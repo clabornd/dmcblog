@@ -1,0 +1,18 @@
+---
+title: The blog lives.  Blog blog blog.
+author: "Daniel Claborne"
+date: "2022-11-06"
+categories: [news]
+---
+
+A test of the new website, deployed on github pages.  Errr, I guess this post can be about how I did it?  Look, just follow [this tutorial](https://quarto.org/docs/websites/website-blog.html) okay.  
+
+Here's some python code I guess?
+
+```{python}
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots()
+ax.scatter([1,2], [1,2])
+fig.show()
+```

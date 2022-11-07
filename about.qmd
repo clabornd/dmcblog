@@ -1,0 +1,21 @@
+---
+title: "Another blog?  Why sir?"
+image: Cubism_portrait.jpeg
+about:
+  template: jolla
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/DanielDunlop123
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/dmclaborne/
+    - icon: github
+      text: Github
+      href: https://github.com/clabornd
+
+---
+
+I made this blog because I wanted to practice with .qmd documents, as well as have a place to document my learning journey on various data-science/ML topics (*I may also post pictures of bread I bake*).  Also, I needed a way to inflate my ego, and a blog seems like a good way to do that?
+
+**\_\_DISCLAIMER\_\_** This will appear throughout the blog - I am not an expert in anything, I will try to cauch everything in uncertainty.  Use any code or follow any conclusions I post at your own risk.

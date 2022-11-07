@@ -1,0 +1,37 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Daniel Mabayog Claborne’s Website",
+    "section": "",
+    "text": "The blog lives. Blog blog blog.\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nNov 6, 2022\n\n\nDaniel Claborne\n\n\n\n\n\n\n  \n\n\n\n\nPost With Code\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nNov 6, 2022\n\n\nHarlow Malloc\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nNov 3, 2022\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/post-with-code/index.html",
+    "href": "posts/post-with-code/index.html",
+    "title": "Post With Code",
+    "section": "",
+    "text": "This is a post with executable code."
+  },
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Another blog? Why sir?",
+    "section": "",
+    "text": "I made this blog because I wanted to practice with .qmd documents, as well as have a place to document my learning journey on various data-science/ML topics (I may also post pictures of bread I bake). Also, I needed a way to inflate my ego, and a blog seems like a good way to do that?\n__DISCLAIMER__ This will appear throughout the blog - I am not an expert in anything, I will try to cauch everything in uncertainty. Use any code or follow any conclusions I post at your own risk."
+  },
+  {
+    "objectID": "posts/hello-word/index.html",
+    "href": "posts/hello-word/index.html",
+    "title": "The blog lives. Blog blog blog.",
+    "section": "",
+    "text": "A test of the new website, deployed on github pages. Errr, I guess this post can be about how I did it? Look, just follow this tutorial okay.\nHere’s some python code I guess?\n\nimport matplotlib.pyplot as plt\n\nfig, ax = plt.subplots()\nax.scatter([1,2], [1,2])\nfig.show()\n\n/home/daniel/anaconda3/lib/python3.7/site-packages/ipykernel_launcher.py:5: UserWarning: Matplotlib is currently using module://matplotlib_inline.backend_inline, which is a non-GUI backend, so cannot show the figure.\n  \"\"\""
+  }
+]
