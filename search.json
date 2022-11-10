@@ -7,6 +7,13 @@
     "text": "Here’s some python code I guess?\n\nimport matplotlib.pyplot as plt\n\nfig, ax = plt.subplots()\nax.scatter([1,2], [1,2])\nfig.show()"
   },
   {
+    "objectID": "posts/ftx-blowup/index.html",
+    "href": "posts/ftx-blowup/index.html",
+    "title": "FTX Blowup and Massive Egos on Twitter",
+    "section": "",
+    "text": "I’ve written previously on my dabbling in crypto, and though I’ve been out from a financial standpoint since ETH was $2000 and still had one more dance with $4000 left in it, I follow the various personalities in the crypto space, partly from a morbid interest in the strange specimens that inhabit the space, and partly from a lingering belief that there just might be something to crypto.\n\nSince I began to exit my crypto holdings, I’ve been a pretty big cynic about the space, however out of some (possibly misplaced) desire to maintain a nonzero level of optimism, I look for the honest, –or at least non-cringe– players in the space. The ones who still be around if the meme-fueled casino ever decides to offer something of value.\nI initially found two candidates for groups of crypto people (sorry cryptographers, they are the crypto people now) that would let me proudly say I never completely lost faith in crypto once we are all paying our taxes in digital currency issued by His Excellency. These groups can be roughly categorized as the degens and the (self-proclaimed) builders.\nIn a result that reveals the true heart of crypto, the degens are the ones that still make me smile about crypto. They are lone-wolf traders, brash, pugnacious, but harmless; refreshingly self-aware and under few illusions (few, not none, as the FTX implosion has shown) about the game they are playing. It is just that to them – a game, and most seem to just be having fun and dont with anything bad on anyone. The most most they might be blamed for is that they serve as an extra light that lures hapless retail traders into the electrified mesh. Finaly, to their credit, I believe that until now, they were not fooled by the latter group.\n\nThe second group, consisting of high-profile heads of exchanges, trading desks and other crypto ‘services’, never gave me the warm fuzzy feeling that the degens did, but boy did they try. Their Twitter accounts are (were) non-stop thread-presses, expounding their deep philosophical and technical wisdom. However the last year has exposed many of these characters (through the collapse of their projects, not just batshit tweets) as nothing more than reckless –though sufficiently intelligent– gamblers with massive egos.\nEvery time one of them posted these insufferable threads clearly meant to keep their sense of self-importance fully inflated, I would try –as I did with the whole crypto space– to maintain a bit of belief that I might be being too cynical. That these people really were trying their best to build something good, but were possibly deluded about the fact that they were just in the casino industry. I said “hey if Sam Bankman-Fried is just transferring money from gamblers to animal-welfare causes (he wasn’t), then I guess I’m okay with that”.\nNever has my cynicism been more validated, and no doubt more validation is to come as the tide continues to recede. The more shocking thing is that these people, after they have been revealed as intellectual and legal frauds, continue to post Twitter threads about what they have learned and how they wish to impart their newfound wisdom as a result of the mistakes they’ve made rough times they’ve endured.\nSomething that keeps me reading their insane rants, is a morbid desire to know whats going on in there. When, after incinerating peoples money, they try to explain their remorse and how they had the best intentions, what is their intent?\n\ngenuinely explain to people how things went bad, but they didn’t want to hurt anyone\nHave drunk their own Kool-Aid and are trying to prevent the air from rushing out of their inflated sense of self-worth\nSetting up for the next con\nMake tweets that sound good, hope that they appear in court as evidence, and that that might help them?\n\nI know its not healthy to spend too much time contemplating this, but you do sometimes just want to see the mask fall of and have them brokenly admit a-la Crime and Punishment that they are the murderer. The people such as His Excellency Justin Sun, though grotesque, at least have the advantage of being so outrageous that there is never any doubt that they are just pure grifters, obtaining their adrenaline rush from getting over on people.\nThe worst part is that the FTX blowup seems to have been the last straw for the degens. On Twitter, they seem exhausted, dejected, ready to call it quits. Their humorous banter is no longer there when I’m sipping coffee in the morning. Who now will bring a smile to my face about crypto?"
+  },
+  {
     "objectID": "posts/post-with-code/index.html",
     "href": "posts/post-with-code/index.html",
     "title": "Post With Code",
@@ -14,18 +21,11 @@
     "text": "This is a post with executable code."
   },
   {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
-    "section": "",
-    "text": "Since this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Daniel Mabayog Claborne’s Website",
+    "title": "Data Science and Miscellaneous Rambling from Daniel Mabayog Claborne",
     "section": "",
-    "text": "news\n\n\n\n\n\n\n\n\n\n\n\nNov 6, 2022\n\n\nDaniel Claborne\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nNov 6, 2022\n\n\nHarlow Malloc\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nNov 3, 2022\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+    "text": "news\n\n\ncrypto\n\n\n\n\n\n\n\n\n\n\n\nNov 9, 2022\n\n\nDaniel Claborne\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nNov 6, 2022\n\n\nDaniel Claborne\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nNov 6, 2022\n\n\nHarlow Malloc\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
