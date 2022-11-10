@@ -1,5 +1,5 @@
 ---
-title: "Daniel Mabayog Claborne's Website"
+title: "Data Science and Miscellaneous Rambling from Daniel Mabayog Claborne"
 listing:
   contents: posts
   sort: "date desc"
