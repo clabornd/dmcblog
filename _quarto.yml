@@ -2,6 +2,7 @@ project:
   type: website
 
 website:
+  site-url: https://clabornd.github.io/dmcblog
   navbar:
     right:
       - about.qmd

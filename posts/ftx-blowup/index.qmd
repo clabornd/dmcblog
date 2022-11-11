@@ -3,7 +3,9 @@ title: "FTX Blowup and Massive Egos on Twitter"
 author: "Daniel Claborne"
 date: "2022-11-09"
 categories: [news, crypto]
-image: "../../www/sbf_bad_tweet.png"
+image: "/www/sbf_bad_tweet.png"
+twitter-card:
+    image: "/www/sbf_bad_tweet.png"
 ---
 
 The last 24 hours on crypto-Twitter have been a cacophony of rage, disbelief and whatever toxic stew of emotions exist in the hearts of crypto traders as the crypto exchange FTX has imploded after some [FUD](https://www.coindesk.com/business/2022/11/02/divisions-in-sam-bankman-frieds-crypto-empire-blur-on-his-trading-titan-alamedas-balance-sheet/) lead to actually-its-not-just-FUD-induced-selling/panic of the Chuck-E-Cheese tokens that made up the majority of assets on the balance sheet of the closely related trading desk Alameda Research.  It was shortly thereafter that FTX itself was revealed to be insolvent, with a hole likely billions deep.  More competent people than me will surely be releasing detailed postmortems in the coming days with the technicals of how this happened, though I'm almost sure it will boil down to some very, very brazen lies about what was being done with peoples money.  Instead I'd like to talk (at bro-science level) about the pathology of the *just spectacular* lineup of characters who did totally legitimate business are are now [*totally not trying to evade authorities*](https://decrypt.co/109981/terra-co-founder-do-kwon-i-am-not-on-the-run).
