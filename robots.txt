@@ -1,1 +1,1 @@
-Sitemap: https://github.com/clabornd/dmcblog/sitemap.xml
+Sitemap: https://clabornd.github.io/dmcblog/sitemap.xml
