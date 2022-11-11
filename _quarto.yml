@@ -3,6 +3,8 @@ project:
 
 website:
   site-url: https://clabornd.github.io/dmcblog
+  twitter-card: true
+  open-graph: true
   navbar:
     right:
       - about.qmd
