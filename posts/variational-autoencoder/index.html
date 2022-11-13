@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Daniel Claborne">
+<meta name="dcterms.date" content="2022-11-12">
+
+<title>Yet Another Explainer on Variation Autoencoders</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Yet Another Explainer on Variation Autoencoders">
+<meta property="og:description" content="For a while, I’ve been struggling to understand variational autoencoders (VAE’s) at a satisfactory level.">
+<meta name="twitter:title" content="Yet Another Explainer on Variation Autoencoders">
+<meta name="twitter:description" content="For a while, I’ve been struggling to understand variational autoencoders (VAE’s) at a satisfactory level.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">Another blog? Why sir?</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/clabornd"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Yet Another Explainer on Variation Autoencoders</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Daniel Claborne </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 12, 2022</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>For a while, I’ve been struggling to understand variational autoencoders (VAE’s) at a satisfactory level. An initial pass produced a bit of understanding, but I got sucked back in when I tried to understand Dalle-E, which led me to try to understand diffusion models, which directed me back to going over the techniques used in variational autoencoders again. Some day I will write a Johnny-come-lately post about the different components of Dall-E, but today is about VAE’s.</p>
+<p>Before I jump into things, my default disclaimer that I am probably not someone who should be writing authoritative-sounding articles about VAE’s - this is an exercise in understanding through explanation. Also, I think its just generally useful to have as many angles at explaining something available as possible – the sources I used to understand VAE’s had great diversity in the ways they explained recurring topics and how much to delve into certain pieces of the puzzle. Here are some resources that I have found useful and are probably more trustworthy (maybe mine is more humorous?):</p>
+<ul>
+<li><a href="https://arxiv.org/abs/1312.6114">Paper by Kingma and Welling</a><span class="math inline">\(^{[1]}\)</span><a name="ref1"></a></li>
+<li><a href="https://arxiv.org/abs/1606.05908">This tutorial by some people at UC-Berkeley and Carnegie Mellon</a><span class="math inline">\(^{[2]}\)</span><a name="ref2"></a></li>
+<li><a href="https://jaan.io/what-is-variational-autoencoder-vae-tutorial/">This blog post</a><span class="math inline">\(^{[3]}\)</span><a name="ref3"></a></li>
+<li><a href="https://towardsdatascience.com/understanding-variational-autoencoders-vaes-f70510919f73">This other blog post</a><span class="math inline">\(^{[4]}\)</span><a name="ref4"></a></li>
+</ul>
+<p>Much of the material here is going to be a re-hash of what has been presented in these. <strong>If you notice something wrong, please submit a pull request or open an issue in <a href="https://github.com/clabornd/dmcblog">the git repo for this blog</a> to correct my mistake</strong>.</p>
+<hr>
+<section id="setup" class="level3">
+<h3 class="anchored" data-anchor-id="setup">Setup</h3>
+<p>Alright, so variational autoencoders are cool, they can produce synthetic samples (images) that are realistic and serve as great material for articles and Reddit posts about how ‘<em>none of these faces are real!</em>’ and how we will soon all live in an identity-less, AI-controlled dystopian nightmare.</p>
+<img src="../../www/Cubism_portrait.jpeg" class="img-fluid">
+<p align="center">
+This person doesn’t exist
+</p><p>
+</p><p>How do VAE’s help us get there? One thing that <a href="#ref1">[1]</a> and <a href="$ref2">[2]</a> do is to initially put any sort of deep learning architectures aside and just focus on the general variational inference problem. At first I found this very annoying (get to the point!), but now think it is probably useful (yea yea, the people who are way smarter than me were right and I was wrong, who would have thought).</p>
+<p>The setup is that we have some real observations, <span class="math inline">\(X_{obs} = \{x^{(1)}, x^{(2)}, ... x^{(N)}\}\)</span> (When I talk about some arbitrary sample from the observed data, i’ll drop the superscript and just say <span class="math inline">\(x\)</span>) that we assume are generated from some process that goes like:</p>
+<ol type="1">
+<li>A random variable <span class="math inline">\(z \in \mathcal{Z}\)</span> is drawn from some distribution <span class="math inline">\(p(z\vert\psi)\)</span> with parameters <span class="math inline">\(\psi\)</span>.</li>
+<li><span class="math inline">\(x^{(i)} \in \mathcal{X}\)</span> are generated through a conditional distribution <span class="math inline">\(p(x\vert z;\theta)\)</span> with parameters <span class="math inline">\(\theta\)</span></li>
+</ol>
+<p>The <span class="math inline">\(x^{(i)}\)</span> could be anything from single values to something very high dimensional like an image. We seek to maximize the likelihood of our data under the entire generative process:</p>
+<p><span class="math display">\[p(x) = \int p(x\vert z; \theta)p(z\vert\psi)dz\]</span></p>
+<p>However there are some issues, the true values of <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\psi\)</span> are not necessarily known to us. We also cannot assume that the posterior <span class="math inline">\(p(z\vert x;\phi)\)</span> is tractable, which we will see is important later. Here we can note that we have the two pieces that correspond to the ‘encoder’ and ‘decoder’ pieces of the problem. <span class="math inline">\(p(x\vert z;\theta)\)</span> is like a decoder, taking the hidden <span class="math inline">\(z\)</span> and turning it into the observed <span class="math inline">\(x\)</span>. <span class="math inline">\(p(z\vert x;\phi)\)</span> is like a decoder, taking some input <span class="math inline">\(x\)</span> and produces a hidden representation <span class="math inline">\(z\)</span> that was likely given that we observed that <span class="math inline">\(x\)</span>. A graph of the whole process including the ‘encoder’ and ‘decoder’ pieces in shown below.</p>
+<div id="fig:vae-plate" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="../../www/vae_plate.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">“Plate diagram” with solid arrows representing <span class="math inline">\(p(x\vert z; \theta)\)</span> and dashed arrows representing <span class="math inline">\(p(z\vert x;\phi)\)</span>. From Kingma and Welling (2014)</figcaption><p></p>
+</figure>
+</div>
+<p>I think now is a good time to bring in the neural network piece of the equation (you can stop scrolling). This was one of the hardest parts of understanding vae’s for me – it was hard to get used to the idea of networks that <em>produced distributions</em>. <span class="math inline">\(p(x\vert z;\theta)\)</span> can be approximated by a neural network. We’ll see soon that <span class="math inline">\(p(z\vert x;\phi)\)</span> can be as well, and I’ll explain why we need it to be.</p>
+<hr>
+<p>Lets start with <span class="math inline">\(p(x\vert z;\theta)\)</span>. First some assumptions are made:</p>
+<ol type="1">
+<li><span class="math inline">\(p(x\vert z;\theta)\)</span> comes from a distribution such that it can be approximated/parametrized by a differentiable function <span class="math inline">\(f(z; \theta)\)</span></li>
+<li><span class="math inline">\(z\)</span> is drawn from some probability distribution, often an isotropic Gaussian p(z) = <span class="math inline">\(N(0, I)\)</span></li>
+</ol>
+<p>The first assumption is simply so we can perform gradient descent given a sampled <span class="math inline">\(z\)</span> and optimize the likelihood of <span class="math inline">\(x\)</span> given that <span class="math inline">\(z\)</span>. Here is where we have our neural network that produces a distribution. One common way is for <span class="math inline">\(f(z; \theta)\)</span> to take the form of encoding the mean of an isotropic normal: <span class="math display">\[p(x\vert z; \theta) = \mathcal{N}(X\vert f(z;\theta), \sigma^2_x*I)\]</span> Ok, I usually have to stop here…how does this help us? Well, we now have a network that will output a distribution from which we can calculate a likelihood for any given <span class="math inline">\(x\)</span>, and it is differentiable, such that we can edit the parameters <span class="math inline">\(\theta\)</span> through gradient descent to maximize the likelihood of all <span class="math inline">\(x \in X_{obs}\)</span>. Having this ‘decoder’ network represent a distribution is also necessary when fitting it into the objective function later. From now on when I refer to <span class="math inline">\(p(x\vert z; \theta)\)</span>, I’ll be simultaneously talking about the distribution, and the network that produces that distribution.</p>
+<p>I think it is worthwhile to consider what maximizing this likelihood looks like in a real example. Suppose the <span class="math inline">\(x^{(i)}\)</span> are greyscale images, what should <span class="math inline">\(f(z; \theta)\)</span> output to maximize the likelihood of a given <span class="math inline">\(x\)</span>? Intuitively (and mathematically) it should output a mean vector with each element corresponding to a pixel in <span class="math inline">\(x\)</span> and having the same value as that pixel – that is, the multivariate Gaussian it outputs should be directly centered over the multivariate representation of the image. One can also consider other forms of <span class="math inline">\(x\)</span> and output distributions that make sense, such as if <span class="math inline">\(x\)</span> is from a multivariate bernoulli, and <span class="math inline">\(f(z; \theta)\)</span> would then output the probability vector <span class="math inline">\(p\)</span>, maximizing the likelihood by having elements of <span class="math inline">\(p\)</span> as close to 1 as possible for corresponding 1’s in <span class="math inline">\(x\)</span> (and close to zero for zeros).</p>
+<p>The second assumption is a bit weirder, and took me a while to get comfortable with. Essentially it is very dubious to try to handcraft a distribution for <span class="math inline">\(z\)</span> that represents some informative latent representation of the data. Better to let <span class="math inline">\(f(z; \theta)\)</span> sort out the random noise and construct informative features through gradient descent. Later, when we get to the encoder/objective, we’ll also see that having <span class="math inline">\(z\)</span> be <span class="math inline">\(N(0, I)\)</span> is convenient when computing a component of the objective.</p>
+<hr>
+<p>At this point, we could go ahead and try to train our decoder to maximize the likelihood of our observed data. We can estimate <span class="math inline">\(p(x)\)</span> by drawing a whole bunch of <span class="math inline">\(z\)</span> and then computing <span class="math inline">\(\frac{1}{N}\sum_{i=1}^{N} p(x\vert z_i;\theta)\)</span> for each <span class="math inline">\(x^{(i)}\)</span> and maximizing <span class="math inline">\(log(p(X_{obs})) = \sum_i log(p(x^{(i)}))\)</span> through gradient descent. However as mentioned in <a href="#ref2">[2]</a> we may need an unreasonable number of samples from <span class="math inline">\(z\)</span> to get a good estimate of any <span class="math inline">\(p(x)\)</span>. This seems to be a problem with the complexity of the observed data, and how reasonable it is that <span class="math inline">\(x\)</span> arises from <span class="math inline">\(N(0, I)\)</span> random noise being passed through a function approximator:</p>
+<ul>
+<li><strong>Us</strong>: Hey! we need you to turn this random noise in <span class="math inline">\(\mathbb{R}^2\)</span> into more of like….a diagonal line.</li>
+<li><strong>Model</strong>: Yea sure I can kinda learn to move stuff in the second and fourth quadrants to the first and third quadrants.</li>
+<li>…</li>
+<li><strong>Us</strong>: Hi, good job on the diagonal thing, now we need you to make some pictures of numbers from the noise.</li>
+<li><strong>Model</strong>: What, like….images? Of digits? Christ man thats really high dimensional, how do I even…I mean i’ll give it a try but this is sort of a stretch.</li>
+<li><strong>Us</strong>: Go get em!</li>
+<li>…</li>
+<li><strong>Us</strong>: Hi champ, back again. We need you to recreate the diversity of pictures of human faces from the same random noi…</li>
+<li><strong>Model</strong>: *explodes*</li>
+</ul>
+<p>Another intuition I have for why this does not work, is that how does <span class="math inline">\(f(z; \theta)\)</span> decide to what distributions to map certain regions of the latent space <span class="math inline">\(\mathcal{Z}\)</span>? In the example of generating images of digits, it has to balance maximizing the probability of <em>all</em> digits. However if there is a group of digits (say, all the twos) that are very different from the rest of the digits than the rest of the digits are from each other, then maximizing <span class="math inline">\(p(X_{obs})\)</span> might involve simply not mapping <em>any</em> region of <span class="math inline">\(\mathcal{Z}\)</span> to a distribution that odd digit is likely under – not a model we want to end up with. It helps then to define, for a given <span class="math inline">\(x\)</span>, regions of <span class="math inline">\(\mathcal{Z}\)</span> that were likely given we observed that <span class="math inline">\(x\)</span>.</p>
+</section>
+<section id="making-things-easier-with-an-encoder" class="level3">
+<h3 class="anchored" data-anchor-id="making-things-easier-with-an-encoder">Making things easier with an encoder</h3>
+<p>I mentioned we would need to consider the posterior <span class="math inline">\(p(z\vert x;\phi)\)</span> – it directly addresses the problem I just brought up: that we need to know what <span class="math inline">\(z\)</span> values are likely given we observed a particular <span class="math inline">\(x\)</span>. We now develop our ‘encoder’, which again will map <span class="math inline">\(x\)</span> to <em>distributions</em> over <span class="math inline">\(\mathcal{Z}\)</span>.</p>
+<p>One reasonable question is why do we want to map to a distribution? Why don’t we just map to specific points in <span class="math inline">\(\mathcal{Z}\)</span> that are most likely to produce <span class="math inline">\(x\)</span>. Well, remember that we want to be able to generate examples by sampling from <span class="math inline">\(\mathcal{Z}\)</span>, and it is highly unlikely that a regular old encoder will map <span class="math inline">\(x\)</span>’s to <span class="math inline">\(z\)</span>’s in such a way that is ‘smooth’ or ‘regular’ enough such that we can do so.</p>
+<p>Consider some <span class="math inline">\(z^{(i)}\)</span> that is likely to have produced a <span class="math inline">\(4\)</span>. The encoder is under no constraint to make some other <span class="math inline">\(z^{(j)}\)</span> that is very close to <span class="math inline">\(z^{(i)}\)</span> also likely to produce a <span class="math inline">\(4\)</span>. Similarly, given two regions of <span class="math inline">\(\mathcal{Z}\)</span> that produce, say, <span class="math inline">\(1\)</span>’s and <span class="math inline">\(7\)</span>’s, as we move from one region to the other, the model is under no obligation to smoothly change from decoding to <span class="math inline">\(1\)</span>’s to decoding to <span class="math inline">\(7\)</span>’s. <a href="#ref4">[4]</a> explains this concept very well. Another way to think about it is that this does not really match our initial definition of the generative process of <span class="math inline">\(z\)</span>’s randomly occurring and producing <span class="math inline">\(x\)</span>’s from some conditional distribution <span class="math inline">\(p(x\vert z)\)</span>. We <em>could</em> make it fit, but <span class="math inline">\(p(z)\)</span> would be some very wacky distribution with completely unknown form. So, it makes sense to encode the <span class="math inline">\(x\)</span> to well behaved <em>distributions</em> over <span class="math inline">\(z\)</span> as well as consider penalizing the encoder for producing sets of these conditional distributions <span class="math inline">\(p(z\vert x)\)</span> which are far apart, so that we can sample the latent space and reasonably get a high-quality example of an <span class="math inline">\(x\)</span>. We’ll see how this is done in the next section.</p>
+<p>To wrap up this section, <span class="math inline">\(p(z\vert x)\)</span> will be approximated in a very similar way as <span class="math inline">\(p(x\vert z;\theta)\)</span> – it’s parameters are determined by a neural network that takes in <span class="math inline">\(x\)</span> and outputs the parameters of a distribution, in this case, the mean and variance vectors of an isotropic normal distribution:</p>
+<p><span class="math display">\[q(z\vert x; \phi) = \mathcal{N}(Z \vert \mu(x;\phi), \mathbf{\Sigma}(x;\phi))\]</span></p>
+<p>Where <span class="math inline">\(\mu(x;\phi)\)</span> and <span class="math inline">\(\mathbf{\Sigma}(x;\phi)\)</span> are the mean vector and covariance matrix for the isotropic normal distribution output by our encoder network with parameters <span class="math inline">\(\phi\)</span> when fed <span class="math inline">\(x\)</span> as input (in practice the network just outputs the diagonal elements for <span class="math inline">\(\mathbf{\Sigma}(x;\phi))\)</span>, since the off-diagonals are forced to be zero). When referring to <span class="math inline">\(q(z\vert x; \phi)\)</span> I’ll be talking both about the distribution induced by the network that outputs <span class="math inline">\(\mu(x;\phi)\)</span> and <span class="math inline">\(\mathbf{\Sigma}(x;\phi)\)</span> and the network itself.</p>
+</section>
+<section id="the-objective" class="level3">
+<h3 class="anchored" data-anchor-id="the-objective">The objective</h3>
+<p>So, we have an encoder <span class="math inline">\(q(z\vert x; \phi)\)</span> and decoder <span class="math inline">\(p(x\vert z;\theta)\)</span>, now all that is left is to train them. So we have to find an objective that incorporates them, as well as satisfies our goal of maximizing <span class="math inline">\(p(X_{obs})\)</span> under a generative process with a <span class="math inline">\(z\)</span> we can reasonably sample from and produce realistic examples.</p>
+<p>There is a lot of variation (man…I think I missed the pun on this one earlier) in tutorials about how they arrive at the loss function. I’m working backwards from the definition in Kingma and Welling (2014) for the reason that the starting point is well motivated: We want to maximize <span class="math inline">\(p(x)\)</span> under the generative process; can we find a differentiable form related to <span class="math inline">\(p(x)\)</span> that includes our encoder and decoder structures?</p>
+<p>Another common approach starts with the motivation of trying to optimize <span class="math inline">\(q(z\vert x; \phi)\)</span> to match the intractable posterior <span class="math inline">\(p(z\vert x)\)</span>, but I found it hard to make the logical leaps as to how someone could reasonably start here. That way is maybe algebraically easier to get to what we want, but I like how starting with <span class="math inline">\(p(x)\)</span> and rewriting it feels more intuitively motivated.</p>
+<p>The way I’ll get our encoder and decoder into the definition of <span class="math inline">\(p(x)\)</span> is by doing a bit of the ol add zero trick:</p>
+<p><span class="math display">\[log(p(x)) = E_{z\sim q(z\vert x;\phi)}[log(q(z\vert x;\phi)) - log(p(z \vert x)) - log(q(z\vert x;\phi)) + log(p(z \vert x))] + log(p(x))\]</span></p>
+<p>Yes, I am just taking the expectation of zero in there. I’m taking the log of <span class="math inline">\(p(x)\)</span> because we’ll need log-everything on the right side and maximizing <span class="math inline">\(log(p(x))\)</span> will also maximize <span class="math inline">\(p(x)\)</span>. As a bonus, we have the form of our encoder in the equation, great! (GREAT!) Notice that the expectation is over <span class="math inline">\(z\)</span>’s drawn from <span class="math inline">\(q(z\vert x;\phi)\)</span>, that is, to approximate this expectation we would sample from <span class="math inline">\(q(z\vert x;\phi)\)</span> by providing an <span class="math inline">\(x\)</span> and sampling from the conditional distribution. Ok, now we need to get the decoder in there. I’ll move the <span class="math inline">\(log(p(x))\)</span> inside the expectation (legal since it doesn’t depend on <span class="math inline">\(z\)</span>) and then rewrite using the equality <span class="math inline">\(log(p(z\vert x)p(x)) = log(p(x,z)) = log(p(x\vert z)p(z))\)</span>:</p>
+<p><span class="math display">\[log(p(x)) = E_{z\sim q(z\vert x;\phi)}[log(q(z\vert x;\phi)) - log(p(z \vert x)) - log(q(z\vert x;\phi)) + log(p(x \vert z;\theta)) + log(p(z))]\]</span></p>
+<p>Yay! Theres our decoder! (Dont doubt me, I really am that excited as I write this). Now what we can do is collapse things into <a href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Definition">Kullback-Leibler divergences</a> - specifically any +/- pair of log probabilities dependent on <span class="math inline">\(z\)</span> can be rewritten as a KL divergence:</p>
+<p><span class="math display">\[
+log(p(x)) = KL(q(z\vert x;\phi) \vert\vert p(z \vert x)) - KL(q(z\vert x;\phi)\vert\vert p(z)) + E_{z\sim q(z\vert x;\phi)}[log(p(x \vert z;\theta))]\label{eq1}\tag{eqn-1}
+\]</span></p>
+<p>Hrm, we have that pesky intractable <span class="math inline">\(p(z \vert x)\)</span> in there. Thankfully, we can focus on the other terms and simply rewrite/rearrange using the fact that KL-divergence is non-negative:</p>
+<p><span class="math display">\[
+\begin{align}
+log(p(x)) \geq E_{z\sim q}[log(p(x \vert z;\theta))] - KL(q(z\vert x;\phi)\vert\vert p(z))\label{eq2}\tag{eqn-2}
+\end{align}
+\]</span></p>
+<p>The right hand side is known as the evidence lower bound (ELBO), and various derivations of it and the above inequality can be found all over the internet if you found the above unsettling, disturbing, offensive.</p>
+<p>It is useful to stare a bit at (<span class="math inline">\(\ref{eq1}\)</span>) and (<span class="math inline">\(\ref{eq2}\)</span>). First, if our <span class="math inline">\(q(z\vert x;\phi)\)</span> eventually ends up <em>matching</em> <span class="math inline">\(p(z \vert x)\)</span>, then the first KL divergence in (<span class="math inline">\(\ref{eq1}\)</span>) will be zero, and maximizing the RHS of (<span class="math inline">\(\ref{eq2}\)</span>) will be like directly maximizing <span class="math inline">\(p(x)\)</span> <a href="$ref2">[2]</a>.</p>
+<p>The other notable thing is that (<span class="math inline">\(\ref{eq2}\)</span>) has a nice interpretation. <span class="math inline">\(E_{z\sim q(z\vert x;\phi)}[log(p(x \vert z;\theta))]\)</span> can be though of as the reconstruction loss - how close are our reconstructions to the data. <span class="math inline">\(KL(q(z\vert x;\phi)\vert\vert p(z))\)</span> is like a regularization term telling our encoder: “You must try to be like the prior distribution <span class="math inline">\(p(z)\)</span>”. This regularization term achieves the goal of making sure the conditional distributions across the <span class="math inline">\(x\)</span> are nice and compact around the prior distribution - so if we sample from a <span class="math inline">\(\mathcal{N}(0,I)\)</span>, we are likely to get a <span class="math inline">\(z\)</span> that is likely to produce one of our <span class="math inline">\(x\)</span>’s.</p>
+</section>
+<section id="maximizing-the-objective-through-gradient-descent" class="level3">
+<h3 class="anchored" data-anchor-id="maximizing-the-objective-through-gradient-descent">Maximizing the objective through gradient descent</h3>
+<p>So, uhm…is (<span class="math inline">\(\ref{eq2}\)</span>) differentiable? Nope. Tutorial over, you’ve been had, AHAHAHAHA!</p>
+<p>Joking aside it actually isn’t currently amenable to backpropagation but we will get around that in a second. So remember we have two things we need to compute:</p>
+<ol type="1">
+<li>The regularization term <span class="math inline">\(KL(q(z\vert x;\phi)\vert\vert p(z))\)</span></li>
+<li>The reconstruction term <span class="math inline">\(E_{z\sim q(z\vert x;\phi)}[log(p(x \vert z;\theta))]\)</span></li>
+</ol>
+<p>For 1, when the two distributions in the KL divergence are Gaussian, then there is a nice closed form solution that reduces nicely when, as in our case, the second distribution is <span class="math inline">\(\mathcal{N}(0, I)\)</span>:<br>
+<span class="math display">\[
+KL(q(z\vert x;\phi)\vert\vert p(z)) = KL(\mathcal{N}(Z \vert \mu(x;\phi), \Sigma(x;\phi))\vert\vert \mathcal{N}(0,I))
+\]</span> <span class="math display">\[
+= \frac{1}{2}(tr(\Sigma(x;\phi)) + \mu(x;\phi)^T\mu(x;\phi) - k - log(det(\Sigma(x;\phi))))
+\]</span></p>
+<p>Where remember <span class="math inline">\(\mu(x;\phi)\)</span> and <span class="math inline">\(\Sigma(x;\phi)\)</span> are our mean vector and covariance matrix computed by our encoder. Nice, this is a value, it is differentiable with respect to the parameters <span class="math inline">\(\phi\)</span>, great.</p>
+<p>For 2, note that when we compute gradients, we move the gradient inside the expectation, and are just computing a gradient from a single example of <span class="math inline">\(z\)</span>, drawn from <span class="math inline">\(q(z\vert x;\phi)\)</span> given our input <span class="math inline">\(x\)</span> at train time (and over many gradient computations, we have well approximated maximizing the expectation over <span class="math inline">\(z\sim q(z\vert x;\phi)\)</span>). However we have a bit of a problem. Again notice the expectation is over <span class="math inline">\(z\)</span> sampled from <span class="math inline">\(q(z\vert x;\phi)\)</span>, therefore maximizing the expression inside the expectation depends not only on updating <span class="math inline">\(p(x \vert z;\theta)\)</span> to perform reconstruction well, but on updating <span class="math inline">\(q(z\vert x;\phi)\)</span> to produce distributions that output <span class="math inline">\(z\)</span>’s that <span class="math inline">\(p(x \vert z;\theta)\)</span> finds easy to decode.</p>
+<p>Ok, so no big deal? Just update both networks based on the reconstruction loss? This won’t immediately work because our training looks like:</p>
+<ol type="1">
+<li>Send <span class="math inline">\(x\)</span> through <span class="math inline">\(q(z\vert x;\phi)\)</span> to get a distribution over <span class="math inline">\(z\)</span>’s</li>
+<li>Sample a <span class="math inline">\(z\)</span> from that distribution</li>
+<li>Send <span class="math inline">\(z\)</span> through <span class="math inline">\(p(x \vert z;\theta)\)</span> to produce <span class="math inline">\(x\)</span> and compute the reconstruction loss</li>
+</ol>
+<p>The problem is that we cannot backpropagate through step 2 (‘sample from a distribution’ is not a math operation we can take the gradient of). The solution is what is known as the reparametrization trick. Instead of sampling directly from the distribution inferred by the output of our encoder, we sample noise <span class="math inline">\(\epsilon \sim \mathcal{N}(0, I)\)</span> and then multiply/add… :</p>
+<p><span class="math display">\[\epsilon*\sqrt{\Sigma(x;\phi)} + \mu(x;\phi)\]</span></p>
+<p>…to mimic sampling from the implied distribution. The difference being that in this case we are just adding and multiplying by constants, things which backpropogation is fine with (even though those constants were obtained from sampling).</p>
+<p>Now we can compute gradients for batches of <span class="math inline">\(x\)</span> and average the gradients in the normal fashion to train the model.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

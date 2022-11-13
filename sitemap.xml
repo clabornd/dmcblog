@@ -2,18 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/hello-word/index.html</loc>
-    <lastmod>2022-11-11T05:34:45.224Z</lastmod>
+    <lastmod>2022-11-13T23:01:26.157Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/ftx-blowup/index.html</loc>
-    <lastmod>2022-11-11T05:34:46.144Z</lastmod>
+    <lastmod>2022-11-13T23:01:26.913Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/variational-autoencoder/index.html</loc>
+    <lastmod>2022-11-13T23:01:27.501Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/index.html</loc>
-    <lastmod>2022-11-11T05:34:46.644Z</lastmod>
+    <lastmod>2022-11-13T23:01:27.897Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/about.html</loc>
-    <lastmod>2022-11-11T05:34:47.048Z</lastmod>
+    <lastmod>2022-11-13T23:01:28.189Z</lastmod>
   </url>
 </urlset>

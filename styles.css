@@ -1,1 +1,5 @@
 /* css styles */
+
+div[id*='fig:'] .figure-caption {
+    text-align:center
+}
