@@ -3,6 +3,9 @@ title: "Yet Another Explainer on Variation Autoencoders"
 author: "Daniel Claborne"
 date: "2022-11-12"
 tags: ["machine learning"]
+image: "/www/sd-vae-impressionist-2.png"
+twitter-card:
+    image: "/www/sd-vae-impressionist-2.png"
 ---
 
 For a while, I've been struggling to understand variational autoencoders (VAE's) at a satisfactory level.  An initial pass produced a bit of understanding, but I got sucked back in when I tried to understand Dalle-E, which led me to try to understand diffusion models, which directed me back to going over the techniques used in variational autoencoders again.  Some day I will write a Johnny-come-lately post about the different components of Dall-E, but today is about VAE's.

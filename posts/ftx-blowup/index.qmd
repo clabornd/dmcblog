@@ -3,9 +3,9 @@ title: "FTX Blowup and Massive Egos on Twitter"
 author: "Daniel Claborne"
 date: "2022-11-09"
 categories: [news, crypto]
-image: "/www/sbf_bad_tweet.png"
+image: "/www/sd-crypto-wasteland-1.png"
 twitter-card:
-    image: "/www/sbf_bad_tweet.png"
+    image: "/www/sd-crypto-wasteland-1.png"
 ---
 
 The last 24 hours on crypto-Twitter have been a cacophony of rage, disbelief and whatever toxic stew of emotions exist in the hearts of crypto traders as the crypto exchange FTX has imploded after some [FUD](https://www.coindesk.com/business/2022/11/02/divisions-in-sam-bankman-frieds-crypto-empire-blur-on-his-trading-titan-alamedas-balance-sheet/) lead to actually-its-not-just-FUD-induced-selling/panic of the Chuck-E-Cheese tokens that made up the majority of assets on the balance sheet of the closely related trading desk Alameda Research.  It was shortly thereafter that FTX itself was revealed to be insolvent, with a hole likely billions deep.  More competent people than me will surely be releasing detailed postmortems in the coming days with the technicals of how this happened, though I'm almost sure it will boil down to some very, very brazen lies about what was being done with peoples money.  Instead I'd like to talk (at bro-science level) about the pathology of the *just spectacular* lineup of characters who did totally legitimate business are are now [*totally not trying to evade authorities*](https://decrypt.co/109981/terra-co-founder-do-kwon-i-am-not-on-the-run).
@@ -23,6 +23,8 @@ In a result that reveals the true heart of crypto, the degens are the ones that 
 ____
 
 The second group, consisting of high-profile heads of exchanges, trading desks and other crypto 'services', never gave me the warm fuzzy feeling that the degens did, but boy did they try.  Their Twitter accounts are (were) non-stop thread-presses, expounding their deep philosophical and technical wisdom.  However the last year has exposed many of these characters (through the collapse of their projects, not just batshit tweets) as nothing more than reckless --though sufficiently intelligent-- gamblers with massive egos.
+
+![Untold wisdom awaits in their threads.](/www/sbf_bad_tweet.png){#fig:sbd-bad-tweet}
 
 Every time one of them posted these insufferable threads clearly meant to keep their sense of self-importance fully inflated, I would try --as I did with the whole crypto space-- to maintain a bit of belief that I might be being too cynical, that these people really were trying their best to build something good, but were possibly deluded about the fact that they were just in the ponzi-as-a-service industry.  I said "hey if Sam Bankman-Fried is just transferring money from gamblers to animal-welfare causes (he wasn't), then I guess I'm okay with that". 
 
