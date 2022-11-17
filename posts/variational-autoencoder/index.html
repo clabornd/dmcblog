@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.251">
+<meta name="generator" content="quarto-1.2.269">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Daniel Claborne">
 <meta name="dcterms.date" content="2022-11-12">
 
-<title>Yet Another Explainer on Variation Autoencoders</title>
+<title>Yet Another Explainer on Variational Autoencoders</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,12 +64,12 @@ ul.task-list li input[type="checkbox"] {
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="Yet Another Explainer on Variation Autoencoders">
+<meta property="og:title" content="Yet Another Explainer on Variational Autoencoders">
 <meta property="og:description" content="For a while, I’ve been struggling to understand variational autoencoders (VAE’s) at a satisfactory level.">
 <meta property="og:image" content="https://clabornd.github.io/dmcblog/www/sd-vae-impressionist-2.png">
 <meta property="og:image:height" content="512">
 <meta property="og:image:width" content="512">
-<meta name="twitter:title" content="Yet Another Explainer on Variation Autoencoders">
+<meta name="twitter:title" content="Yet Another Explainer on Variational Autoencoders">
 <meta name="twitter:description" content="For a while, I’ve been struggling to understand variational autoencoders (VAE’s) at a satisfactory level.">
 <meta name="twitter:image" content="https://clabornd.github.io/dmcblog/www/sd-vae-impressionist-2.png">
 <meta name="twitter:image-height" content="512">
@@ -89,17 +89,18 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html">Another blog? Why sir?</a>
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">Another blog? Why sir?</span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/clabornd"><i class="bi bi-github" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://twitter.com/"><i class="bi bi-twitter" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -111,7 +112,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Yet Another Explainer on Variation Autoencoders</h1>
+      <h1 class="title">Yet Another Explainer on Variational Autoencoders</h1>
                       </div>
   </div>
     
@@ -131,6 +132,7 @@ ul.task-list li input[type="checkbox"] {
         <p class="date">November 12, 2022</p>
       </div>
     </div>
+    
       
     </div>
     
@@ -182,7 +184,7 @@ This person doesn’t exist
 <p>Lets start with <span class="math inline">\(p(x\vert z;\theta)\)</span>. First some assumptions are made:</p>
 <ol type="1">
 <li><span class="math inline">\(p(x\vert z;\theta)\)</span> comes from a distribution such that it can be approximated/parametrized by a differentiable function <span class="math inline">\(f(z; \theta)\)</span></li>
-<li><span class="math inline">\(z\)</span> is drawn from some probability distribution, often an isotropic Gaussian p(z) = <span class="math inline">\(N(0, I)\)</span></li>
+<li><span class="math inline">\(z\)</span> is drawn from some probability distribution, often an isotropic Gaussian <span class="math inline">\(p(z) = N(0, I)\)</span></li>
 </ol>
 <p>The first assumption is simply so we can perform gradient descent given a sampled <span class="math inline">\(z\)</span> and optimize the likelihood of <span class="math inline">\(x\)</span> given that <span class="math inline">\(z\)</span>. Here is where we have our neural network that produces a distribution. One common way is for <span class="math inline">\(f(z; \theta)\)</span> to take the form of encoding the mean of an isotropic normal: <span class="math display">\[p(x\vert z; \theta) = \mathcal{N}(X\vert f(z;\theta), \sigma^2_x*I)\]</span> Ok, I usually have to stop here…how does this help us? Well, we now have a network that will output a distribution from which we can calculate a likelihood for any given <span class="math inline">\(x\)</span>, and it is differentiable, such that we can edit the parameters <span class="math inline">\(\theta\)</span> through gradient descent to maximize the likelihood of all <span class="math inline">\(x \in X_{obs}\)</span>. Having this ‘decoder’ network represent a distribution is also necessary when fitting it into the objective function later. From now on when I refer to <span class="math inline">\(p(x\vert z; \theta)\)</span>, I’ll be simultaneously talking about the distribution, and the network that produces that distribution.</p>
 <p>I think it is worthwhile to consider what maximizing this likelihood looks like in a real example. Suppose the <span class="math inline">\(x^{(i)}\)</span> are greyscale images, what should <span class="math inline">\(f(z; \theta)\)</span> output to maximize the likelihood of a given <span class="math inline">\(x\)</span>? Intuitively (and mathematically) it should output a mean vector with each element corresponding to a pixel in <span class="math inline">\(x\)</span> and having the same value as that pixel – that is, the multivariate Gaussian it outputs should be directly centered over the multivariate representation of the image. One can also consider other forms of <span class="math inline">\(x\)</span> and output distributions that make sense, such as if <span class="math inline">\(x\)</span> is from a multivariate bernoulli, and <span class="math inline">\(f(z; \theta)\)</span> would then output the probability vector <span class="math inline">\(p\)</span>, maximizing the likelihood by having elements of <span class="math inline">\(p\)</span> as close to 1 as possible for corresponding 1’s in <span class="math inline">\(x\)</span> (and close to zero for zeros).</p>
@@ -306,7 +308,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -342,24 +361,42 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>

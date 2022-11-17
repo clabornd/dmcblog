@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.251">
+<meta name="generator" content="quarto-1.2.269">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -110,17 +110,18 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html">Another blog? Why sir?</a>
+    <a class="nav-link" href="./about.html">
+ <span class="menu-text">Another blog? Why sir?</span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/clabornd"><i class="bi bi-github" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://twitter.com/"><i class="bi bi-twitter" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -140,6 +141,7 @@ ul.task-list li input[type="checkbox"] {
   <div class="quarto-title-meta">
 
       
+    
       
     </div>
     
@@ -162,20 +164,20 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1668211200000" data-listing-file-modified-sort="1668404637801" data-listing-reading-time-sort="15.365">
+<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1668211200000" data-listing-file-modified-sort="1668660449530" data-listing-reading-time-sort="15.365">
 <div class="thumbnail">
 <p><a href="./posts/variational-autoencoder/index.html"> <img src="./www/sd-vae-impressionist-2.png" class="thumnail-image"> </a></p>
 </div>
 <div class="body">
 <a href="./posts/variational-autoencoder/index.html">
 <h3 class="no-anchor listing-title">
-Yet Another Explainer on Variation Autoencoders
+Yet Another Explainer on Variational Autoencoders
 </h3>
 <div class="listing-subtitle">
 
 </div>
 <div class="listing-description">
-For a while, I’ve been struggling to understand variational autoencoders (VAE’s) at a satisfactory level. An initial pass produced a bit of understanding, but I got sucked back in when I tried to understand Dalle-E, which led me to try to understand diffusion models, which directed me back to going over the techniques used in variational autoencoders again. Some day I will write a Johnny-come-lately post about the different components of Dall-E, but today is about VAE’s.
+For a while, I’ve been struggling to understand variational autoencoders (VAE’s) at a satisfactory level. An initial pass produced a bit of understanding, but I got sucked…
 </div>
 </a>
 </div>
@@ -190,7 +192,7 @@ Daniel Claborne
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="news,crypto" data-listing-date-sort="1667952000000" data-listing-file-modified-sort="1668404637801" data-listing-reading-time-sort="4.845">
+<div class="quarto-post image-right" data-index="1" data-categories="news,crypto" data-listing-date-sort="1667952000000" data-listing-file-modified-sort="1668660449530" data-listing-reading-time-sort="4.845">
 <div class="thumbnail">
 <p><a href="./posts/ftx-blowup/index.html"> <img src="./www/sd-crypto-wasteland-1.png" class="thumnail-image"> </a></p>
 </div>
@@ -213,7 +215,7 @@ crypto
 </div>
 <a href="./posts/ftx-blowup/index.html">
 <div class="listing-description">
-The last 24 hours on crypto-Twitter have been a cacophony of rage, disbelief and whatever toxic stew of emotions exist in the hearts of crypto traders as the crypto exchange FTX has imploded after some FUD lead to actually-its-not-just-FUD-induced-selling/panic of the Chuck-E-Cheese tokens that made up the majority of assets on the balance sheet of the closely related trading desk Alameda Research. It was shortly thereafter that FTX itself was revealed to be insolvent, with a hole likely billions deep. More competent people than me will surely be releasing detailed postmortems in the coming days with the technicals of how this happened, though I’m almost sure it will boil down to some very, very brazen lies about what was being done with peoples money. Instead I’d like to talk (at bro-science level) about the pathology of the <em>just spectacular</em> lineup of characters who did totally legitimate business are are now <em>totally not trying to evade authorities</em>.
+The last 24 hours on…<em></em><em></em>
 </div>
 </a>
 </div>
@@ -228,7 +230,7 @@ Daniel Claborne
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="news" data-listing-date-sort="1667692800000" data-listing-file-modified-sort="1668404637801" data-listing-reading-time-sort="0.22">
+<div class="quarto-post image-right" data-index="2" data-categories="news" data-listing-date-sort="1667692800000" data-listing-file-modified-sort="1668660449530" data-listing-reading-time-sort="0.22">
 <div class="thumbnail">
 <a href="./posts/hello-word/index.html">
 <div class="thumbnail-image">
@@ -313,7 +315,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -349,24 +368,42 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>
