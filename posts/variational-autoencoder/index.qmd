@@ -1,5 +1,5 @@
 ---
-title: "Yet Another Explainer on Variation Autoencoders"
+title: "Yet Another Explainer on Variational Autoencoders"
 author: "Daniel Claborne"
 date: "2022-11-12"
 tags: ["machine learning"]
@@ -53,7 +53,7 @@ ____
 Lets start with $p(x\vert z;\theta)$.  First some assumptions are made:
 
 1. $p(x\vert z;\theta)$ comes from a distribution such that it can be approximated/parametrized by a differentiable function $f(z; \theta)$
-2. $z$ is drawn from some probability distribution, often an isotropic Gaussian p(z) = $N(0, I)$
+2. $z$ is drawn from some probability distribution, often an isotropic Gaussian $p(z) = N(0, I)$
 
 The first assumption is simply so we can perform gradient descent given a sampled $z$ and optimize the likelihood of $x$ given that $z$.  Here is where we have our neural network that produces a distribution.  One common way is for $f(z; \theta)$ to take the form of encoding the mean of an isotropic normal:  $$p(x\vert z; \theta) = \mathcal{N}(X\vert f(z;\theta), \sigma^2_x*I)$$  Ok, I usually have to stop here...how does this help us?  Well, we now have a network that will output a distribution from which we can calculate a likelihood for any given $x$, and it is differentiable, such that we can edit the parameters $\theta$ through gradient descent to maximize the likelihood of all $x \in X_{obs}$.  Having this 'decoder' network represent a distribution is also necessary when fitting it into the objective function later.  From now on when I refer to $p(x\vert z; \theta)$, I'll be simultaneously talking about the distribution, and the network that produces that distribution.
 
