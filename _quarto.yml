@@ -17,4 +17,4 @@ format:
     theme: cosmo
     css: styles.css
 
-jupyter: base
+jupyter: python3
