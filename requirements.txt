@@ -1,5 +1,6 @@
 matplotlib
 matplotlib-inline
+seaborn
 numpy
 pandas
 jupyter
