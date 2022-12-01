@@ -4,6 +4,9 @@ author: "Daniel Claborne"
 date: "2022-11-28"
 categories: [Data Science, Code]
 bibliography: "../../bibs/ml.bib"
+image: "/www/gumbel-matrix.png"
+twitter-card:
+    image: "/www/gumbel-matrix.png"
 format: 
   html:
     fig-width: 8
