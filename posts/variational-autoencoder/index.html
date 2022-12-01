@@ -182,7 +182,7 @@ This person doesn’t exist
 <p></p><figcaption class="figure-caption">“Plate diagram” with solid arrows representing <span class="math inline">\(p(x\vert z; \theta)\)</span> and dashed arrows representing <span class="math inline">\(p(z\vert x;\phi)\)</span>. From Kingma and Welling (2014)</figcaption><p></p>
 </figure>
 </div>
-<p>I think now is a good time to bring in the neural network piece of the equation (you can stop scrolling). This was one of the hardest parts of understanding vae’s for me – it was hard to get used to the idea of networks that <em>produced distributions</em>. <span class="math inline">\(p(x\vert z;\theta)\)</span> can be approximated by a neural network. We’ll see soon that <span class="math inline">\(p(z\vert x;\phi)\)</span> can be as well, and I’ll explain why we need it to be.</p>
+<p>Ok now I’ll try to make the jump to neural networks (you can stop scrolling). This was one of the hardest parts of understanding vae’s for me – it was hard to get used to the idea of networks that <em>produced distributions</em>. The notation of using <span class="math inline">\(p(...)\)</span> to refer to both a distribution under the variational Bayes framework <em>and</em> a neural network that parametrizes that distribution can be a bit confusing, but try to get comfortable switching between the two views. The important part is that <span class="math inline">\(p(x\vert z;\theta)\)</span> can be approximated by a neural network. We’ll see soon that <span class="math inline">\(p(z\vert x;\phi)\)</span> can be as well, and I’ll explain why we need it to be.</p>
 <hr>
 <p>Lets start with <span class="math inline">\(p(x\vert z;\theta)\)</span>. First some assumptions are made:</p>
 <ol type="1">

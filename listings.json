@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/use-shift/index.html",
       "/posts/variational-autoencoder/index.html",
       "/posts/ftx-blowup/index.html",
       "/posts/hello-word/index.html"
