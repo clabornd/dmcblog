@@ -44,7 +44,7 @@ However there are some issues, the true values of $\theta$ and $\psi$ are not ne
 !["Plate diagram" with solid arrows representing $p(x\vert z; \theta)$ and dashed arrows representing $p(z\vert x;\phi)$.  From Kingma and Welling (2014)](/www/vae_plate.png){#fig:vae-plate}
 
 
-I think now is a good time to bring in the neural network piece of the equation (you can stop scrolling).  This was one of the hardest parts of understanding vae's for me -- it was hard to get used to the idea of networks that *produced distributions*.  $p(x\vert z;\theta)$ can be approximated by a neural network.  We'll see soon that $p(z\vert x;\phi)$ can be as well, and I'll explain why we need it to be.  
+Ok now I'll try to make the jump to neural networks (you can stop scrolling).  This was one of the hardest parts of understanding vae's for me -- it was hard to get used to the idea of networks that *produced distributions*.  The notation of using $p(...)$ to refer to both a distribution under the variational Bayes framework *and* a neural network that parametrizes that distribution can be a bit confusing, but try to get comfortable switching between the two views.  The important part is that $p(x\vert z;\theta)$ can be approximated by a neural network.  We'll see soon that $p(z\vert x;\phi)$ can be as well, and I'll explain why we need it to be.  
 
 
 ____
