@@ -2,8 +2,12 @@
 title: Vectorize Your Sampling from a Categorical Distribution Using Gumbel-max!  Use pandas.DataFrame.shift() more!
 author: "Daniel Claborne"
 date: "2022-11-28"
-categories: [news]
+categories: [Data Science, Code]
 bibliography: "../../bibs/ml.bib"
+format: 
+  html:
+    fig-width: 8
+    fig-height: 6
 ---
 
 Honestly, what a disaster of a title.  I don't know if either part in isolation would be more likely to get someone to read this, but I just wanted to make a post.  Maybe I should have click-baited with something completely unrelated, oh well.
@@ -119,11 +123,11 @@ apply_func_df = pd.melt(apply_func_df, var_name = "distribution")
 fig, axs = plt.subplots(1, 2, figsize = (14, 8))
 
 p = sns.countplot(data = gumbel_df, x="distribution", hue="value", ax = axs[0])
-p.legend(title='School', bbox_to_anchor=(1, 1), loc='upper left')
+p.legend(title='Category', bbox_to_anchor=(1, 1), loc='upper left')
 axs[0].set_title("Using Gumbel-max")
 
 p = sns.countplot(data = apply_func_df, x="distribution", hue="value", ax = axs[1])
-p.legend(title='School', bbox_to_anchor=(1, 1), loc='upper left')
+p.legend(title='Category', bbox_to_anchor=(1, 1), loc='upper left')
 axs[1].set_title("Using apply_along_axis + np.random.choice")
 
 fig.tight_layout()
@@ -131,7 +135,7 @@ fig.tight_layout()
 
 Eyeballing these, they look similar enough that I feel confident I've not messed up somewhere.
 
-Finally, of note is that a modification this trick is used a lot in training deep learning models that want to sample from a categorical distribution (Wav2vec[@baevski_wav2vec_2020] and Dall-E[@ramesh_zero-shot_2021] use this).  I'll go over it in another post, but tl;dr, the network learns the probabilities and max is changed to softmax to allow backpropagation.
+Finally, of note is that a modification of this trick is used a lot in training deep learning models that want to sample from a categorical distribution (Wav2vec[@baevski_wav2vec_2020] and Dall-E[@ramesh_zero-shot_2021] use this).  I'll go over it in another post, but tl;dr, the network learns the probabilities and max is changed to softmax to allow backpropagation.
 
 ## pandas.DataFrame.shift()
 
