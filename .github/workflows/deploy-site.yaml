@@ -1,6 +1,9 @@
 on:
   push:
     branches: [main, master]
+    paths-ignore:
+      - README.md
+      - .gitignore
 
 name: Deploy blog
 

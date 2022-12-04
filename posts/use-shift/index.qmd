@@ -201,7 +201,7 @@ With this we can easily compute the lag 1 difference, keeping the indices and su
 # difference
 mydf["col1"] - mydf["col2"].shift(1)
 
-# lag 5 ratio
+# lag 3 ratio
 mydf["col1"]/mydf["col2"].shift(3)
 ```
 
