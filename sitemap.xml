@@ -2,26 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://clabornd.github.io/dmcblog/about.html</loc>
-    <lastmod>2022-12-04T17:34:14.827Z</lastmod>
+    <lastmod>2022-12-31T22:13:57.991Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/vision-transformer/vision-transformer.html</loc>
+    <lastmod>2022-12-31T22:13:58.783Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/use-shift/index.html</loc>
-    <lastmod>2022-12-04T17:34:50.182Z</lastmod>
+    <lastmod>2022-12-31T22:14:36.232Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/hello-word/index.html</loc>
-    <lastmod>2022-12-04T17:34:53.966Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/ftx-blowup/index.html</loc>
-    <lastmod>2022-12-04T17:34:54.358Z</lastmod>
+    <lastmod>2022-12-31T22:14:39.588Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/variational-autoencoder/index.html</loc>
-    <lastmod>2022-12-04T17:34:54.958Z</lastmod>
+    <lastmod>2022-12-31T22:14:40.140Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/ftx-blowup/index.html</loc>
+    <lastmod>2022-12-31T22:14:40.480Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/index.html</loc>
-    <lastmod>2022-12-04T17:34:55.342Z</lastmod>
+    <lastmod>2022-12-31T22:14:40.844Z</lastmod>
   </url>
 </urlset>
