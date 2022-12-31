@@ -296,14 +296,14 @@ div.csl-indent {
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>(np.log(logits) <span class="op">+</span> np.random.gumbel(size <span class="op">=</span> logits.shape)).argmax(axis <span class="op">=</span> <span class="dv">1</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>404 µs ± 735 ns per loop (mean ± std. dev. of 7 runs, 1,000 loops each)</code></pre>
+<pre><code>416 µs ± 501 ns per loop (mean ± std. dev. of 7 runs, 1,000 loops each)</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>np.apply_along_axis(<span class="kw">lambda</span> x: np.random.choice(<span class="bu">range</span>(<span class="bu">len</span>(x)), p<span class="op">=</span>x), <span class="dv">1</span>, logits)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>24.1 ms ± 255 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)</code></pre>
+<pre><code>22.6 ms ± 416 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)</code></pre>
 </div>
 </div>
 <p>Yea, so a couple orders of magnitude faster with vectorization. We should probably also check that it produces a similar distribution across many samples (and also put a plot in here to break up the wall of text). I’ll verify by doing barplots for the distribution of 1000 values drawn from 4 of the probability distributions. Brb, going down the stackoverflow wormhole because no one knows how to make plots, no one.</p>
