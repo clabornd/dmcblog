@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://clabornd.github.io/dmcblog/about.html</loc>
-    <lastmod>2023-01-01T19:58:08.091Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/vision-transformer/vision-transformer.html</loc>
-    <lastmod>2023-01-01T19:58:08.899Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/use-shift/index.html</loc>
-    <lastmod>2023-01-01T19:58:42.750Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/hello-word/index.html</loc>
-    <lastmod>2023-01-01T19:58:46.026Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/variational-autoencoder/index.html</loc>
-    <lastmod>2023-01-01T19:58:46.550Z</lastmod>
+    <loc>https://clabornd.github.io/dmcblog/index.html</loc>
+    <lastmod>2023-02-02T07:43:08.721Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/ftx-blowup/index.html</loc>
-    <lastmod>2023-01-01T19:58:46.882Z</lastmod>
+    <lastmod>2023-02-02T07:43:09.397Z</lastmod>
   </url>
   <url>
-    <loc>https://clabornd.github.io/dmcblog/index.html</loc>
-    <lastmod>2023-01-01T19:58:47.250Z</lastmod>
+    <loc>https://clabornd.github.io/dmcblog/posts/use-shift/index.html</loc>
+    <lastmod>2023-02-02T07:43:44.032Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/hello-word/index.html</loc>
+    <lastmod>2023-02-02T07:43:47.112Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/minigpt/minigpt.html</loc>
+    <lastmod>2023-02-02T07:43:47.492Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/vision-transformer/vision-transformer.html</loc>
+    <lastmod>2023-02-02T07:43:47.920Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/variational-autoencoder/index.html</loc>
+    <lastmod>2023-02-02T07:43:48.424Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/about.html</loc>
+    <lastmod>2023-02-02T07:43:48.692Z</lastmod>
   </url>
 </urlset>
