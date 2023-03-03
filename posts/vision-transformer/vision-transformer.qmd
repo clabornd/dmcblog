@@ -1,7 +1,8 @@
 ---
 title: "Dumb Mistakes Training Vision Transformer"
 author: Daniel Claborne
-date: last-modified
+date: "2023-01-01"
+lastmod: "2023-01-01"
 format: html
 categories: [data science, machine learning, code]
 bibliography: "../../bibs/ml.bib"

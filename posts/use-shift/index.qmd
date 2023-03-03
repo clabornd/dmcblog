@@ -2,6 +2,7 @@
 title: Vectorize Your Sampling from a Categorical Distribution Using Gumbel-max!  Use pandas.DataFrame.shift() more!
 author: "Daniel Claborne"
 date: "2022-11-28"
+lastmod: "2022-12-04"
 categories: [Data Science, Code]
 bibliography: "../../bibs/ml.bib"
 image: "/www/gumbel-matrix.png"

@@ -2,6 +2,7 @@
 title: "Yet Another Explainer on Variational Autoencoders"
 author: "Daniel Claborne"
 date: "2022-11-12"
+lastmod: "2022-11-29"
 categories: ["machine learning"]
 image: "/www/sd-vae-impressionist-2.png"
 twitter-card:
