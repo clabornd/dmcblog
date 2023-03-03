@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://clabornd.github.io/dmcblog/index.html</loc>
-    <lastmod>2023-02-02T07:43:08.721Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/ftx-blowup/index.html</loc>
-    <lastmod>2023-02-02T07:43:09.397Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/use-shift/index.html</loc>
-    <lastmod>2023-02-02T07:43:44.032Z</lastmod>
-  </url>
-  <url>
     <loc>https://clabornd.github.io/dmcblog/posts/hello-word/index.html</loc>
-    <lastmod>2023-02-02T07:43:47.112Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/minigpt/minigpt.html</loc>
-    <lastmod>2023-02-02T07:43:47.492Z</lastmod>
+    <lastmod>2023-03-03T06:17:01.460Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/vision-transformer/vision-transformer.html</loc>
-    <lastmod>2023-02-02T07:43:47.920Z</lastmod>
+    <lastmod>2023-03-03T06:17:02.548Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/use-shift/index.html</loc>
+    <lastmod>2023-03-03T06:17:56.136Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/minigpt/minigpt.html</loc>
+    <lastmod>2023-03-03T06:17:56.716Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/ftx-blowup/index.html</loc>
+    <lastmod>2023-03-03T06:17:57.232Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/variational-autoencoder/index.html</loc>
-    <lastmod>2023-02-02T07:43:48.424Z</lastmod>
+    <lastmod>2023-03-03T06:17:58.000Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/about.html</loc>
-    <lastmod>2023-02-02T07:43:48.692Z</lastmod>
+    <lastmod>2023-03-03T06:17:58.368Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/index.html</loc>
+    <lastmod>2023-03-03T06:17:58.924Z</lastmod>
   </url>
 </urlset>
