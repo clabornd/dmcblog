@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/vqvae/vqvae.html",
       "/posts/minigpt/minigpt.html",
       "/posts/vision-transformer/vision-transformer.html",
       "/posts/use-shift/index.html",

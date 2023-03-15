@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Daniel Claborne">
+<meta name="dcterms.date" content="2023-03-14">
+
+<title>Pain, Suffering, Vector-quantized VAEs</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Pain, Suffering, Vector-quantized VAEs">
+<meta property="og:description" content="I’ve written before about both the gumbel-max trick and variational autoencoders. The world demanded a post that combined the two, so here it is.">
+<meta property="og:image" content="https://clabornd.github.io/dmcblog/www/vqvae-thumb.png">
+<meta property="og:image:height" content="777">
+<meta property="og:image:width" content="879">
+<meta name="twitter:title" content="Pain, Suffering, Vector-quantized VAEs">
+<meta name="twitter:description" content="I’ve written before about both the gumbel-max trick and variational autoencoders. The world demanded a post that combined the two, so here it is.">
+<meta name="twitter:image" content="https://clabornd.github.io/dmcblog/www/vqvae-thumb.png">
+<meta name="twitter:image-height" content="777">
+<meta name="twitter:image-width" content="879">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">Another blog? Why sir?</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/clabornd"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Pain, Suffering, Vector-quantized VAEs</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">machine learning</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Daniel Claborne </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 14, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>I’ve written before about both the <a href="../../posts/use-shift/index.html#vectorized-sampling-from-a-categorical-distribution">gumbel-max trick</a> and <a href="../../posts/variational-autoencoder/index.html">variational autoencoders</a>. The world demanded a post that combined the two, so here it is. I mostly follow the <a href="https://github.com/openai/DALL-E">repo</a> for the DALL-E paper <span class="citation" data-cites="ramesh_zero-shot_2021">Ramesh et al. (<a href="#ref-ramesh_zero-shot_2021" role="doc-biblioref">2021</a>)</span>. They also use the <a href="https://www.attrs.org/en/stable/">attrs</a> package, which was nice to learn about, kinda neat, but a bit opaque.</p>
+<p>As usual, I hope to entertain you with some of my mistakes and general troubles. If you are a sick, sick individual and came here to hear about taking the log of 0, I will happily indulge you. <a href="https://colab.research.google.com/drive/1JxmB20W6nUi91P1ZcGC8IFoF01_VbuCi?usp=sharing">Here’s a Colab notebook</a> if you’re on a similar learning journey and just need to see some code. <strong>Mega-disclaimer that I am just some dude, use at your own risk.</strong></p>
+<section id="categorical-vaes" class="level2">
+<h2 class="anchored" data-anchor-id="categorical-vaes">Categorical VAE’s</h2>
+<p>The general idea of categorical VAE’s is that our encoder learns the probabilities of a categorical distribution with <span class="math inline">\(K\)</span> categories. These probabilities are used to sample from one of <span class="math inline">\(K\)</span> vectors in a codebook (a collection of vectors). These sampled codebook vectors are then fed into a decoder to try to reconstruct the input.</p>
+<p>Optimization is done in the usual way, by maximizing the evidence lower bound (ELBO, see my VAE post or other resources for details): <span class="math display">\[
+\begin{align}
+log(p(x)) \geq E_{z\sim q}[log(p(x \vert z;\theta))] - KL(q(z\vert x;\phi)\vert\vert p(z))
+\end{align}
+\]</span></p>
+<p>The first term on the RHS (the reconstruction objective) is usually defined as a Gaussian or Laplace distribution, and can be maximized with the <span class="math inline">\(l2\)</span> or <span class="math inline">\(l1\)</span> loss. In the paper, they use a different distribution called the logit-laplace distribution, with the reasoning that it models the distribution of pixel values better, specifically that they lie in a bounded range. The logit-laplace distribution is defined as:</p>
+<p><span class="math display">\[
+f(x, \mu, b) = \frac{1}{2bx(1-x)}\exp\left(-\frac{|logit(x) - \mu|}{b}\right)
+\]</span></p>
+<p>They use the log of the RHS as the reconstruction objective, with the decoder outputting 6 channels per pixel location (3 <span class="math inline">\(\mu\)</span>’s and 3 <span class="math inline">\(b\)</span>’s for each pixel). I couldn’t tell you why this is better than assuming the inputs (between 0 and 1) are the probabilites of Bernoulli distributions, perhaps it is more flexible? But their concern of a bounded range is just as well taken care of by outputting values in the range <span class="math inline">\([0, 1]\)</span> and using cross entopy with logits against the input image. In fact, I do this against MNIST (yes, its MNIST again, gimme a break ok).</p>
+<p><strong>The second (KL) term of the ELBO</strong> in the case of categorical VAE’s is comparing our encoder’s outputted distribution with a uniform categorical distribution over the <span class="math inline">\(K\)</span> classes, which is easily calculated as:</p>
+<p><span class="math display">\[
+KL(q(z\vert x;\phi)\vert\vert p(z)) = \sum_{k=1}^K q(k\vert x;\phi) \log\left(\frac{q(k\vert x;\phi)}{1/K}\right)
+\]</span></p>
+<p>since we assume <span class="math inline">\(p(z) = 1/K\)</span> for all <span class="math inline">\(z\)</span>.</p>
+</section>
+<section id="the-gumbel-softmax-trick" class="level2">
+<h2 class="anchored" data-anchor-id="the-gumbel-softmax-trick">The Gumbel-(soft)Max Trick</h2>
+<p>Ok, if you remember in VAE’s we have to deal with this whole non-differentiable thing, since our process goes:</p>
+<ol type="1">
+<li>Encode our input to the probabilities of a categorical distribution</li>
+<li>Sample from that distribution and use the sample to select a vector from a codebook.</li>
+<li>Decode the sample to try and match the input</li>
+</ol>
+<p>and we cant backpropagate through 2. This is handled by using a relaxation of the Gumbel-max trick which if you’ll recall, is a way to sample from a categorical distribution by taking the arg-max of the log of the probabilities plus noise from a Gumbel(0,1) distribution. Arg-max isn’t differentiable, so we use softmax (which is more accurately described as soft-arg-max) as a differentiable approximation. We can adjust the temperature of the softmax operation to more closely approximate the arg-max operation.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>probs <span class="op">=</span> <span class="va">self</span>.encoder(x) <span class="co"># B x K x H x W</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>gumbel_noise <span class="op">=</span> gumbel_sample(probs.shape).to(probs.device)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># apply softmax to log(probs) + gumbel noise divided by temperature tau.</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># very small tau essentialy makes this one-hot</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> torch.nn.functional.softmax((probs.log() <span class="op">+</span> gumbel_noise)<span class="op">/</span>tau, dim<span class="op">=</span><span class="dv">1</span>) </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 'soft-samples' from the vector quantized embeddings</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> torch.einsum(<span class="st">"bchw,cv -&gt; bvhw"</span>, z, <span class="va">self</span>.embedding)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># reconstruct to B x C x H x W</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>x_reconstr <span class="op">=</span> <span class="va">self</span>.decoder(z)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Notice that the probabilities are a <code>B x vocab_size x H x W</code> feature map. So we are sampling a vector from the codebook at each location in this feature map, or rather we are approximating sampling from it by taking a weighted (where the weights sum to one) combination of the codebook vectors, where one weight is very large is the rest are very small (due to the softmax operation). Once we have the reconstructed image and the probabilities of the categorical distribution, we can calculate the reconstruction loss and the KL divergence. The reconstruction loss is just:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>reconstr_loss <span class="op">=</span> nn.functional.binary_cross_entropy_with_logits(xrecon, x, reduction<span class="op">=</span><span class="st">"mean"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Or it would be the logit-laplace loss if I had implemented that:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> laplace_loss(x, mu, b):    </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> <span class="op">-</span>torch.log(<span class="dv">2</span><span class="op">*</span>b<span class="op">*</span>x<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>x)) <span class="op">-</span> torch.<span class="bu">abs</span>(torch.logit(x) <span class="op">-</span> mu)<span class="op">/</span>b</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> loss</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The KL divergence is as defined above, and can be calculated like so:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> KL_loss(logits, vocab_size<span class="op">=</span><span class="dv">4096</span>):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  loss <span class="op">=</span> logits <span class="op">*</span> (logits.log() <span class="op">-</span> torch.log(torch.ones_like(logits)<span class="op">/</span>vocab_size))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># B x C x H x W</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> loss</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>…well, really I should be summing over the channel axis (KL definition has a sum), I do it in the notebook outside the function. As we’ll see later though, whether you sum or average is kinda arbitrary, because it seems empirical results suggests multiplying the KL loss by some constant is a good idea.</p>
+<section id="mistakes-were-made" class="level3">
+<h3 class="anchored" data-anchor-id="mistakes-were-made">Mistakes were made</h3>
+<p><strong>1)</strong> My first attempt was on the STL-10 dataset, which I leave code for in the notebook, but I couldn’t get the model to output good reconstructions. An example of one of the reconstructions:</p>
+<div id="fig-blurrybird" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="../../www/vqvae-stl10-fail.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: Left: Hi I’m a bird. Right: alks3lkj3olkdfffff</figcaption><p></p>
+</figure>
+</div>
+<p><strong>2)</strong> In the paper, they describe dividing the pixel values by 255, when performing preprocessing steps necessary to prevent divide-by-zeros in the logit-Laplace loss, which I gladly replicated without checking if my images were already 0-1 normalized. Funilly enough, it seemed to learn better than the non-normalized version, perhaps this is a clue to why I can’t get good quality samples from STL-10.</p>
+<p><strong>3)</strong> I had switched to cross-entropy loss, and was doing okay, until I got divide-by-zero errors. You see, I am calling softmax twice, once to do the Gumbel-softmax sampling, but also once before, in the encoder, to form the probabilities that go into the gumbel-softmax sampling. Remember we take the log of those values and then add Gumbel noise, so they all better be positive. Well, you might think that the softmax equation:</p>
+<p><span class="math display">\[
+\frac{e^x}{\sum_{i=1}^n e^x}
+\]</span></p>
+<p>would always produce positive values, but there’s this thing called numerical underflow which is a real pain in the ass, the ass of Daniel Claborne trying to take the logarithm of things, that is. Well, I just add a small constant and divide by the appropriate constant to make them still sum to 1 along the channel axis:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># forward method of the encoder</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="va">self</span>.blocks(x)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> torch.nn.functional.softmax(x, dim <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> (x <span class="op">+</span> <span class="fl">1e-6</span>)<span class="op">/</span>(<span class="dv">1</span> <span class="op">+</span> <span class="va">self</span>.vocab_size<span class="op">*</span><span class="fl">1e-6</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>4)</strong> I underestimated how much I would need to increase the importance of the KL term. In the paper, they multiply the KL loss term by <span class="math inline">\(\beta\)</span> which is increased from 0 to 6.6 over some number of iteration. My initial attempts that stopped at <span class="math inline">\(\beta = 2\)</span> produced poor sample quality, so I just tried their suggested <span class="math inline">\(\beta\)</span></p>
+</section>
+<section id="some-success-with-mnist" class="level3">
+<h3 class="anchored" data-anchor-id="some-success-with-mnist">Some success with MNIST</h3>
+<p>Ok, I was defeated by STL-10 (I’ll try again once Colab gives me some more compute credits), but good ol easy-mode MNIST gave me some nice results.</p>
+<p>First, we see if it can reconstruct an image that is passed to the encoder. Intuitively the encoder should map the image <span class="math inline">\(X\)</span> to a latent representation <span class="math inline">\(z\)</span> that is likely to produce something similar to <span class="math inline">\(X\)</span> in the output, and so it does as seen in <a href="#fig-vqvae-compare">Figure&nbsp;2</a>.</p>
+<div id="fig-vqvae-compare" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="../../www/vqvae-mnist-compare.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2: Left: Input. Right: decoded output</figcaption><p></p>
+</figure>
+</div>
+<p>But remember we not only wanted to be able to produce an image when providing an image, but be able to produce images when sampling from random noise. This is the point of the KL loss term, making the latent representation close to a uniform categorical distribution. We <em>should</em> then be able to sample from a uniform categorical (for each pixel location in a latent feature map), pass this sample to our decoder, and get things that look like our training data. And so we do (sorta):</p>
+<div id="fig-vqvae-samples" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="../../www/vqvae-mnist-gen.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;3: Output of the decoder when fed feature maps of codebook vectors sampled from a uniform categorical distribution</figcaption><p></p>
+</figure>
+</div>
+<p>Wow, what a bunch o beauts’. Hopefully I can get you some pictures of slightly less blurry birds/airplanes soon.</p>
+
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-ramesh_zero-shot_2021" class="csl-entry" role="doc-biblioentry">
+Ramesh, Aditya, Mikhail Pavlov, Gabriel Goh, Scott Gray, Chelsea Voss, Alec Radford, Mark Chen, and Ilya Sutskever. 2021. <span>“Zero-<span>Shot</span> <span>Text</span>-to-<span>Image</span> <span>Generation</span>.”</span> arXiv. <a href="https://doi.org/10.48550/arXiv.2102.12092">https://doi.org/10.48550/arXiv.2102.12092</a>.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>In the paper they start with temperature <span class="math inline">\(tau = 1\)</span> and reduce it to <span class="math inline">\(\frac{1}{16}\)</span> over some number of iterations - I do as well in the notebook.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
