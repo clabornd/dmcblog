@@ -300,7 +300,7 @@ KL(q(z\vert x;\phi)\vert\vert p(z)) = \sum_{k=1}^K q(k\vert x;\phi) \log\left(\f
 <p><strong>2)</strong> In the paper, they describe dividing the pixel values by 255, when performing preprocessing steps necessary to prevent divide-by-zeros in the logit-Laplace loss, which I gladly replicated without checking if my images were already 0-1 normalized. Funilly enough, it seemed to learn better than the non-normalized version, perhaps this is a clue to why I can’t get good quality samples from STL-10.</p>
 <p><strong>3)</strong> I had switched to cross-entropy loss, and was doing okay, until I got divide-by-zero errors. You see, I am calling softmax twice, once to do the Gumbel-softmax sampling, but also once before, in the encoder, to form the probabilities that go into the gumbel-softmax sampling. Remember we take the log of those values and then add Gumbel noise, so they all better be positive. Well, you might think that the softmax equation:</p>
 <p><span class="math display">\[
-\frac{e^x}{\sum_{i=1}^n e^x}
+softmax(z_i) = \frac{e^{z_i}}{\sum_{j=1}^n e^{z_j}}
 \]</span></p>
 <p>would always produce positive values, but there’s this thing called numerical underflow which is a real pain in the ass, the ass of Daniel Claborne trying to take the logarithm of things, that is. Well, I just add a small constant and divide by the appropriate constant to make them still sum to 1 along the channel axis:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># forward method of the encoder</span></span>
@@ -315,7 +315,7 @@ KL(q(z\vert x;\phi)\vert\vert p(z)) = \sum_{k=1}^K q(k\vert x;\phi) \log\left(\f
 </section>
 <section id="some-success-with-mnist" class="level3">
 <h3 class="anchored" data-anchor-id="some-success-with-mnist">Some success with MNIST</h3>
-<p>Ok, I was defeated by STL-10 (I’ll try again once Colab gives me some more compute credits), but good ol easy-mode MNIST gave me some nice results.</p>
+<p>Ok, I was defeated by STL-10 (I’ll try again once Colab gives me some more compute credits), but good ol easy-mode MNIST gave me some nice results. I load my best test loss model from https://wandb.ai/clabornd/VQVAE/runs/9bb6w3ru?workspace=user-clabornd and use it to generate some samples.s</p>
 <p>First, we see if it can reconstruct an image that is passed to the encoder. Intuitively the encoder should map the image <span class="math inline">\(X\)</span> to a latent representation <span class="math inline">\(z\)</span> that is likely to produce something similar to <span class="math inline">\(X\)</span> in the output, and so it does as seen in <a href="#fig-vqvae-compare">Figure&nbsp;2</a>.</p>
 <div id="fig-vqvae-compare" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">

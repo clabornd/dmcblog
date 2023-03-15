@@ -2,38 +2,38 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://clabornd.github.io/dmcblog/about.html</loc>
-    <lastmod>2023-03-15T04:02:15.713Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/index.html</loc>
-    <lastmod>2023-03-15T04:02:17.794Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/variational-autoencoder/index.html</loc>
-    <lastmod>2023-03-15T04:02:18.490Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/hello-word/index.html</loc>
-    <lastmod>2023-03-15T04:02:24.066Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/ftx-blowup/index.html</loc>
-    <lastmod>2023-03-15T04:02:24.502Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/vqvae/vqvae.html</loc>
-    <lastmod>2023-03-15T04:02:25.058Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/vision-transformer/vision-transformer.html</loc>
-    <lastmod>2023-03-15T04:02:25.630Z</lastmod>
+    <lastmod>2023-03-15T17:25:43.482Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/minigpt/minigpt.html</loc>
-    <lastmod>2023-03-15T04:02:26.098Z</lastmod>
+    <lastmod>2023-03-15T17:25:44.322Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/ftx-blowup/index.html</loc>
+    <lastmod>2023-03-15T17:25:44.670Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/use-shift/index.html</loc>
-    <lastmod>2023-03-15T04:03:21.210Z</lastmod>
+    <lastmod>2023-03-15T17:26:25.006Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/variational-autoencoder/index.html</loc>
+    <lastmod>2023-03-15T17:26:25.542Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/hello-word/index.html</loc>
+    <lastmod>2023-03-15T17:26:28.786Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/vqvae/vqvae.html</loc>
+    <lastmod>2023-03-15T17:26:29.194Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/vision-transformer/vision-transformer.html</loc>
+    <lastmod>2023-03-15T17:26:29.610Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/index.html</loc>
+    <lastmod>2023-03-15T17:26:30.002Z</lastmod>
   </url>
 </urlset>
