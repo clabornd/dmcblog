@@ -28,7 +28,7 @@ Okay, so the setup is you have an array that looks like this:
 import numpy as np
 np.random.seed(23496)
 
-# The ML people got to me and I now call stuff that sums to 1 'logits'
+# The ML people got to me and I now call everything that gets squashed to a probability distribution 'logits'
 logits = np.random.uniform(size = (1000, 10))
 logits = logits/logits.sum(axis = 1)[:,None]
 
