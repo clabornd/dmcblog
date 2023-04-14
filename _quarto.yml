@@ -12,6 +12,9 @@ website:
         href: https://github.com/clabornd
       - icon: twitter
         href: https://twitter.com/
+    left:
+      - text: "Home"
+        file: index.qmd
 format:
   html:
     theme: cosmo
