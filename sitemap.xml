@@ -2,42 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/hello-word/index.html</loc>
-    <lastmod>2023-04-15T05:10:43.882Z</lastmod>
+    <lastmod>2023-04-17T01:21:05.747Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/vqvae/vqvae.html</loc>
-    <lastmod>2023-04-15T05:10:44.826Z</lastmod>
+    <lastmod>2023-04-17T01:21:06.727Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/variational-autoencoder/index.html</loc>
-    <lastmod>2023-04-15T05:10:45.358Z</lastmod>
+    <lastmod>2023-04-17T01:21:07.279Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/ddpg/ddpg.html</loc>
-    <lastmod>2023-04-15T05:10:45.826Z</lastmod>
+    <lastmod>2023-04-17T01:21:07.811Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/vision-transformer/vision-transformer.html</loc>
-    <lastmod>2023-04-15T05:10:46.262Z</lastmod>
+    <lastmod>2023-04-17T01:21:08.263Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/minigpt/minigpt.html</loc>
-    <lastmod>2023-04-15T05:10:46.650Z</lastmod>
+    <lastmod>2023-04-17T01:21:08.659Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/use-shift/index.html</loc>
-    <lastmod>2023-04-15T05:11:20.118Z</lastmod>
+    <lastmod>2023-04-17T01:21:42.692Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/ftx-blowup/index.html</loc>
-    <lastmod>2023-04-15T05:11:20.490Z</lastmod>
+    <lastmod>2023-04-17T01:21:43.088Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/init-bagels/bagels.html</loc>
+    <lastmod>2023-04-17T01:21:48.496Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/index.html</loc>
-    <lastmod>2023-04-15T05:11:20.918Z</lastmod>
+    <lastmod>2023-04-17T01:21:48.948Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/about.html</loc>
-    <lastmod>2023-04-15T05:11:21.190Z</lastmod>
+    <lastmod>2023-04-17T01:21:49.232Z</lastmod>
   </url>
 </urlset>
