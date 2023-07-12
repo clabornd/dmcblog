@@ -127,3 +127,39 @@ arXiv:2005.14165 [cs]},
 	annote = {Comment: 40+32 pages},
 	file = {arXiv Fulltext PDF:/home/daniel/Zotero/storage/787TYDG8/Brown et al. - 2020 - Language Models are Few-Shot Learners.pdf:application/pdf;arXiv.org Snapshot:/home/daniel/Zotero/storage/B7CHTWVD/2005.html:text/html},
 }
+
+@article{schulman_proximal_2017,
+	title = {Proximal {Policy} {Optimization} {Algorithms}},
+	url = {https://arxiv.org/abs/1707.06347v2},
+	doi = {10.48550/arXiv.1707.06347},
+	abstract = {We propose a new family of policy gradient methods for reinforcement learning, which alternate between sampling data through interaction with the environment, and optimizing a "surrogate" objective function using stochastic gradient ascent. Whereas standard policy gradient methods perform one gradient update per data sample, we propose a novel objective function that enables multiple epochs of minibatch updates. The new methods, which we call proximal policy optimization (PPO), have some of the benefits of trust region policy optimization (TRPO), but they are much simpler to implement, more general, and have better sample complexity (empirically). Our experiments test PPO on a collection of benchmark tasks, including simulated robotic locomotion and Atari game playing, and we show that PPO outperforms other online policy gradient methods, and overall strikes a favorable balance between sample complexity, simplicity, and wall-time.},
+	language = {en},
+	urldate = {2022-04-11},
+	author = {Schulman, John and Wolski, Filip and Dhariwal, Prafulla and Radford, Alec and Klimov, Oleg},
+	month = jul,
+	year = {2017},
+	file = {Full Text PDF:/home/daniel/Zotero/storage/2C2SP9F7/Schulman et al. - 2017 - Proximal Policy Optimization Algorithms.pdf:application/pdf;Snapshot:/home/daniel/Zotero/storage/TZF7NSUR/Schulman et al. - 2017 - Proximal Policy Optimization Algorithms.html:text/html},
+}
+
+
+@misc{schulman_high-dimensional_2018,
+	title = {High-{Dimensional} {Continuous} {Control} {Using} {Generalized} {Advantage} {Estimation}},
+	url = {http://arxiv.org/abs/1506.02438},
+	doi = {10.48550/arXiv.1506.02438},
+	abstract = {Policy gradient methods are an appealing approach in reinforcement learning because they directly optimize the cumulative reward and can straightforwardly be used with nonlinear function approximators such as neural networks. The two main challenges are the large number of samples typically required, and the difficulty of obtaining stable and steady improvement despite the nonstationarity of the incoming data. We address the first challenge by using value functions to substantially reduce the variance of policy gradient estimates at the cost of some bias, with an exponentially-weighted estimator of the advantage function that is analogous to TD(lambda). We address the second challenge by using trust region optimization procedure for both the policy and the value function, which are represented by neural networks. Our approach yields strong empirical results on highly challenging 3D locomotion tasks, learning running gaits for bipedal and quadrupedal simulated robots, and learning a policy for getting the biped to stand up from starting out lying on the ground. In contrast to a body of prior work that uses hand-crafted policy representations, our neural network policies map directly from raw kinematics to joint torques. Our algorithm is fully model-free, and the amount of simulated experience required for the learning tasks on 3D bipeds corresponds to 1-2 weeks of real time.},
+	urldate = {2022-07-20},
+	publisher = {arXiv},
+	author = {Schulman, John and Moritz, Philipp and Levine, Sergey and Jordan, Michael and Abbeel, Pieter},
+	month = oct,
+	year = {2018},
+	note = {arXiv:1506.02438 [cs]},
+	keywords = {Computer Science - Machine Learning, Computer Science - Robotics, Electrical Engineering and Systems Science - Systems and Control},
+	file = {arXiv Fulltext PDF:/home/daniel/Zotero/storage/3H3H456M/Schulman et al. - 2018 - High-Dimensional Continuous Control Using Generali.pdf:application/pdf;arXiv.org Snapshot:/home/daniel/Zotero/storage/5V5T62NG/1506.html:text/html},
+}
+
+@book{sutton2020reinforcement,
+  title={Reinforcement learning: An introduction},
+  author={Sutton, Richard S and Barto, Andrew G},
+  year={2020},
+  publisher={MIT press}
+}
