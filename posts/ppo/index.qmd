@@ -1,8 +1,8 @@
 ---
 title: "Lunar Lander with PPO"
 author: "Daniel Claborne"
-date: "2023-04-13"
-lastmod: "2023-04-13"
+date: "2023-07-12"
+lastmod: "2023-07-12"
 categories: [machine learning, reinforcement learning]
 bibliography: "../../bibs/ml.bib"
 image: "lunarlander.gif"
@@ -12,19 +12,19 @@ twitter-card:
 
 So, PPO....it seems like the transformer of reinforcement learning:  "What should we do?", "Eh, shove it through PPO and see what happens".  So again, this is just me replicating PPO and imploring anyone who got lost on the internet and is reading this to just go read the paper instead:  @schulman_proximal_2017.  
 
-**If you are just here for some code, here is a [colab notebook](https://colab.research.google.com/drive/1jmhfSV0LL148QMF2_HUvntk1-MsOSNn2#scrollTo=ZZjG3SrI2nYj)** that runs hyperparameter tuning with wandb and ray-tune on my PPO implementation.
+**If you are just here for some code, here is a [colab notebook](https://colab.research.google.com/drive/1jmhfSV0LL148QMF2_HUvntk1-MsOSNn2#scrollTo=ZZjG3SrI2nYj)** that runs hyperparameter tuning with wandb and ray-tune on my PPO implementation.  At the end you can grab a trained model from wandb, run an episode, and download a gif of the episode.
 
 ## The Objective
 
-Mmmm, ok again....the paper....but I'll go over the main pieces presented therein.  PPO is, as it's name suggests, a policy gradient algorithm, in the sense that it uses an update that attempts to update the policy in order to maximize the expected return.  That is, we want to maximize $J(\pi_{\theta}) = E_{\tau \sim \pi_{\theta}}[R(\tau)]$.
+Mmmm, ok again....the paper....but I'll go over the main pieces presented therein.  PPO is, as it's name suggests, a policy gradient algorithm, in the sense that it tries to maximize expected performance (total reward) by directly leveraging the gradient of the performance with respect to the policy parameters.  That is, we want to maximize $J(\pi_{\theta}) = E_{\tau \sim \pi_{\theta}}[R(\tau)]$ and can derive an expression for the gradient $\nabla_{\theta} J(\pi_{\theta})$ that we can approximate by sampling episodes and computing gradients.  For a good intro to policy optimization, I like [this intro by OpenAI](https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html).
 
-PPO maximizes some weird surrogate objective function:
+PPO is different from 'vanilla' policy optimization in that it maximizes some weird surrogate objective function:
 
 $$
 L^{CPI}(\theta) = E_{t \sim \pi_{\theta_{old}}}\left[\frac{\pi_{\theta}(a_t|s_t)}{\pi_{\theta_{old}}(a_t|s_t)}A(s_t, a_t)\right]
 $$
 
-where $A(s_t, a_t)$ is the advantage function, which is the difference between the value function at time step $t$ and some bootstrapped version of the value function at time step $t$, which I'll show later.  The subscripts $\theta$ and $\theta_old$ indicate the parameters that will be updated, and a 'frozen' version of the parameters that will be used to compute the ratio of the new policy to the old policy.  In words, the part of the objective inside the expectation says **if the action we took at time step $t$ was better than we currently expect (positive advantage), increase the probability of that action.  If it was worse than we expect (negative advantage) decrease the probability of that action**.  Each example inside the expectation is sampled according the policy with the old parameters, $\pi_{\theta_{old}}$.
+where $A(s_t, a_t)$ is the advantage function, which is the difference between the value function at time step $t$ and some bootstrapped version of the value function at time step $t$, which I'll show later.  The subscripts $\theta$ and $\theta_{old}$ indicate the parameters that will be updated, and a 'frozen' version of the parameters that will be used to compute the ratio of the new policy to the old policy.  In words, the part of the objective inside the expectation says **if the action we took at time step $t$ was better than we currently expect (positive advantage), increase the probability of that action.  If it was worse than we expect (negative advantage) decrease the probability of that action**.  Each example inside the expectation is sampled according a policy with the old parameters, $\pi_{\theta_{old}}$.
 
 Okay, so if you stare at that loss there, you might notice that the algorithm will probably want to make very large updates to $\theta$.  PPO addresses this by 'clipping' the probability ratio to prevent these large updates, like so:
 
@@ -32,7 +32,7 @@ $$
 L^{CLIP}(\theta) = E_{t \sim \pi_{\theta_{old}}}\left[\text{min}\left(\frac{\pi_{\theta}(a_t|s_t)}{\pi_{\theta_{old}}(a_t|s_t)}A(s_t, a_t), \text{clip}\left(\frac{\pi_{\theta}(a_t|s_t)}{\pi_{\theta_{old}}(a_t|s_t)}, 1 - \epsilon, 1 + \epsilon\right)A(s_t, a_t)\right)\right]
 $$
 
-Where $clip(x, a, b)$ is a function that clips $x$ to be between $a$ and $b$ and $\epsilon$ is a hyperparameter that controls the size of the clipping.
+Where `clip`$(x, a, b)$ is a function that clips $x$ to be between $a$ and $b$ and $\epsilon$ is a hyperparameter that controls the size of the clipping.
 
 One thing that was weird to me, is that this loss does not have the log probability in the expectation there, as is seen in the derivation of the vanilla policy gradient.  Well, actually, it sort of does, but it's just easier to write it the way they do, see [this blog post](https://costa.sh/blog-understanding-why-there-isn't-a-log-probability-in-trpo-and-ppo's-objective.html) for an explanation.
 
