@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/ppo/index.html",
       "/posts/init-bagels/bagels.html",
       "/posts/ddpg/ddpg.html",
       "/posts/vqvae/vqvae.html",
