@@ -4,9 +4,6 @@ image: Cubism_portrait.jpeg
 about:
   template: jolla
   links:
-    - icon: twitter
-      text: Twitter
-      href: https://twitter.com/DanielDunlop123
     - icon: linkedin
       text: LinkedIn
       href: https://www.linkedin.com/in/dmclaborne/
