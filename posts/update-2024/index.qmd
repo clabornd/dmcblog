@@ -1,0 +1,116 @@
+---
+title: "Personal Updates, Flipping Coins (Bobgate)"
+author: "Daniel Claborne"
+date: "2024-05-11"
+lastmod: "2024-5-11"
+categories: [personal, puzzles]
+---
+
+Havent posted in a while, this is gonna be mostly a personal post to describe what I've been up to and practice regularly updating this blog so it doesn't go stale.  If you shockingly don't care about the details of some random internet person's life and just wanna read about an interesting puzzle, skip to [Bobgate](#bobgate).  
+
+# PhD Applications
+
+I applied to about a dozen computer science PhD programs for Fall 2024, focusing on programs with good artificial intelligence labs preferably doing RL research.  I aimed high and was *rejected across the board*.  I was somewhat expecting it, given the competitiveness of the programs I applied to and the current hype around AI.  There is a lot of doomerism about CS PhD admissions on Reddit, with people saying there's high schoolers with AI/ML publications in top conferences, so the competition is incredibly strong.  No doubt some of this is just the bias of the most worried people posting on Reddit, but probably there is some truth to it.  Of course I'm still a bit disappointed, but am trying to shift focus back to work and finishing my masters in OMSCS, which I'm now two classes away from completing.  For anyone interested, my list of schools and general application profile were:
+
+- **Schools**: UW, UMD, UMass Amherst, Northeaster, Northwester, Oregon State, Penn, Columbia, GaTech, Duke, Chicago, USC.
+- **Education**:  Oregon State:  Undergrad in Economics, 2.88 GPA, Masters in Statistics, 3.67 GPA, OMSCS currently 4.0 GPA.
+- **Research**:  Some publications, a couple in ML/AI but not at top venues, one first author.
+- **Experience**:  6 years as a data scientist at Pacific Northwest National Laboratory.
+- **Recommendations**:  3 from colleagues with PhD's who I've co-authored with.
+
+# OMSCS Worries
+
+I took machine learning (CS7641) this Spring and tried to basically wing it with my current knowledge of ML.  I wouldn't recommend this as the class is quite challenging even if you're familiar with the material.  They expect you to really engage with the content and the requirements of the assignments are somewhat ambiguous.  In typical fashion, I was lamenting that I might not get a B, that I would have to take it again (B required for 'core' classes, ML being one of them), and of course in the end did well on the final and got an A.  Along with an A in the second class I took this term, my 4.0 at OMSCS lives on.  This probably won't be the last time I'm worried for nothing.
+
+# Bobgate
+
+There was recently a question posed by `@littmath` on Twitter that stumped some people as far as explaining the answer.  The best answer I found can be seen here: [Reddit](https://www.reddit.com/r/theydidthemath/comments/1bgnbnt/request_whod_get_more_points/).
+
+The problem, briefly:  100 coins are flipped.  For every HH that appears, Alice gets a point.  For every HT that appears, Bob gets a point.  Who is more likely to win?  That is, who is more likely to have more points at the end of the 100 flips?  Doesn't matter by how much they win, just who is more likely to win.
+
+There are reasonable arguments to say Alice will win (HHH is 2 points!), or that it is a tie (something about equal probability), however the answer is Bob.  The easiest way to see this is by simply simulating a bunch of flips and seeing who wins more often, or by enumerating all possible outcomes for a smaller number of flips and counting who wins more:
+
+```r
+library(dplyr)
+library(purrr)
+
+# all combos of 10 flips
+binary_list = lapply(1:10, function(i) c(0,1))
+all_combos = do.call(expand.grid, binary_list)
+
+score_flip <- function(...) {
+  x = list(...)
+  score_bob = 0
+  score_alice = 0
+  for (i in 1:(length(x)-1)) {
+    if ((x[i] == 1) && (x[i+1] == 0)) {
+      score_bob = score_bob + 1
+    }
+    
+    if ((x[i] == 1) && (x[i+1] == 1)) {
+      score_alice = score_alice + 1
+    }
+  }
+  
+  return(list('alice' = score_alice, 'bob' = score_bob))
+}
+
+result = all_combos |>  mutate(scores = purrr::pmap(all_combos, .f = score_flip))
+
+score_alice = purrr::map(result$scores, ~.x$alice) |> unlist()
+score_bob = purrr::map(result$scores, ~.x$bob) |> unlist()
+
+print(c(mean(score_alice > score_bob), mean(score_alice < score_bob)))
+```
+
+```
+[1] 0.3623047 0.4531250
+```
+
+We see that Bob is winning more often in this example of 10 flips.  The question asked for 100 flips though, which does matter, and indeed simulating it shows that Alice catches up a bit but loses more often.  The intuition in the reddit post is that scoring happens only when there is one or more heads.  This could be a single H, or a sequence of H's, both terminated by a T or reaching the 100th flip.  We can ask, for any such sequence, what is the expected points for Bob or Alice?  Lets consider Bob first.  They are almost always going to get 1 point, only in the case where there are H's until the 100th flip will there not be 1 point which is usually very unlikely, so lets approximate the expected points for Bob as 1 for now.  
+
+Now for Alice.  We consider that HT makes up half of all sequences of H's:  Half the time, a T is flipped after the first head, ending the sequence with zero points.  Then we consider that HHT happens 1/4 of the time with one point, HHHT 1/8 of the time with 2 points, etc.  Assuming there are 99 possible flips to go after the initial H, we can write out this sequence of expected points for Alice as:
+
+$$
+\sum_{i=1}^{100} \frac{(i-1)}{2^i} \lt \sum_{i=1}^{\infty} \frac{(i-1)}{2^i}
+$$
+
+Yes the first term is zero but I'm starting there to simplify things later.  Eh...okay I'm going to rewrite this and then use the power of *stackexchange*! to finally get the answer.
+
+\begin{align*}
+\sum_{i=1}^{\infty} \frac{(i-1)}{2^i} &= \sum_{i=1}^{\infty} \frac{i}{2^i} - \sum_{i=1}^{\infty} \frac{1}{2^i} \\
+&= \sum_{i=1}^{\infty} \frac{i}{2^i} - 1 \\
+\end{align*}
+
+Where the last step uses the definition of a geometric series.  Now we have to solve for the final infinite summation.  The solution is [here](https://math.stackexchange.com/a/30741), which I'll repeat here in case my blog outlives stackexchange (likely).  We start by stating the partial sum of the series (with a general $r$ instead of our $r=\frac{1}{2}$) as:
+
+$$
+S_m = \sum_{i=1}^{m} i r^i
+$$
+
+Now notice the following:
+
+\begin{align*}
+S_m - r S_m &= \sum_{i=1}^{m} r^i - mr^{m+1} \\
+&= \frac{r - r^{m+1}}{1 - r} - mr^{m+1} \\
+&= \frac{r - (m+1)r^{m+1} + mr^{m+2}}{1 - r}
+\end{align*}
+
+And since $S_m - r S_m = (1 - r) S_m$, we have:
+
+$$
+S_m = \frac{r - (m+1)r^{m+1} + mr^{m+2}}{(1 - r)^2}
+$$
+
+With our $r=\frac{1}{2}$, this sucker is going to 2 as $m \rightarrow \infty$ and is basically already there at $m=100$.  So the expected points for Alice is 1, but this is *only true in the limit*.  If we begin our sequence with, say, only 5 flips left, then we actually have:
+
+$$
+S_5 - \sum_{i=1}^{5} \frac{1}{2^i} = 1.78125 - 0.96875 = 0.8125
+$$
+
+versus Bob who is $1-\frac{1}{2^5} = 0.96875$, a serious edge.  This appears to be true for all values of $m$, so that Bob's expected score for a series of H's is always greater.  I'm not sure if there is a straightforward way to compute the expected score over the entire sequence of flips without enumerating each outcome as I did previously.
+
+# Coming Soon!
+
+I've been trying to train an agent to play fighting games with [diambra](https://diambra.ai/login).  It has been a bit tricky since I'm trying to run it in Colab so I can share it, but that requires spinning up docker on another system (EC2) and pinging them from the Colab notebook.  I've got this mostly sorted, so hopefully I can show something soon.
+
