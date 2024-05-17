@@ -259,7 +259,7 @@ window.Quarto = {
 <section id="vectorized-sampling-from-a-categorical-distribution" class="level2">
 <h2 class="anchored" data-anchor-id="vectorized-sampling-from-a-categorical-distribution">Vectorized sampling from a categorical distribution</h2>
 <p>Okay, so the setup is you have an array that looks like this:</p>
-<div id="5ba2671d" class="cell" data-execution_count="1">
+<div id="324b24b8" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">23496</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -282,7 +282,7 @@ window.Quarto = {
 </div>
 </div>
 <p>Each row can be seen as the bin probabilities of a categorical distribution. Now suppose we want to sample from each of those distributions. One way you might do it is by leveraging <code>apply_along_axis</code>:</p>
-<div id="1eff22df" class="cell" data-execution_count="2">
+<div id="29daac86" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>samples <span class="op">=</span> np.apply_along_axis(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> x: np.random.choice(<span class="bu">range</span>(<span class="bu">len</span>(x)), p<span class="op">=</span>x), </span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>, </span>
@@ -297,7 +297,7 @@ window.Quarto = {
 <p>Hm, okay this works, but it is basically running a for loop over the rows of the array. Generally, <code>apply_along_axis</code> is not what you want to be doing if speed is a concern.</p>
 <p>So how do we vectorize this? The answer I provide here takes advantage of the <a href="https://en.wikipedia.org/wiki/Gumbel_distribution#Gumbel_reparametrization_tricks">Gumbel-max trick</a> for sampling from a categorical distribution. Essentially, given probabilities <span class="math inline">\(\pi_i, i \in {0,1,...,K}, \sum_i \pi_i = 1\)</span> if you add <a href="https://en.wikipedia.org/wiki/Gumbel_distribution">Gumbel distribution</a> noise to the log of the probabilites and then take the max, it is equivalent to sampling from a categorical distribution.</p>
 <p>Again, take the log of the probabilities, add Gumbel noise, then take the arg-max of the result.</p>
-<div id="c0790cb9" class="cell" data-execution_count="3">
+<div id="ce7886b4" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>samples <span class="op">=</span> (</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    np.log(logits) <span class="op">+</span> <span class="op">\</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    np.random.gumbel(size <span class="op">=</span> logits.shape)</span>
@@ -309,24 +309,24 @@ window.Quarto = {
 </div>
 </div>
 <p>Lets test if this is actually faster:</p>
-<div id="d1835a3a" class="cell" data-execution_count="4">
+<div id="86052180" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>(np.log(logits) <span class="op">+</span> np.random.gumbel(size <span class="op">=</span> logits.shape)).argmax(axis <span class="op">=</span> <span class="dv">1</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>334 µs ± 509 ns per loop (mean ± std. dev. of 7 runs, 1,000 loops each)</code></pre>
+<pre><code>334 µs ± 709 ns per loop (mean ± std. dev. of 7 runs, 1,000 loops each)</code></pre>
 </div>
 </div>
-<div id="d1846ab8" class="cell" data-execution_count="5">
+<div id="d6d0b575" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>np.apply_along_axis(<span class="kw">lambda</span> x: np.random.choice(<span class="bu">range</span>(<span class="bu">len</span>(x)), p<span class="op">=</span>x), <span class="dv">1</span>, logits)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>18.6 ms ± 1.84 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)</code></pre>
+<pre><code>18.6 ms ± 1.33 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)</code></pre>
 </div>
 </div>
 <p>Yea, so a couple orders of magnitude faster with vectorization. We should probably also check that it produces a similar distribution across many samples (and also put a plot in here to break up the wall of text). I’ll verify by doing barplots for the distribution of 1000 values drawn from 4 of the probability distributions. Brb, going down the stackoverflow wormhole because no one knows how to make plots, no one.</p>
 <p>…</p>
 <p>Ok I’m back, here is a way to make grouped barplots with seaborn:</p>
-<div id="0d7e2d5d" class="cell" data-execution_count="6">
+<div id="9d4623b2" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -390,7 +390,7 @@ window.Quarto = {
 <section id="pandas.dataframe.shift" class="level2">
 <h2 class="anchored" data-anchor-id="pandas.dataframe.shift">pandas.DataFrame.shift()</h2>
 <p>You could probably just go read the docs on this function, but I’ll try to explain <em>why</em> its useful. We often had to compute lagged differences or ratios for trading data indexed by date. To start I’ll give some solutions that don’t work or are bad for some reason, but might seem like reasonable starts. Lets make our dataframe with a date index to play around with:</p>
-<div id="ff44a5f7" class="cell" data-execution_count="8">
+<div id="35e6b9ee" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>mydf <span class="op">=</span> pd.DataFrame(</span>
@@ -447,7 +447,7 @@ window.Quarto = {
 </div>
 </div>
 <p>Now, suppose we want to compute the lag 1 difference. Specifically, make a new series <span class="math inline">\(s\)</span> where <span class="math inline">\(s[t] = col1[t] - col2[t-1]: t &gt; 0\)</span>, <span class="math inline">\(s[0] =\)</span> NaN. Naive first attempt:</p>
-<div id="8438e762" class="cell" data-execution_count="9">
+<div id="fa7a7ba9" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>mydf[<span class="st">"col1"</span>][<span class="dv">1</span>:] <span class="op">-</span> mydf[<span class="st">"col2"</span>][:<span class="op">-</span><span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>2022-11-29         NaN
@@ -466,7 +466,7 @@ Freq: D, Length: 100, dtype: float64</code></pre>
 </div>
 <p>Uh, so what happened here? Well, pandas does subtraction by <em>index</em>, like a join, so we just subtracted the values at the same dates, but the first and last dates were missing from col1 and col2 respectively, so we get NaN at those dates. Clearly this is not what we want.</p>
 <p>Another option converts to numpy, this is essentially just a way to move to element-wise addition:</p>
-<div id="3a75eba8" class="cell" data-execution_count="10">
+<div id="3db29d3a" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>lag1_arr <span class="op">=</span> np.array(mydf[<span class="st">"col1"</span>][<span class="dv">1</span>:]) <span class="op">-</span> np.array(mydf[<span class="st">"col2"</span>][:<span class="op">-</span><span class="dv">1</span>])</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>lag1_arr[:<span class="dv">5</span>], lag1_arr.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
@@ -475,7 +475,7 @@ Freq: D, Length: 100, dtype: float64</code></pre>
 </div>
 </div>
 <p>Of course, this is not the same length as the series, so we have to do some finagling to get it to look right.</p>
-<div id="681dc86e" class="cell" data-execution_count="11">
+<div id="bae86d88" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prepend a NaN</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>lag1_arr <span class="op">=</span> np.insert(lag1_arr, <span class="dv">0</span>, np.nan)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>lag1_arr[:<span class="dv">5</span>], lag1_arr.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -485,7 +485,7 @@ Freq: D, Length: 100, dtype: float64</code></pre>
 </div>
 </div>
 <p>Ok, its the same length and has the right values so we can put it back in the dataframe as a column or create a new series (and add the index again)</p>
-<div id="8da65f57" class="cell" data-execution_count="12">
+<div id="5b4df716" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a new series</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>lag1_series <span class="op">=</span> pd.Series(lag1_arr, index<span class="op">=</span>mydf.index)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -493,7 +493,7 @@ Freq: D, Length: 100, dtype: float64</code></pre>
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># mydf["col3"] = lag1_arr</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Alright, but this looks kinda ugly, we can do the same thing much more cleanly with the <code>.shift()</code> method of pandas DataFrames and Series. <code>.shift(N)</code> does what it sounds like, it shifts the values N places forward (or backward for negative values), but keeps the indices of the series/dataframe fixed.</p>
-<div id="ecde30cb" class="cell" data-execution_count="13">
+<div id="1cd4cfaa" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>mydf[<span class="st">"col1"</span>].shift(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>2022-11-29         NaN
@@ -511,7 +511,7 @@ Freq: D, Name: col1, Length: 100, dtype: float64</code></pre>
 </div>
 </div>
 <p>With this we can easily compute the lag 1 difference, keeping the indices and such.</p>
-<div id="bb274c55" class="cell" data-execution_count="14">
+<div id="14c59567" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># difference</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>mydf[<span class="st">"col1"</span>] <span class="op">-</span> mydf[<span class="st">"col2"</span>].shift(<span class="dv">1</span>)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
