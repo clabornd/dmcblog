@@ -15,4 +15,4 @@ about:
 
 I made this blog because I wanted to practice with .qmd documents, as well as have a place to document my learning journey on various data-science/ML topics (*I may also post pictures of bread I bake*).  Also, I needed a way to inflate my ego, and a blog seems like a good way to do that?
 
-**\_\_DISCLAIMER\_\_** This will appear throughout the blog - I am not an expert in anything, I will try to cauch everything in uncertainty.  Use any code or follow any conclusions I post at your own risk.
+**\_\_DISCLAIMER\_\_** This will appear throughout the blog - I am not an expert in anything, I will try to couch everything in uncertainty.  Use any code or follow any conclusions I post at your own risk.
