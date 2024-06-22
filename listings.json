@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/mlflow-hydra/mlflow-hydra.html",
       "/posts/update-2024/index.html",
       "/posts/ppo/index.html",
       "/posts/init-bagels/bagels.html",

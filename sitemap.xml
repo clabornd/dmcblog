@@ -2,54 +2,58 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://clabornd.github.io/dmcblog/about.html</loc>
-    <lastmod>2024-06-21T07:08:28.302Z</lastmod>
+    <lastmod>2024-06-22T16:55:35.464Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/vqvae/vqvae.html</loc>
-    <lastmod>2024-06-21T07:08:28.310Z</lastmod>
+    <lastmod>2024-06-22T16:55:35.476Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/update-2024/index.html</loc>
-    <lastmod>2024-06-21T07:08:28.310Z</lastmod>
+    <lastmod>2024-06-22T16:55:35.476Z</lastmod>
   </url>
   <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/ppo/index.html</loc>
-    <lastmod>2024-06-21T07:08:28.310Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/vision-transformer/vision-transformer.html</loc>
-    <lastmod>2024-06-21T07:08:28.310Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/hello-word/index.html</loc>
-    <lastmod>2024-06-21T07:08:28.306Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/init-bagels/bagels.html</loc>
-    <lastmod>2024-06-21T07:08:28.310Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/variational-autoencoder/index.html</loc>
-    <lastmod>2024-06-21T07:08:28.310Z</lastmod>
-  </url>
-  <url>
-    <loc>https://clabornd.github.io/dmcblog/posts/ddpg/ddpg.html</loc>
-    <lastmod>2024-06-21T07:08:28.302Z</lastmod>
+    <loc>https://clabornd.github.io/dmcblog/posts/mlflow-hydra/mlflow-hydra.html</loc>
+    <lastmod>2024-06-22T16:55:35.472Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/use-shift/index.html</loc>
-    <lastmod>2024-06-21T07:08:28.310Z</lastmod>
+    <lastmod>2024-06-22T16:55:35.476Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/ddpg/ddpg.html</loc>
+    <lastmod>2024-06-22T16:55:35.464Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/variational-autoencoder/index.html</loc>
+    <lastmod>2024-06-22T16:55:35.476Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/init-bagels/bagels.html</loc>
+    <lastmod>2024-06-22T16:55:35.472Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/hello-word/index.html</loc>
+    <lastmod>2024-06-22T16:55:35.468Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/vision-transformer/vision-transformer.html</loc>
+    <lastmod>2024-06-22T16:55:35.476Z</lastmod>
+  </url>
+  <url>
+    <loc>https://clabornd.github.io/dmcblog/posts/ppo/index.html</loc>
+    <lastmod>2024-06-22T16:55:35.476Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/ftx-blowup/index.html</loc>
-    <lastmod>2024-06-21T07:08:28.306Z</lastmod>
+    <lastmod>2024-06-22T16:55:35.468Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/posts/minigpt/minigpt.html</loc>
-    <lastmod>2024-06-21T07:08:28.310Z</lastmod>
+    <lastmod>2024-06-22T16:55:35.472Z</lastmod>
   </url>
   <url>
     <loc>https://clabornd.github.io/dmcblog/index.html</loc>
-    <lastmod>2024-06-21T07:08:28.302Z</lastmod>
+    <lastmod>2024-06-22T16:55:35.464Z</lastmod>
   </url>
 </urlset>
