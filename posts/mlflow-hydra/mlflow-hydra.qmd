@@ -5,23 +5,31 @@ date: "2024-11-09"
 categories: [machine learning]
 ---
 
+PROGRAMMING NOTE:  My post on running diambra reinforcement learning training from Colab is still coming, but might be posted elsewhere.
+
 # Table of Contents
 
-1. [Introduction](#introduction)
-2. [Requirements](#requirements)
-3. [Run minio and postgres](#run-minio-and-postgres)
+1. [Requirements](#requirements)
+2. [Run minio and postgres](#run-minio-and-postgres)
+3. [Run the mlflow tracking server](#run-the-mlflow-tracking-server)
+4. [Run the example](#run-the-example)
+5. [Extra options with hydra](#extra-options-with-hydra)
+6. [Hyperparameter sweeps](#hyperparameter-sweeps)
+7. [Running on AWS ec2](#running-on-aws-ec2)
 
 # Introduction
 
+Are you ready to learn about a bunch of random stuff I've been playing around with?  "God, I hope he decided to try to get mlflow working with minio and postgresql and then use hydra to manage the configuration of the mlflow runs.  That would be so cool!" you're thinking.  Being plugged into the mind of the modern data scientist, I have delivered on your wishes, read on!
+
 I've used mlflow several times at work, mostly as an organization tool, and a couple times with the experiments feature on Databricks.  Run a bunch of stuff, collect metrics, outputs, etc, and have a UI/API that I can use to retrieve things.  However, I've never actually used it with a proper storage backend that I set up myself.  There is always just that ugly `mlruns/0` folder in my project directory or elsewhere with a bunch of nonsense folders under it.
 
-Okay, so I figured I'd try out using mlflow + minio to store arifacts and a postgresql database to store metadata/metrics.  I also wanted to use [hydra](https://github.com/facebookresearch/hydra) to manage the configuration of mlruns just as an exercise.  I've used hydra a couple times before and can never decide if if the juice is worth the squeeze in terms of how much it actually improved over argparse + some manual munging of arguments.  Regardless, it is *neat* and I wanted to use it again.
+Okay, so I figured I'd try out using mlflow + minio to store arifacts and a postgresql database to store metadata/metrics.  I also wanted to use [hydra](https://github.com/facebookresearch/hydra) to manage the configuration of mlruns just as an exercise.  I've used hydra a couple times before and can never decide if the juice is worth the squeeze in terms of how much it actually improved over argparse + some manual munging of arguments.  Regardless, it is *neat* and I wanted to use it again.
 
-You can find resources to follow along with this post in my little [github repo](https://github.com/clabornd/mlflow-examples) that I'll hopefully expand on with more experiments in the future.
+You can find resources to follow along with this post in my little [github repo](https://github.com/clabornd/mlflow-examples) that I'll hopefully expand on with more experiments in the future (...The year is 2040, the repo has not been updated since 2024, mutant dogs roam the streets, Daniel Claborne's readers have long abandoned him after losing hope they would see more toy examples of using mlflow...).
 
 # Requirements
 
-1. Create the conda environment or otherwise install the dependencies in environment.yml.
+1. Create the conda environment or otherwise install the dependencies in environment.yml.  There's a bit of fluff in there from cookiecutter datascience, the main dependencies are mlflow, hydra, sklearn, boto3, psycopg2.
 
 ```bash
 conda env create -f environment.yml
@@ -91,11 +99,11 @@ export AWS_ACCESS_KEY_ID=minioadmin # minio username
 export AWS_SECRET_ACCESS_KEY=minioadmin # minio password
 ```
 
-These essentially tell the mlflow tracking server where to find 's3'-like storage.  Finally, we can start the tracking server with the following command:
+These essentially tell the mlflow tracking server where to find s3-like storage.  Finally, we can start the tracking server with the following command:
 
 ```bash
 mlflow server \
-    --backend-store-uri postgresql://user:password@localhost:5432/mlflowdb \
+    --backend-store-uri postgresql://user:password@localhost:5432/mlflow \
     --artifacts-destination s3://mlruns \
     --host 0.0.0.0 \
     --port 5000
@@ -104,7 +112,7 @@ mlflow server \
 make mlflow-server
 ```
 
-Where you can replace user, password, and mlflow db with whatever you set in the docker-compose file, e.g. POSTGRES_USER -> user, POSTGRES_PASSWORD -> password, POSTGRES_DB -> mlflowdb.
+Where you can replace user, password, and mlflow db with whatever you set in the docker-compose file, e.g. POSTGRES_USER -> user, POSTGRES_PASSWORD -> password, POSTGRES_DB -> mlflow.
 
 The `s3://mlruns` thing is a bit confusing....basically mlflow has stored the specifics of where 's3' is, namely using the `MLFLOW_S3_ENDPOINT_URL` environment variable.  So, when you set `--artifacts-destination s3://mlruns`, it is actually going to use the minio service we set up earlier, and store the artifacts in the `mlruns` bucket.
 
@@ -241,3 +249,51 @@ The hydra/sweeper/params group is a special hydra group for performing sweeps.  
 ```bash
 python src/basic-example.py -m +sweep=svm
 ```
+
+If you go to the mlflow or minio UI after all this you should see all these runs populated, and sortable by parameters and performance metrics:
+
+![](multi-runs.png)
+
+# Running on AWS ec2
+
+If you want somewhere to host the data, you can easily spin up an ec2 instance and run the docker-compose file there.
+
+Step 1:  Set up and ssh into an ec2 instance.  The AWS docs are pretty good on this, [this tutorial](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html) should get you logged into an instance.
+
+Step 2:  Install docker and docker-compose on the ec2 instance.  [See this AWS documentation](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-docker.html).  In my testing, I used Amazon linux, where the commands to install are:
+
+```bash
+# install docker
+sudo yum update -y
+sudo yum install -y docker
+
+# start the docker daemon
+sudo service docker start
+
+# add the ec2-user to the docker group so you dont have to do sudo docker commands
+sudo usermod -a -G docker ec2-user
+```
+
+Check that docker works with `docker run hello-world` or `docker ps`.
+
+Now you can either clone my repo from the instance or scp up the docker-compose file and run it on the ec2 instance.  Once you have the two containers running, you need to edit your ec2 security settings to allow traffic on port 5432 (postgres) and 9000 (minio).  You can do this in the AWS console under the security group settings for your instance.
+
+Now run the mlflow tracking server as above, but replace `localhost` with the `Public IPv4 DNS` of your ec2 instance if you are runnin it from your desktop.  You'll need to specify this both for the `--backend-store-uri` flag and `MLFLOW_S3_ENDPOINT_URL` environment variable.  You can find this in the AWS console under the main page for your ec2 instance.
+
+```bash
+export MLFLOW_S3_ENDPOINT_URL=<Public IPv4 DNS>:9000 # where the minio service is running
+export AWS_ACCESS_KEY_ID=minioadmin # minio username
+export AWS_SECRET_ACCESS_KEY=minioadmin # minio password
+
+mlflow server \
+    --backend-store-uri postgresql://user:password@<Public IPv4 DNS>:5432/mlflow \
+    --artifacts-destination s3://mlruns \
+    --host 0.0.0.0 \
+    --port 5000
+```
+
+Then set MLFLOW_TRACKING_URI to localhost:5000 and run the training script as above.  Of course if you run the mlflow server on the ec2 instance, you can set the MLFLOW_TRACKING_URI to the `<Public IPv4 DNS>:5000` and add a new inbound rule to the security group to allow traffic on port 5000.
+
+_____
+
+Well, I hope that was useful, but remember this was all for me not you.  Not really sure what I learned here....but at least now I have some impetus to try out some other ML experiments since I have my own mlflow storage backend set up.  Or I could just continue using wandb.....meh, whatever.  Thanks for reading!
