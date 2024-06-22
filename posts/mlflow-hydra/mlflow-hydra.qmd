@@ -1,8 +1,11 @@
 ---
-title: "Using MlFlow with Actual Storage and Hydra"
+title: "Using MlFlow with Minio, Postgres, and Hydra."
 author: "Daniel Claborne"
-date: "2024-11-09"
+date: "2024-06-2"
 categories: [machine learning]
+image: 'hydra-mlflow.png'
+twitter-card:
+  image: 'hydra-mlflow.png'
 ---
 
 PROGRAMMING NOTE:  My post on running diambra reinforcement learning training from Colab is still coming, but might be posted elsewhere.
@@ -19,7 +22,7 @@ PROGRAMMING NOTE:  My post on running diambra reinforcement learning training fr
 
 # Introduction
 
-Are you ready to learn about a bunch of random stuff I've been playing around with?  "God, I hope he decided to try to get mlflow working with minio and postgresql and then use hydra to manage the configuration of the mlflow runs.  That would be so cool!" you're thinking.  Being plugged into the mind of the modern data scientist, I have delivered on your wishes, read on!
+Are you ready to learn about a bunch of random stuff I've been playing around with?  "God, I hope he decided to try to get mlflow working with minio and postgresql and then use hydra to manage the configuration of the mlflow runs.  That would be so cool!" you're thinking.  Being plugged-in to the mind of the modern data scientist who is reading random blogs, I have delivered on your wishes, read on!
 
 I've used mlflow several times at work, mostly as an organization tool, and a couple times with the experiments feature on Databricks.  Run a bunch of stuff, collect metrics, outputs, etc, and have a UI/API that I can use to retrieve things.  However, I've never actually used it with a proper storage backend that I set up myself.  There is always just that ugly `mlruns/0` folder in my project directory or elsewhere with a bunch of nonsense folders under it.
 
