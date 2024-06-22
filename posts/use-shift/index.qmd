@@ -3,7 +3,7 @@ title: Vectorize Your Sampling from a Categorical Distribution Using Gumbel-max!
 author: "Daniel Claborne"
 date: "2022-11-28"
 lastmod: "2022-12-04"
-categories: [Data Science, Code]
+categories: [data science, code]
 bibliography: "../../bibs/ml.bib"
 image: "/www/gumbel-matrix.png"
 twitter-card:
