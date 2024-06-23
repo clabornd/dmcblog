@@ -7,7 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Daniel Claborne">
-<meta name="dcterms.date" content="2024-06-02">
+<meta name="dcterms.date" content="2024-06-21">
+<meta name="description" content="Using mlflow with minio and postgresql as storage backends, and hydra to manage configuration and perform sweeps.">
 
 <title>Using MlFlow with Minio, Postgres, and Hydra.</title>
 <style>
@@ -106,15 +107,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="Using MlFlow with Minio, Postgres, and Hydra.">
-<meta property="og:description" content="">
-<meta property="og:image" content="https://clabornd.github.io/dmcblog/posts/mlflow-hydra/hydra-mlflow.png">
-<meta property="og:image:height" content="446">
-<meta property="og:image:width" content="447">
+<meta property="og:description" content="Using mlflow with minio and postgresql as storage backends, and hydra to manage configuration and perform sweeps.">
+<meta property="og:image" content="https://clabornd.github.io/dmcblog/posts/mlflow-hydra/mlflow-hydra-thumb.png">
+<meta property="og:image:height" content="600">
+<meta property="og:image:width" content="600">
 <meta name="twitter:title" content="Using MlFlow with Minio, Postgres, and Hydra.">
-<meta name="twitter:description" content="">
-<meta name="twitter:image" content="https://clabornd.github.io/dmcblog/posts/mlflow-hydra/hydra-mlflow.png">
-<meta name="twitter:image-height" content="446">
-<meta name="twitter:image-width" content="447">
+<meta name="twitter:description" content="Using mlflow with minio and postgresql as storage backends, and hydra to manage configuration and perform sweeps.">
+<meta name="twitter:image" content="https://clabornd.github.io/dmcblog/posts/mlflow-hydra/mlflow-hydra-thumb.png">
+<meta name="twitter:image-height" content="600">
+<meta name="twitter:image-width" content="600">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -162,7 +163,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">Using MlFlow with Minio, Postgres, and Hydra.</h1>
-                                <div class="quarto-categories">
+                  <div>
+        <div class="description">
+          Using mlflow with minio and postgresql as storage backends, and hydra to manage configuration and perform sweeps.
+        </div>
+      </div>
+                          <div class="quarto-categories">
                 <div class="quarto-category">machine learning</div>
               </div>
                   </div>
@@ -181,7 +187,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">June 2, 2024</p>
+        <p class="date">June 21, 2024</p>
       </div>
     </div>
     
@@ -269,8 +275,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
 <span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./minio-data:/data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>You’ll notice I have a bunch of environment variables used to set password. For example purposes, you can change these to whatever you want (user:user, password:password, db:mlflow, etc).</p>
-<p>Lets start these containers with docker-compose:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> up <span class="at">-d</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Lets start these containers with docker compose:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">-d</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>You should be able to navigate to <code>http://localhost:9000</code> and see the minio UI. You can log in with the credentials you set in the docker-compose file. The docker compose file will create a bucket called <code>mlruns</code> for you by default.</p>
 </section>
 <section id="run-the-mflow-tracking-server" class="level1">
@@ -296,7 +302,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="run-the-example" class="level1">
 <h1>Run the example</h1>
-<p>In <a href="https://github.com/clabornd/mlflow-examples/blob/master/src/basic-example.py">src/basic-example.py</a> Is a python script that uses mlflow to very simply log the input parameters, train an sklearn model on practice data, log the trained model as an artifact, and log performance on the test set.</p>
+<p>In <a href="https://github.com/clabornd/mlflow-examples/blob/master/src/basic-example.py">src/basic-example.py</a> I use mlflow to very simply log the input parameters, train an sklearn model on practice data, log the trained model as an artifact, and log performance on the test set.</p>
 <p>We need to tell the script where to find the mlflow tracking server, which we can do with the following (wait for it) environment variable:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MLFLOW_TRACKING_URI</span><span class="op">=</span>http://localhost:5000</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Which should match whatever host/port you set when starting the mlflow tracking server.</p>
