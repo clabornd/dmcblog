@@ -1,11 +1,12 @@
 ---
 title: "Using MlFlow with Minio, Postgres, and Hydra."
 author: "Daniel Claborne"
-date: "2024-06-2"
+date: "2024-06-21"
 categories: [machine learning]
-image: 'hydra-mlflow.png'
+image: 'mlflow-hydra-thumb.png'
 twitter-card:
-  image: 'hydra-mlflow.png'
+  image: 'mlflow-hydra-thumb.png'
+description: "Using mlflow with minio and postgresql as storage backends, and hydra to manage configuration and perform sweeps."
 ---
 
 PROGRAMMING NOTE:  My post on running diambra reinforcement learning training from Colab is still coming, but might be posted elsewhere.
@@ -84,10 +85,10 @@ services:
 
 You'll notice I have a bunch of environment variables used to set password.  For example purposes, you can change these to whatever you want (user:user, password:password, db:mlflow, etc).
 
-Lets start these containers with docker-compose:
+Lets start these containers with docker compose:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 You should be able to navigate to `http://localhost:9000` and see the minio UI.  You can log in with the credentials you set in the docker-compose file.  The docker compose file will create a bucket called `mlruns` for you by default.
@@ -129,7 +130,7 @@ make mlflow-plus-storage
 
 # Run the example
 
-In [src/basic-example.py](https://github.com/clabornd/mlflow-examples/blob/master/src/basic-example.py) Is a python script that uses mlflow to very simply log the input parameters, train an sklearn model on practice data, log the trained model as an artifact, and log performance on the test set.  
+In [src/basic-example.py](https://github.com/clabornd/mlflow-examples/blob/master/src/basic-example.py) I use mlflow to very simply log the input parameters, train an sklearn model on practice data, log the trained model as an artifact, and log performance on the test set.  
 
 We need to tell the script where to find the mlflow tracking server, which we can do with the following (wait for it) environment variable:
 
