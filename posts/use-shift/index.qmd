@@ -12,6 +12,7 @@ format:
   html:
     fig-width: 8
     fig-height: 6
+description: "Behind this disaster of a title lies the secret to quickly sample from a categorical distribution in python!"
 ---
 
 Honestly, what a disaster of a title.  I don't know if either part in isolation would be more likely to get someone to read this, but I just wanted to make a post.  Maybe I should have click-baited with something completely unrelated, oh well.

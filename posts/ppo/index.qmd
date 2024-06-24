@@ -8,6 +8,7 @@ bibliography: "../../bibs/ml.bib"
 image: "lunarlander.gif"
 twitter-card:
     image: "lunarlander.gif"
+description: "I am a sick man who enjoys watching a little lunar module softly touch down on the surface in a simulated environment.  See how to do it with PPO."
 ---
 
 So, PPO....it seems like the transformer of reinforcement learning:  "What should we do?", "Eh, shove it through PPO and see what happens".  So again, this is just me replicating PPO and imploring anyone who got lost on the internet and is reading this to just go read the paper instead:  @schulman_proximal_2017.  

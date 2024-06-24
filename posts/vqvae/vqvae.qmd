@@ -9,6 +9,7 @@ bibliography: "../../bibs/ml.bib"
 image: "/www/vqvae-thumb.png"
 twitter-card:
     image: "/www/vqvae-thumb.png"
+description : "I've written before about both the gumbel-max trick and variational autoencoders.  The world demanded a post that combined the two, so here it is."
 ---
 
 I've written before about both the [gumbel-max trick](../use-shift/index.qmd#vectorized-sampling-from-a-categorical-distribution) and [variational autoencoders](../variational-autoencoder/index.qmd).  The world demanded a post that combined the two, so here it is.  I mostly follow the [repo](https://github.com/openai/DALL-E) for the DALL-E paper @ramesh_zero-shot_2021.  They also use the [attrs](https://www.attrs.org/en/stable/) package, which was nice to learn about, kinda neat, but a bit opaque.

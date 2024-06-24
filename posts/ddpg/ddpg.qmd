@@ -8,6 +8,7 @@ bibliography: "../../bibs/ml.bib"
 image: "walker.gif"
 twitter-card:
     image: "walker.gif"
+description: "Training a 'spider' to awkwardly walk to the right using DDPG."
 ---
 
 I've had a lot of fun (most of the time) training reinforcement learning algorithms to play various gym environments.  There is a somewhat sad satisfaction in getting an agent to push a cart to the top of a hill, land a lunar lander, or balance a pole on a cart - cartpole was the first RL task I tackled, and I am not ashamed to say I was very excited to see a pixelated cart successfully balance a pole. 

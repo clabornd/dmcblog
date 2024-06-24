@@ -8,6 +8,7 @@ bibliography: "../../bibs/ml.bib"
 image: "bagel-single.jpg"
 twitter-card:
     image: "bagel-single.jpg"
+description: "Somewhere in this blog I mentioned I would talk about baking?  Ok here it is.  Look at that bagel, mmmmmm.  I got the recipe from GPT-5 which OpenAI has been sitting on since early 2023 and gave me early access to."
 ---
 
 I've made bagels for a long time, usually bringing them into the office and leaving them out in the lunch-room for co-workers, interns, and others to eat them.  If you'd just like to have the recipe and be on your way it is [Peter Reinhart's New York Style Bagels With Wild Sourdough](https://honestcooking.com/peter-reinharts-new-york-style-bagels-wild-sourdough/).  I use molasses instead of barley malt, and ~30g less flour since I found 4 cups to make them too tough &mdash; the gears on my KitchenAid were eventually stripped from mixing the dough.  I've had it from at least one actual New Yorker that they pass the test.

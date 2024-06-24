@@ -9,6 +9,7 @@ bibliography: "../../bibs/ml.bib"
 image: "/www/mnist-chunks.png"
 twitter-card:
     image: "/www/mnist-chunks.png"
+description: "Read about me fumbling around recreating vision transformer, one of the components of DALL-E/CLIP."
 ---
 
 Another post about one of the pieces of DALL-E, the vision transformer [@dosovitskiy_image_2021], which is specifically used as one of the vision encoders in CLIP [@radford_learning_2021], which is itself used to condition the decoding process in DALL-E.    

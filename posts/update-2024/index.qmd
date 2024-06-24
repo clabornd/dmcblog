@@ -7,6 +7,7 @@ categories: [personal, puzzles]
 image: "/www/coinflips.png"
 twitter-card:
     image: "/www/coinflips.png"
+description: "Personal updates:  PhD applications and OMSCS worries.  Bonus:  a puzzle about flipping coins."
 ---
 
 Havent posted in a while, this is gonna be mostly a personal post to describe what I've been up to and practice regularly updating this blog so it doesn't go stale.  If you shockingly don't care about the details of some random internet person's life and just wanna read about an interesting puzzle, skip to [Bobgate](#bobgate).  
