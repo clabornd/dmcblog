@@ -1,0 +1,45 @@
+---
+title: "Training Diambra Agents on Google Colab"
+author: "Daniel Claborne"
+date: "2024-06-09"
+categories: [machine learning]
+---
+
+Diambra is a framework for training reinforcement learning agents on classic video games.  In my exploration of the project, I found myself needing a gpu to train CNN based policies and value function approximators.  Enter Google Colab, where you can get access to an A100 GPU for 10 bucks a month (granted you probably only have ~20 hours of training on an A100 with your monthly credits before needing to top up).  I decided to give this a try since Colab is a nice way to share solutions.
+
+Immediately there was a problem:  Diambra is run with Docker containers, and running these containers on Google Colab is, in my investigations, not well supported/hacky.  My solution was to attempt to run the containers on a separate machine, accessible by the Colab instance.  The Colab instance would then send actions to the Diambra container over HTTPS, and receive observations and rewards in return.  As we'll see, this solution runs into some issues, hopefully solvable by someone reading this!
+
+## Single Environment Setup
+
+First lets see how to get the simplest setup working:  1 container on a remote machine, accessed from Google Colab.  The remote machine I used was an AWS EC2 instance.  
+
+### Set up an EC2 instance
+
+We need an ec2 instance to host our containers.  It does not have to be beefy, just have enough memory to run some docker containers.  I started with a t2.micro instance running .  For a tutorial on how to create/connect to an ec2 instance via SSH, see [this tutorial](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html).
+
+
+Once you are up and running and connected, we need to install docker.  [See this AWS documentation](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-docker.html).  In short, we run:
+
+```bash
+# install docker
+sudo yum update -y
+sudo yum install -y docker
+
+# start the docker daemon
+sudo service docker start
+
+# add the ec2-user to the docker group so you dont have to do sudo docker commands
+sudo usermod -a -G docker ec2-user
+```
+
+Check that docker works with `docker run hello-world` or `docker ps`.
+
+### Install Diambra
+
+This setup is exactly like in the [Diambra installation docs](https://docs.diambra.ai/#installation) and the vanilla ec2 instance should have all you need to install diambra.  You will, as with running locally, need a copy of a compatible ROM.  You can copy this to the ec2 instance with `scp` or `rsync` from your local machine:
+
+```bash
+scp -i ~/.ssh/my-key.pem /path/to/doapp.zip <ec2-public-ip>:<ec2-roms-path>
+```
+
+And then specify the roms path as usual in the ec2 instance.
