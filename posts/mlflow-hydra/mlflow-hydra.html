@@ -279,8 +279,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">-d</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>You should be able to navigate to <code>http://localhost:9000</code> and see the minio UI. You can log in with the credentials you set in the docker-compose file. The docker compose file will create a bucket called <code>mlruns</code> for you by default.</p>
 </section>
-<section id="run-the-mflow-tracking-server" class="level1">
-<h1>Run the mflow tracking server</h1>
+<section id="run-the-mlflow-tracking-server" class="level1">
+<h1>Run the mlflow tracking server</h1>
 <p>Finally, we run the mlflow tracking server, which basically acts as an intermediary between the mlflow client and the storage backend. We need to set some environment variables again (UHG):</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MLFLOW_S3_ENDPOINT_URL</span><span class="op">=</span>http://localhost:9000 <span class="co"># where the minio service is running</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">AWS_ACCESS_KEY_ID</span><span class="op">=</span>minioadmin <span class="co"># minio username</span></span>
