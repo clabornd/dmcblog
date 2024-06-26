@@ -1,6 +1,11 @@
 on:
   push:
-    branches: [main, master]
+    branches: [master]
+    paths-ignore:
+      - README.md
+      - .gitignore
+  pull_request:
+    branches: [master]
     paths-ignore:
       - README.md
       - .gitignore
@@ -19,8 +24,13 @@ jobs:
         with:
           # To install LaTeX to build PDF book 
           tinytex: true 
+
       - uses: actions/setup-python@v4
       - run: pip install -r requirements.txt
+
+      - name: Render Quarto
+        uses: quarto-dev/quarto-actions/render@v2
+        if: github.event_name == 'pull_request' && github.base_ref == 'master'
 
       - name: Publish to GitHub Pages (and render)
         uses: quarto-dev/quarto-actions/publish@v2
@@ -28,3 +38,4 @@ jobs:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # this secret is always available for github actions
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
