@@ -93,7 +93,7 @@ docker compose up -d
 
 You should be able to navigate to `http://localhost:9000` and see the minio UI.  You can log in with the credentials you set in the docker-compose file.  The docker compose file will create a bucket called `mlruns` for you by default.
 
-# Run the mflow tracking server
+# Run the mlflow tracking server
 
 Finally, we run the mlflow tracking server, which basically acts as an intermediary between the mlflow client and the storage backend.  We need to set some environment variables again (UHG):
 

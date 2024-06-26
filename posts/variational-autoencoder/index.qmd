@@ -30,7 +30,7 @@ Alright, so variational autoencoders are cool, they can produce synthetic sample
 ![](../../www/Cubism_portrait.jpeg)
 <p align='center'>This person doesn't exist<p>
 
-How do VAE's help us get there?  One thing that [[1]](#ref1) and [[2]]($ref2) do is to initially put any sort of deep learning architectures aside and just focus on the general variational inference problem.  At first I found this very annoying (get to the point!), but now think it is probably useful (yea yea, the people who are way smarter than me were right and I was wrong, who would have thought).
+How do VAE's help us get there?  One thing that [[1]](#ref1) and [[2]](#ref2) do is to initially put any sort of deep learning architectures aside and just focus on the general variational inference problem.  At first I found this very annoying (get to the point!), but now think it is probably useful (yea yea, the people who are way smarter than me were right and I was wrong, who would have thought).
 
 The setup is that we have some real observations,  $X_{obs} = \{x^{(1)}, x^{(2)}, ... x^{(N)}\}$ (When I talk about some arbitrary sample from the observed data, i'll drop the superscript and just say $x$) that we assume are generated from some process that goes like:
 
@@ -129,7 +129,7 @@ $$
 
 The right hand side is known as the evidence lower bound (ELBO), and various derivations of it and the above inequality can be found all over the internet if you found the above unsettling, disturbing, offensive.
 
-It is useful to stare a bit at (\ref{eq1}) and (\ref{eq2}).  First, if our $q(z\vert x;\phi)$ eventually ends up *matching* $p(z \vert x)$, then the first KL divergence in (\ref{eq1}) will be zero, and maximizing the RHS of (\ref{eq2}) will be like directly maximizing $p(x)$ [[2]]($ref2).  
+It is useful to stare a bit at (\ref{eq1}) and (\ref{eq2}).  First, if our $q(z\vert x;\phi)$ eventually ends up *matching* $p(z \vert x)$, then the first KL divergence in (\ref{eq1}) will be zero, and maximizing the RHS of (\ref{eq2}) will be like directly maximizing $p(x)$ [[2]](#ref2).  
 
 The other notable thing is that (\ref{eq2}) has a nice interpretation.  $E_{z\sim q(z\vert x;\phi)}[log(p(x \vert z;\theta))]$ can be though of as the reconstruction loss - how close are our reconstructions to the data.  $KL(q(z\vert x;\phi)\vert\vert p(z))$ is like a regularization term telling our encoder:  "You must try to be like the prior distribution $p(z)$".  This regularization term achieves the goal of making sure the conditional distributions across the $x$ are nice and compact around the prior distribution - so if we sample from a $\mathcal{N}(0,I)$, we are likely to get a $z$ that is likely to produce one of our $x$'s.      
 
