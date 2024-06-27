@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.4.556">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -124,7 +124,7 @@ div.csl-indent {
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -344,6 +344,7 @@ L^{CLIP}(\theta) = E_{t \sim \pi_{\theta_{old}}}\left[\text{min}\left(\frac{\pi_
 <p>learning rate (actor and critic), clipping parameter <span class="math inline">\(\epsilon\)</span>, <span class="math inline">\(\lambda\)</span> parameter in the computation of the advantage, and discount factor <span class="math inline">\(\gamma\)</span>. The results are in <a href="https://wandb.ai/clabornd/ppo-basic/groups/%3Cnull%3E/workspace">this wandb project</a>. Below is the parallel lines plot showing the effect of hyperparameters.</p>
 <iframe src="https://wandb.ai/clabornd/ppo-basic/reports/-23-07-11-20-27-08---Vmlldzo0ODU4ODQw" style="border:none;height:1024px;width:100%">
 </iframe>
+<p><a href="https://wandb.ai/clabornd/ppo-basic/reports/-23-07-11-20-27-08---Vmlldzo0ODU4ODQw"></a></p>
 <p>Many of the training runs stagnate around 0 average reward, others get up to around ~100 average reward. A few seem to be doing okay and then completely collapse…I’m not sure what’s going on here but I’m investigating some methods of alleviating this. Some of the runs maintain a stable reward at over 200, which is what we want to consider it a success. The parameter that training seems most sensitive to is the advantage computation parameter <span class="math inline">\(\lambda\)</span>.</p>
 <p>Okay, below is a gif of an episode from the best training run:</p>
 <p><img src="lunarlander.gif" class="img-fluid"></p>
