@@ -145,6 +145,7 @@ Whats happening here is we send a sample through the actor, pass that action to 
 I do some hyperparameter tuning on things like batch size, replay buffer size, and learning rates.  Here's a link to a group of runs produced by ray-tune and wandb where you can see the variability in training outcomes due to hyperparameters:
 
 <iframe width = "800" height = "550" src="https://wandb.ai/clabornd/rl_experiments/reports/batch_reward-23-04-13-21-40-45---Vmlldzo0MDYyOTI4"></iframe>
+[](https://wandb.ai/clabornd/rl_experiments/reports/batch_reward-23-04-13-21-40-45---Vmlldzo0MDYyOTI4)
 
 ### Weird walking spiders...
 

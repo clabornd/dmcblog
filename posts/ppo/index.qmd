@@ -146,6 +146,7 @@ I train on the LunarLander environment for 100 rounds of sampling + training, fi
 learning rate (actor and critic), clipping parameter $\epsilon$, $\lambda$ parameter in the computation of the advantage, and discount factor $\gamma$.  The results are in [this wandb project](https://wandb.ai/clabornd/ppo-basic/groups/%3Cnull%3E/workspace).  Below is the parallel lines plot showing the effect of hyperparameters.
 
 <iframe src="https://wandb.ai/clabornd/ppo-basic/reports/-23-07-11-20-27-08---Vmlldzo0ODU4ODQw" style="border:none;height:1024px;width:100%"></iframe>
+[](https://wandb.ai/clabornd/ppo-basic/reports/-23-07-11-20-27-08---Vmlldzo0ODU4ODQw)
 
 Many of the training runs stagnate around 0 average reward, others get up to around ~100 average reward.  A few seem to be doing okay and then completely collapse...I'm not sure what's going on here but I'm investigating some methods of alleviating this.  Some of the runs maintain a stable reward at over 200, which is what we want to consider it a success.  The parameter that training seems most sensitive to is the advantage computation parameter $\lambda$.
 
