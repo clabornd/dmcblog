@@ -11,6 +11,8 @@ description: "Using mlflow with minio and postgresql as storage backends, and hy
 
 PROGRAMMING NOTE:  My post on running diambra reinforcement learning training from Colab is still coming, but might be posted elsewhere.
 
+UPDATE:  This post discusses running the storage (postgres and minio) in docker containers and the mlflow UI from the command line.  I've since edited the associated [github repo](https://github.com/clabornd/mlflow-examples) to run the mlflow UI in a docker container as well from docker-compose, inspired by [this tds post](https://towardsdatascience.com/deploy-mlflow-with-docker-compose-8059f16b6039).  The below should still work, but take a look at that post and the repo for the full docker setup.
+
 # Table of Contents
 
 1. [Requirements](#requirements)
@@ -23,7 +25,7 @@ PROGRAMMING NOTE:  My post on running diambra reinforcement learning training fr
 
 # Introduction
 
-Are you ready to learn about a bunch of random stuff I've been playing around with?  "God, I hope he decided to try to get mlflow working with minio and postgresql and then use hydra to manage the configuration of the mlflow runs.  That would be so cool!" you're thinking.  Being plugged-in to the mind of the modern data scientist who is reading random blogs, I have delivered on your wishes, read on!
+Are you ready to learn about a bunch of random stuff I've been playing around with?  "God, I hope he decided to try to get mlflow working with minio and postgresql and then use hydra to manage the configuration of the mlflow runs" you're thinking.  Being plugged-in to the mind of the modern data scientist who is reading random blogs, I have delivered on your wishes.
 
 I've used mlflow several times at work, mostly as an organization tool, and a couple times with the experiments feature on Databricks.  Run a bunch of stuff, collect metrics, outputs, etc, and have a UI/API that I can use to retrieve things.  However, I've never actually used it with a proper storage backend that I set up myself.  There is always just that ugly `mlruns/0` folder in my project directory or elsewhere with a bunch of nonsense folders under it.
 
@@ -282,7 +284,7 @@ Check that docker works with `docker run hello-world` or `docker ps`.
 
 Now you can either clone my repo from the instance or scp up the docker-compose file and run it on the ec2 instance.  Once you have the two containers running, you need to edit your ec2 security settings to allow traffic on port 5432 (postgres) and 9000 (minio).  You can do this in the AWS console under the security group settings for your instance.
 
-Now run the mlflow tracking server as above, but replace `localhost` with the `Public IPv4 DNS` of your ec2 instance if you are runnin it from your desktop.  You'll need to specify this both for the `--backend-store-uri` flag and `MLFLOW_S3_ENDPOINT_URL` environment variable.  You can find this in the AWS console under the main page for your ec2 instance.
+Now run the mlflow tracking server as above, but replace `localhost` with the `Public IPv4 DNS` of your ec2 instance if you are running it from your desktop.  You'll need to specify this both for the `--backend-store-uri` flag and `MLFLOW_S3_ENDPOINT_URL` environment variable.  You can find this in the AWS console under the main page for your ec2 instance.
 
 ```bash
 export MLFLOW_S3_ENDPOINT_URL=http://<Public IPv4 DNS>:9000 # where the minio service is running
@@ -296,7 +298,7 @@ mlflow server \
     --port 5000
 ```
 
-Then set MLFLOW_TRACKING_URI to localhost:5000 and run the training script as above.  Of course if you run the mlflow server on the ec2 instance, you can set the MLFLOW_TRACKING_URI to the `http://<Public IPv4 DNS>:5000` and add a new inbound rule to the security group to allow traffic on port 5000.
+Then set MLFLOW_TRACKING_URI to `http://localhost:5000` and run the training script as above.  Of course if you run the mlflow server on the ec2 instance, you can set the MLFLOW_TRACKING_URI to the `http://<Public IPv4 DNS>:5000` and add a new inbound rule to the security group to allow traffic on port 5000.
 
 _____
 
