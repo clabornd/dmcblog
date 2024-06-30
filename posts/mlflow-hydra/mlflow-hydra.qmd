@@ -11,7 +11,7 @@ description: "Using mlflow with minio and postgresql as storage backends, and hy
 
 PROGRAMMING NOTE:  My post on running diambra reinforcement learning training from Colab is still coming, but might be posted elsewhere.
 
-UPDATE:  This post discusses running the storage (postgres and minio) in docker containers and the mlflow UI from the command line.  I've since edited the associated [github repo](https://github.com/clabornd/mlflow-examples) to run the mlflow UI in a docker container as well from docker-compose, inspired by [this tds post](https://towardsdatascience.com/deploy-mlflow-with-docker-compose-8059f16b6039).  The below should still work, but take a look at that post and the repo for the full docker setup.
+UPDATE:  This post discusses running the storage (postgres and minio) in docker containers and the mlflow UI from the command line.  The post references a [github repo at this commit](https://github.com/clabornd/mlflow-examples/tree/249d4fb78b2c6fd9ebc2ace3ed04951244ecc6a4).  I've since edited the associated [github repo](https://github.com/clabornd/mlflow-examples) to run the mlflow UI in a docker container as well from docker-compose, inspired by [this tds post](https://towardsdatascience.com/deploy-mlflow-with-docker-compose-8059f16b6039).  The below should still work, but take a look at that post and the repo for the full docker setup.
 
 # Table of Contents
 
@@ -31,7 +31,7 @@ I've used mlflow several times at work, mostly as an organization tool, and a co
 
 Okay, so I figured I'd try out using mlflow + minio to store arifacts and a postgresql database to store metadata/metrics.  I also wanted to use [hydra](https://github.com/facebookresearch/hydra) to manage the configuration of mlruns just as an exercise.  I've used hydra a couple times before and can never decide if the juice is worth the squeeze in terms of how much it actually improved over argparse + some manual munging of arguments.  Regardless, it is *neat* and I wanted to use it again.
 
-You can find resources to follow along with this post in my little [github repo](https://github.com/clabornd/mlflow-examples) that I'll hopefully expand on with more experiments in the future (...The year is 2040, the repo has not been updated since 2024, mutant dogs roam the streets, Daniel Claborne's readers have long abandoned him after losing hope they would see more toy examples of using mlflow...).
+You can find resources to follow along with this post in my little [github repo](https://github.com/clabornd/mlflow-examples/tree/249d4fb78b2c6fd9ebc2ace3ed04951244ecc6a4) that I'll hopefully expand on with more experiments in the future (...The year is 2040, the repo has not been updated since 2024, mutant dogs roam the streets, Daniel Claborne's readers have long abandoned him after losing hope they would see more toy examples of using mlflow...).
 
 # Requirements
 
@@ -132,7 +132,7 @@ make mlflow-plus-storage
 
 # Run the example
 
-In [src/basic-example.py](https://github.com/clabornd/mlflow-examples/blob/master/src/basic-example.py) I use mlflow to very simply log the input parameters, train an sklearn model on practice data, log the trained model as an artifact, and log performance on the test set.  
+In [src/basic-example.py](https://github.com/clabornd/mlflow-examples/blob/249d4fb78b2c6fd9ebc2ace3ed04951244ecc6a4/src/basic-example.py) I use mlflow to very simply log the input parameters, train an sklearn model on practice data, log the trained model as an artifact, and log performance on the test set.  
 
 We need to tell the script where to find the mlflow tracking server, which we can do with the following (wait for it) environment variable:
 
