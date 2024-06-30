@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.556">
+<meta name="generator" content="quarto-1.4.557">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -36,7 +36,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -207,6 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>PROGRAMMING NOTE: My post on running diambra reinforcement learning training from Colab is still coming, but might be posted elsewhere.</p>
+<p>UPDATE: This post discusses running the storage (postgres and minio) in docker containers and the mlflow UI from the command line. The post references a <a href="https://github.com/clabornd/mlflow-examples/tree/249d4fb78b2c6fd9ebc2ace3ed04951244ecc6a4">github repo at this commit</a>. I’ve since edited the associated <a href="https://github.com/clabornd/mlflow-examples">github repo</a> to run the mlflow UI in a docker container as well from docker-compose, inspired by <a href="https://towardsdatascience.com/deploy-mlflow-with-docker-compose-8059f16b6039">this tds post</a>. The below should still work, but take a look at that post and the repo for the full docker setup.</p>
 <section id="table-of-contents" class="level1">
 <h1>Table of Contents</h1>
 <ol type="1">
@@ -221,10 +222,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>Are you ready to learn about a bunch of random stuff I’ve been playing around with? “God, I hope he decided to try to get mlflow working with minio and postgresql and then use hydra to manage the configuration of the mlflow runs. That would be so cool!” you’re thinking. Being plugged-in to the mind of the modern data scientist who is reading random blogs, I have delivered on your wishes, read on!</p>
+<p>Are you ready to learn about a bunch of random stuff I’ve been playing around with? “God, I hope he decided to try to get mlflow working with minio and postgresql and then use hydra to manage the configuration of the mlflow runs” you’re thinking. Being plugged-in to the mind of the modern data scientist who is reading random blogs, I have delivered on your wishes.</p>
 <p>I’ve used mlflow several times at work, mostly as an organization tool, and a couple times with the experiments feature on Databricks. Run a bunch of stuff, collect metrics, outputs, etc, and have a UI/API that I can use to retrieve things. However, I’ve never actually used it with a proper storage backend that I set up myself. There is always just that ugly <code>mlruns/0</code> folder in my project directory or elsewhere with a bunch of nonsense folders under it.</p>
 <p>Okay, so I figured I’d try out using mlflow + minio to store arifacts and a postgresql database to store metadata/metrics. I also wanted to use <a href="https://github.com/facebookresearch/hydra">hydra</a> to manage the configuration of mlruns just as an exercise. I’ve used hydra a couple times before and can never decide if the juice is worth the squeeze in terms of how much it actually improved over argparse + some manual munging of arguments. Regardless, it is <em>neat</em> and I wanted to use it again.</p>
-<p>You can find resources to follow along with this post in my little <a href="https://github.com/clabornd/mlflow-examples">github repo</a> that I’ll hopefully expand on with more experiments in the future (…The year is 2040, the repo has not been updated since 2024, mutant dogs roam the streets, Daniel Claborne’s readers have long abandoned him after losing hope they would see more toy examples of using mlflow…).</p>
+<p>You can find resources to follow along with this post in my little <a href="https://github.com/clabornd/mlflow-examples/tree/249d4fb78b2c6fd9ebc2ace3ed04951244ecc6a4">github repo</a> that I’ll hopefully expand on with more experiments in the future (…The year is 2040, the repo has not been updated since 2024, mutant dogs roam the streets, Daniel Claborne’s readers have long abandoned him after losing hope they would see more toy examples of using mlflow…).</p>
 </section>
 <section id="requirements" class="level1">
 <h1>Requirements</h1>
@@ -302,7 +303,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="run-the-example" class="level1">
 <h1>Run the example</h1>
-<p>In <a href="https://github.com/clabornd/mlflow-examples/blob/master/src/basic-example.py">src/basic-example.py</a> I use mlflow to very simply log the input parameters, train an sklearn model on practice data, log the trained model as an artifact, and log performance on the test set.</p>
+<p>In <a href="https://github.com/clabornd/mlflow-examples/blob/249d4fb78b2c6fd9ebc2ace3ed04951244ecc6a4/src/basic-example.py">src/basic-example.py</a> I use mlflow to very simply log the input parameters, train an sklearn model on practice data, log the trained model as an artifact, and log performance on the test set.</p>
 <p>We need to tell the script where to find the mlflow tracking server, which we can do with the following (wait for it) environment variable:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MLFLOW_TRACKING_URI</span><span class="op">=</span>http://localhost:5000</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Which should match whatever host/port you set when starting the mlflow tracking server.</p>
@@ -388,7 +389,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> usermod <span class="at">-a</span> <span class="at">-G</span> docker ec2-user</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Check that docker works with <code>docker run hello-world</code> or <code>docker ps</code>.</p>
 <p>Now you can either clone my repo from the instance or scp up the docker-compose file and run it on the ec2 instance. Once you have the two containers running, you need to edit your ec2 security settings to allow traffic on port 5432 (postgres) and 9000 (minio). You can do this in the AWS console under the security group settings for your instance.</p>
-<p>Now run the mlflow tracking server as above, but replace <code>localhost</code> with the <code>Public IPv4 DNS</code> of your ec2 instance if you are runnin it from your desktop. You’ll need to specify this both for the <code>--backend-store-uri</code> flag and <code>MLFLOW_S3_ENDPOINT_URL</code> environment variable. You can find this in the AWS console under the main page for your ec2 instance.</p>
+<p>Now run the mlflow tracking server as above, but replace <code>localhost</code> with the <code>Public IPv4 DNS</code> of your ec2 instance if you are running it from your desktop. You’ll need to specify this both for the <code>--backend-store-uri</code> flag and <code>MLFLOW_S3_ENDPOINT_URL</code> environment variable. You can find this in the AWS console under the main page for your ec2 instance.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MLFLOW_S3_ENDPOINT_URL</span><span class="op">=</span>http://<span class="op">&lt;</span>Public IPv4 DNS<span class="op">&gt;</span>:9000 <span class="co"># where the minio service is running</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">AWS_ACCESS_KEY_ID</span><span class="op">=</span>minioadmin <span class="co"># minio username</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">AWS_SECRET_ACCESS_KEY</span><span class="op">=</span>minioadmin <span class="co"># minio password</span></span>
@@ -398,7 +399,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">--artifacts-destination</span> s3://mlruns <span class="dt">\</span></span>
 <span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">--host</span> 0.0.0.0 <span class="dt">\</span></span>
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">--port</span> 5000</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Then set MLFLOW_TRACKING_URI to localhost:5000 and run the training script as above. Of course if you run the mlflow server on the ec2 instance, you can set the MLFLOW_TRACKING_URI to the <code>http://&lt;Public IPv4 DNS&gt;:5000</code> and add a new inbound rule to the security group to allow traffic on port 5000.</p>
+<p>Then set MLFLOW_TRACKING_URI to <code>http://localhost:5000</code> and run the training script as above. Of course if you run the mlflow server on the ec2 instance, you can set the MLFLOW_TRACKING_URI to the <code>http://&lt;Public IPv4 DNS&gt;:5000</code> and add a new inbound rule to the security group to allow traffic on port 5000.</p>
 <hr>
 <p>Well, I hope that was useful, but remember this was all for me not you. Not really sure what I learned here….but at least now I have some impetus to try out some other ML experiments since I have my own mlflow storage backend set up. Or I could just continue using wandb…..meh, whatever. Thanks for reading!</p>
 
