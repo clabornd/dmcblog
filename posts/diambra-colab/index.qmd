@@ -5,7 +5,9 @@ date: "2024-06-09"
 categories: [machine learning]
 ---
 
-Diambra is a framework for training reinforcement learning agents on classic video games.  In my exploration of the project, I found myself needing a gpu to train CNN based policies and value function approximators.  Enter Google Colab, where you can get access to an A100 GPU for 10 bucks a month (granted you probably only have ~20 hours of training on an A100 with your monthly credits before needing to top up).  I decided to give this a try since Colab is a nice way to share solutions.
+SAD TIMES SPOILER:  There is no expert agent at the end of this blog post, really its mostly about interfacing between multiple docker containers running on an EC2 instance and Google Colab.  
+
+[Diambra](https://diambra.ai/) is a framework for training reinforcement learning agents on classic video games.  In my exploration of the project, I found myself needing a gpu to train CNN based policies and value function approximators.  Enter Google Colab, where you can get access to an A100 GPU for 10 bucks a month (granted you probably only have ~20 hours of training on an A100 with your monthly credits before needing to top up).  I decided to give this a try since Colab is a nice way to share solutions.
 
 Immediately there was a problem:  Diambra is run with Docker containers, and running these containers on Google Colab is, in my investigations, not well supported/hacky.  My solution was to attempt to run the containers on a separate machine, accessible by the Colab instance.  The Colab instance would then send actions to the Diambra container over HTTPS, and receive observations and rewards in return.  As we'll see, this solution runs into some issues, hopefully solvable by someone reading this!
 
@@ -15,8 +17,7 @@ First lets see how to get the simplest setup working:  1 container on a remote m
 
 ### Set up an EC2 instance
 
-We need an ec2 instance to host our containers.  It does not have to be beefy, just have enough memory to run some docker containers.  I started with a t2.micro instance running .  For a tutorial on how to create/connect to an ec2 instance via SSH, see [this tutorial](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html).
-
+We need an ec2 instance to host our containers.  It does not have to be beefy, just have enough memory to run some docker containers.  I started with a t2.micro running AWS Linux, but we'll have to spin up more .  For a tutorial on how to create/connect to an ec2 instance via SSH, see [this tutorial](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html).
 
 Once you are up and running and connected, we need to install docker.  [See this AWS documentation](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-docker.html).  In short, we run:
 
@@ -34,7 +35,14 @@ sudo usermod -a -G docker ec2-user
 
 Check that docker works with `docker run hello-world` or `docker ps`.
 
-### Install Diambra
+#### Add a Security Group
+I am about to give you some advice that is probably bad, which is to allow all traffic on ports 32000-32999 on your ec2 instance.  Under the 'Security' tab of your ec2 instance, there should be at least one listed security group.  Click on that security group, go to the groups inbound rules and 'Edit inbound rules'.  You should see a screen with an option to 'Add rule'.  The rule we want to add is a Custom TCP rule on ports 32000 - 32999 as shown below:
+
+![](inbound-rules.png)
+
+Do this same thing for the outbound rules, as we will be passing data to and receiving data from the running containers on the ec2 instance.
+
+#### Install Diambra
 
 This setup is exactly like in the [Diambra installation docs](https://docs.diambra.ai/#installation) and the vanilla ec2 instance should have all you need to install diambra.  You will, as with running locally, need a copy of a compatible ROM.  You can copy this to the ec2 instance with `scp` or `rsync` from your local machine:
 
@@ -42,4 +50,58 @@ This setup is exactly like in the [Diambra installation docs](https://docs.diamb
 scp -i ~/.ssh/my-key.pem /path/to/doapp.zip <ec2-public-ip>:<ec2-roms-path>
 ```
 
-And then specify the roms path as usual in the ec2 instance.
+### Run a Diambra Container
+
+And then specify the roms path as usual in the ec2 instance with the `DIAMBRAROMSPATH` environment variable.  
+We can run a single diambra container with:
+
+```bash
+[ec2-user]$ diambra arena --path.roms /path/to/roms --env.host 0.0.0.0 up
+🖥️  logged in
+v2.2: Pulling from diambra/engine
+Digest: sha256:77ba99e5d7d099fe2db292fc7b4e43da310e1bbdb0bcc3a157810e1f933ec81d
+Status: Image is up to date for diambra/engine:v2.2
+Stored credentials found.
+Authorization granted.
+Server listening on 0.0.0.0:50051
+127.0.0.1:32768
+```
+
+Make note of the port it is running on, this will be in the range 32000-32999.
+
+We can see the running container with:
+
+```bash
+[ec2-user]$ docker ps
+CONTAINER ID   IMAGE                 COMMAND                  CREATED         STATUS         PORTS                      NAMES
+7bf96960255f   diambra/engine:v2.2   "/bin/diambraEngineS…"   8 seconds ago   Up 6 seconds   0.0.0.0:32768->50051/tcp   busy_villani
+```
+
+## Connect From Colab
+
+From colab, we can connect using the diambra api.  We will need the ec2 instances IPv4 address/IPv4 DNS.  These can be obtained from the main page of your ec2 instance in the AWS console.
+
+```python
+import diambra.arena
+from diambra.arena import EnvironmentSettings
+
+# 
+os.environ['DIAMBRA_ENVS'] = "your-ec2-ipv4-address:port"
+
+settings = EnvironmentSettings(
+    difficulty=2,
+    splash_screen=False
+)
+
+env = diambra.arena.make("doapp", render_mode='rgb_array', env_settings=settings)
+env.reset()
+
+act = env.action_space.sample()
+state, reward, done, truncated, info = env.step(act)
+```
+
+If we take a look at the state we see the start screen of a fight inside DOA++:
+
+![](example-fight-start.png)
+
+## Connect to Multiple Environments
