@@ -1,11 +1,15 @@
 ---
 title: "Training Diambra Agents on Google Colab"
 author: "Daniel Claborne"
-date: "2024-06-09"
+date: "2024-010-24"
 categories: [machine learning]
+image: "example-fight-start.png"
+twitter-card:
+    image: "example-fight-start.png"
+description:  "Run some fighting game environments on an ec2 instance, retrieve experience for training an RL agent from Google Colab."
 ---
 
-SAD TIMES SPOILER:  There is no expert agent at the end of this blog post, really its mostly about interfacing between multiple docker containers running on an EC2 instance and Google Colab.  
+SAD TIMES SPOILER:  There is no expert agent at the end of this blog post, really its mostly about interfacing between multiple docker containers running on an EC2 instance and Google Colab.  See the example notebook [here](https://colab.research.google.com/drive/1--FvZbaBX_NNDctdbF-OeHCMGt7Cl1eN?usp=sharing).
 
 [Diambra](https://diambra.ai/) is a framework for training reinforcement learning agents on classic video games.  In my exploration of the project, I found myself needing a gpu to train CNN based policies and value function approximators.  Enter Google Colab, where you can get access to an A100 GPU for 10 bucks a month (granted you probably only have ~20 hours of training on an A100 with your monthly credits before needing to top up).  I decided to give this a try since Colab is a nice way to share solutions.
 
@@ -44,7 +48,7 @@ Do this same thing for the outbound rules, as we will be passing data to and rec
 
 #### Install Diambra
 
-This setup is exactly like in the [Diambra installation docs](https://docs.diambra.ai/#installation) and the vanilla ec2 instance should have all you need to install diambra.  You will, as with running locally, need a copy of a compatible ROM.  You can copy this to the ec2 instance with `scp` or `rsync` from your local machine:
+This setup is exactly like in the [Diambra installation docs](https://docs.diambra.ai/#installation) and the vanilla ec2 instance should have all you need to install diambra.  You will, as with running locally, need a copy of a compatible ROM (I use DOA++ in this example).  You can copy this to the ec2 instance with `scp` or `rsync` from your local machine:
 
 ```bash
 scp -i ~/.ssh/my-key.pem /path/to/doapp.zip <ec2-public-ip>:<ec2-roms-path>
@@ -104,4 +108,30 @@ If we take a look at the state we see the start screen of a fight inside DOA++:
 
 ![](example-fight-start.png)
 
+Now you have the ability to run a training loop or pass your environment object to e.g. stable-baselines.
+
 ## Connect to Multiple Environments
+
+Just one problem...there is a bit of latency between sending the action to the ec2 instance, and receiving the observations, rewards, etc. back.  It's not much for a single ping, but we're talking about training an RL agent, requiring millions of agent-environment interactions, and if you add 30ms to *every single interaction* you can imagine the training is gonna be very slow.
+
+No problem, lets spin up a bunch of containers and call them in parallel!  How do we do this?  Well, basically we need to create a class that spins up multiple environments and calls them all at once.  Thanks to @lwneal on github for [this example](https://github.com/lwneal/simple-multithreading-gym) which was basically the template for what follows.  We essentially have a function that executes multiple commands from an iterable and then use that for our environment's `reset()` and `step()` functions.  See the colab notebook for the code and below for an example of 12 observations pulled from 12 environments running in an ec2 instance:
+
+![](multi-envs.png)
+
+Great!  There are still some hurdles to jump over however.  Remember these are 12 different environments being sampled from, we cant just mix the observations from all of them.  Instead, we have to keep track of things like states, rewards, etc. on a per-environment basis.  Something like below:
+
+```python
+# store running episodes for each parallel environment
+obs_list = [[] for _ in range(len(env.envs))]
+act_list = [[] for _ in range(len(env.envs))]
+rew_list = [[] for _ in range(len(env.envs))]
+val_list = [[] for _ in range(len(env.envs))]
+log_prob_list = [[] for _ in range(len(env.envs))]
+done_list = [[] for _ in range(len(env.envs))]
+truncated_list = [[] for _ in range(len(env.envs))]
+discounted_rewards = [[] for _ in range(len(env.envs))]
+```
+
+For example, in PPO, we have to complete a few episodes, compute discounted rewards and advantages, and then form training tuples.  We don't want to just wait til a few episodes are complete, update the policy/value function, and then continue, since then the episodes that did not get used since they did not complete will not reflect the current policy.  
+
+Further, this process is.....still kinda slow.  Colab is a great tool, but this might not be the use case for it (we dont *really* need that A100), and the cost of spinning up an ec2 instance with a GPU might be worth having the environment running on the same machine that is doing the training and seriously reduce latency issues.  I'll probably give a go at actually training a fighter all on an ec2 instance since, well, I want to actually get this working and I've been making some mistakes in training previous PPO agents (incoming amendments to previous posts).
