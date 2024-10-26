@@ -2,7 +2,7 @@
 title: "Using MlFlow with Minio, Postgres, and Hydra."
 author: "Daniel Claborne"
 date: "2024-06-21"
-categories: [machine learning]
+categories: [machine learning, tools]
 image: 'mlflow-hydra-thumb.png'
 twitter-card:
   image: 'mlflow-hydra-thumb.png'

@@ -1,8 +1,8 @@
 ---
-title: "Training Diambra Agents on Google Colab"
+title: "Diambra Agents on EC2 and Google Colab"
 author: "Daniel Claborne"
 date: "2024-010-24"
-categories: [machine learning]
+categories: [machine learning, tools]
 image: "example-fight-start.png"
 twitter-card:
     image: "example-fight-start.png"
