@@ -1,0 +1,57 @@
+---
+title: "Doubling your pay by doubling your masters degrees"
+author:  Daniel Claborne
+date: "2025-01-06"
+categories: ['personal']
+description:  "I graduated from Georgia Tech's Online Master's in Computer Science and they promoted me straight to the top."
+---
+
+First of all, happy new year, wow, 2025.  This opening is quickly dated as no one besides me is gonna be reading this during January 2025, but anyway.  What happened to me in 2024?  Well one big one was that I graduated from Georgia Tech's online M.S. in Computer Science (OMSCS) with a specialization in Machine Learning.  Other things included getting engaged$^{*}$ to my wonderful girlfriend, it'll happen sometime in 2025, probably around early June, perhaps more on that later.  Today I'm giving my 'review' of the OMSCS along with some of the higlights of my experiences during the program.
+
+# OMSCS
+Trigger Warning:  Promotional sounding text.  Georgia Tech's online MS in Computer Science (they also have analytics and cybersecurity) is a fully asynchronous online master's degree in computer science.  It's main selling points are that 1.  It is a masters degree from a respected institution.  2.  It costs less than $10,000 3. It is well suited to people who are already employed and want to take 1, maybe 2 classes each semester.  CS lends itself somewhat well to an online setting since there's very little hands-on work to be done.    
+
+I started in January of 2022 and finished December 2024, covering 9 semesters where for 2 semesters I took 2 classes, and the rest I took just 1.  My motivation was to just engage in some continual learning to smooth out my knowledge in machine learning topics and of course just learn some new things.  As I specialized in the ML track, I dodged a lot of the more traditional CS classes, with the most classic CS class being an analysis of algorithms course.  
+
+## Stuff I liked
+
+This program is comically cheap, like I think the total cost is between 6-7 thousand USD at the moment.  No competitors for online masters programs in CS come close to this.  The asynchronous nature of the program is very convenient, though you need to make sure to force yourself to watch the lectures or go to office hours if necessary.
+
+I learned some cool new stuff and felt like I solidified my knowledge in other areas.  Some of my favorite classes:
+
+**Reinforcement Learning**.  A topic I find really awesome and have done some self-directed learning with previous to OMSCS. I need no encouragement to re-read Sutton & Barto's excellent book on RL which is used in the course.  Lectures are entertaining but not for everyone, projects are okay but big thumbs down for group projects. 
+
+**High Dimensional Data Analysis**.  This was one of the more mathy classes and introduced a lot of techniques I was unfamiliar with for high dimensional data.  Functional PCA, $p > 2$ tensor decomposition, group LASSO.  Lots of good review of some familiar concepts as well like LASSO, ridge, robust PCA.
+
+**Game AI**.  A pretty easy class, but the projects were just very fun and the material pretty interesting.  Cool to get a look at the 'Good ol fashioned AI' still used in a lot of games.  Fun to mess around in Unity and C# which I've never touched previously.
+
+**Graduate Algorithms**.  I've never taken a formal algorithms course, so this had a lot of new and interesting material for me.  Now, there are some...things about this class that I'll talk about later, but for now I'll just note that the material is interesting and the TA's are pretty involved.
+
+## Stuff that is maybe not so great
+
+**Rigor.** The program is possibly not as rigorous as most in-person masters programs.  I'm comparing it to my experience with in-person classes for my undergrad and stats masters, where the assignments and tests just seemed more frustrating/difficult.  Now this is possibly just because I've become a better student along the way, but I don't think so.  The material can still be difficult, but there is definitely sentiment on the OMSCS reddit that things are not as difficult, or comparable to a difficult undergraduate curriculum.  For example, there is a general opinion that graduate algorithms is as difficult or easier than many undergraduate algorithms classes.
+
+**Engagement**.  There is some level of community centered around class boards and Slack channels, but obviously it's a bit more difficult to meet up for lunch.  Often the professors are completely MIA, basically outsourcing the administration of the class to an army of TA's.  In my experience the TA's mostly did an admirable job, however some classes you really are just navigating the material by yourself.
+
+**Cheating**.  The possibility of cheating is omnipresent.  There is simply no way to mimic the in-person test taking experience while making sure no one is cheating.  A sufficiently motivated cheater will be able to cheat effectively.  The program has some ham-fisted methods for trying to prevent cheating.  One is Honorlock, essentially a virus you install on your browser that records your screen/audio to prevent low-effort cheating.  I guess this is fine since without it a lot of people would just google a lot of answers.  They have other opaque methods that take coding submissions and compare them against some database(?) of known code.  As you can imagine this will probably produce some false positives.    
+
+## Some Anecdotes From my Experience
+
+**Graduate Algorithms Cheating Accusation Fiasco**.  As I said, OMSCS uses plagiarism detection tools.  In the semester (Fall 2024) I took this class a large number of people were flagged for plagiarism on a couple assignments and sent to OSI, a place where you can make your case against cheating accusations from staff.  There was a ton of hubbub around this on Reddit/Slack (Search the OMSCS subreddit for posts tagged 6515 around Fall 2024).  Essentially people felt that certain assignments were almost guaranteed to produce false positives, as they are common problems with known solutions.  Eventually many were acquitted in OSI, but it seems to have prompted some changes in the grading (homeworks are now 0%, tests 90%).  
+
+Other drama included people being very pissed at some of the attitutes of the TA's, going to far as to call them out by name on Reddit/class review sites, and tension around harsh grading and mistakes in some of the quizzes.  I am sympathetic to both sides (cowardly I know) here, on one hand it really sucks to be stressed about one of the harder classes and possibly be accused of cheating (if you didn't cheat), but on the other hand the TA's have to put up with a bunch of nonsense on top of the day-to-day administration of the class which includes forum discussion, grading, regrading, watching probably mind-numbingly boring proctoring footage etc.
+
+**Doing Assignments in Hotels/Airplanes**
+A couple of vacations I booked without thinking lined up with the final exams/projects for a couple classes.  While it sucks to have to finish up a final assignment in a hotel, airplane, or just away from home, there's a weird feeling of accomplishment when it all works out.
+
+**Stress for Nothing**.  In RL I was stressed about my final exam score (74) before learning it was the highest score.  In Machine Learning I was stressed I would not get the B and have to retake it, ended up getting an A.  In general the grading is forgiving, but may bruise your ego a bit.
+
+## Final Thoughts
+
+Overall OMSCS was a good experience for me.  I feel like I learned a lot for very cheap, the quality was mostly high, and though my motivation tapered off towards the end, it kept me engaged which was what I wanted.  Career-wise do I think it will help me?  I think a *little* bit, but CS degrees are the shovels being sold to would-be prospectors in the current age, and I feel like their value is not what it used to be.  My motivation was to just force myself to learn by paying someone and having a bit of structure, I'm not too concerned about the sticker.  My read is that if you are using OMSCS as a ticket to a career switch into software engineering/data science it will not be so effective.
+
+Also as mentioned in the title my work immediately doubled by pay, fired my work enemies, and showered me with accolades.     
+
+*****
+
+\* We just agreed to get married sometimes next year, it was not as formal as it sounds.
