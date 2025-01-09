@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/omscs-grad/omscs-grad.html",
       "/posts/diambra-colab/index.html",
       "/posts/mlflow-hydra/mlflow-hydra.html",
       "/posts/update-2024/index.html",
