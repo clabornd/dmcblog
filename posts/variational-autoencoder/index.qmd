@@ -41,7 +41,7 @@ The $x^{(i)}$ could be anything from single values to something very high dimens
 
 $$p(x) = \int p(x\vert z; \theta)p(z\vert\psi)dz$$
 
-However there are some issues, the true values of $\theta$ and $\psi$ are not necessarily known to us.  We also cannot assume that the posterior $p(z\vert x;\phi)$ is tractable, which we will see is important later.  Here we can note that we have the two pieces that correspond to the 'encoder' and 'decoder' pieces of the problem.  $p(x\vert z;\theta)$ is like a decoder, taking the hidden $z$ and turning it into the observed $x$.  $p(z\vert x;\phi)$ is like a decoder, taking some input $x$ and produces a hidden representation $z$ that was likely given that we observed that $x$.  A graph of the whole process including the 'encoder' and 'decoder' pieces in shown below.
+However there are some issues, the true values of $\theta$ and $\psi$ are not necessarily known to us.  We also cannot assume that the posterior $p(z\vert x;\phi)$ is tractable, which we will see is important later.  Here we can note that we have the two pieces that correspond to the 'encoder' and 'decoder' pieces of the problem.  $p(x\vert z;\theta)$ is like a decoder, taking the hidden $z$ and turning it into the observed $x$.  $p(z\vert x;\phi)$ is like an encoder, taking some input $x$ and produces a hidden representation $z$ that was likely given that we observed that $x$.  A graph of the whole process including the 'encoder' and 'decoder' pieces in shown below.
 
 !["Plate diagram" with solid arrows representing $p(x\vert z; \theta)$ and dashed arrows representing $p(z\vert x;\phi)$.  From Kingma and Welling (2014)](/www/vae_plate.png){#fig:vae-plate}
 
