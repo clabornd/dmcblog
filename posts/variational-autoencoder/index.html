@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.40">
+<meta name="generator" content="quarto-1.6.43">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -38,10 +38,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-d4d76bf8491c20bad77d141916dc28e1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c75bcb89907db7808f0349b764a1a524.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8647a4a42273f773479d27c00df3f9ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -226,7 +226,7 @@ This person doesn’t exist
 </ol>
 <p>The <span class="math inline">\(x^{(i)}\)</span> could be anything from single values to something very high dimensional like an image. We seek to maximize the likelihood of our data under the entire generative process:</p>
 <p><span class="math display">\[p(x) = \int p(x\vert z; \theta)p(z\vert\psi)dz\]</span></p>
-<p>However there are some issues, the true values of <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\psi\)</span> are not necessarily known to us. We also cannot assume that the posterior <span class="math inline">\(p(z\vert x;\phi)\)</span> is tractable, which we will see is important later. Here we can note that we have the two pieces that correspond to the ‘encoder’ and ‘decoder’ pieces of the problem. <span class="math inline">\(p(x\vert z;\theta)\)</span> is like a decoder, taking the hidden <span class="math inline">\(z\)</span> and turning it into the observed <span class="math inline">\(x\)</span>. <span class="math inline">\(p(z\vert x;\phi)\)</span> is like a decoder, taking some input <span class="math inline">\(x\)</span> and produces a hidden representation <span class="math inline">\(z\)</span> that was likely given that we observed that <span class="math inline">\(x\)</span>. A graph of the whole process including the ‘encoder’ and ‘decoder’ pieces in shown below.</p>
+<p>However there are some issues, the true values of <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\psi\)</span> are not necessarily known to us. We also cannot assume that the posterior <span class="math inline">\(p(z\vert x;\phi)\)</span> is tractable, which we will see is important later. Here we can note that we have the two pieces that correspond to the ‘encoder’ and ‘decoder’ pieces of the problem. <span class="math inline">\(p(x\vert z;\theta)\)</span> is like a decoder, taking the hidden <span class="math inline">\(z\)</span> and turning it into the observed <span class="math inline">\(x\)</span>. <span class="math inline">\(p(z\vert x;\phi)\)</span> is like an encoder, taking some input <span class="math inline">\(x\)</span> and produces a hidden representation <span class="math inline">\(z\)</span> that was likely given that we observed that <span class="math inline">\(x\)</span>. A graph of the whole process including the ‘encoder’ and ‘decoder’ pieces in shown below.</p>
 <div id="fig:vae-plate" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="../../www/vae_plate.png" class="img-fluid figure-img"></p>
