@@ -123,22 +123,6 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
-<meta property="og:title" content="Unconditional Diffusion With a UNET">
-<meta property="og:description" content="Trying to rewrite the whole guided latent diffusion thing is hard, so instead here’s some smushy images of butterflies.">
-<meta property="og:image" content="https://clabornd.github.io/dmcblog/posts/unet-diffusion/butterflies4x4.png">
-<meta property="og:image:height" content="1589">
-<meta property="og:image:width" content="1588">
-<meta name="twitter:title" content="Unconditional Diffusion With a UNET">
-<meta name="twitter:description" content="Trying to rewrite the whole guided latent diffusion thing is hard, so instead here’s some smushy images of butterflies.">
-<meta name="twitter:image" content="https://clabornd.github.io/dmcblog/posts/unet-diffusion/butterflies4x4.png">
-<meta name="twitter:image-height" content="1589">
-<meta name="twitter:image-width" content="1588">
-<meta name="twitter:card" content="summary_large_image">
-</head><body class="nav-fixed fullcontent">$$\newcommand\reverseproc{p_{\theta}(x_{0:T})}$$
-$$\newcommand\reversecond{p_{\theta}(x_{t-1} \vert x_t)}$$
-$$\newcommand\forwardproc{q(x_{1:T} \vert x_0)}$$
-$$\newcommand\forwardcond{q(x_t \vert x_{t-1})}$$
-$$\newcommand\alphabar{\bar{\alpha}_t}$$
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -171,9 +155,20 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Unconditional Diffusion With a UNET">
+<meta property="og:description" content="Trying to rewrite the whole guided latent diffusion thing is hard, so instead here’s some smushy images of butterflies.">
+<meta property="og:image" content="https://clabornd.github.io/dmcblog/posts/unet-diffusion/butterflies4x4.png">
+<meta property="og:image:height" content="1589">
+<meta property="og:image:width" content="1588">
+<meta name="twitter:title" content="Unconditional Diffusion With a UNET">
+<meta name="twitter:description" content="Trying to rewrite the whole guided latent diffusion thing is hard, so instead here’s some smushy images of butterflies.">
+<meta name="twitter:image" content="https://clabornd.github.io/dmcblog/posts/unet-diffusion/butterflies4x4.png">
+<meta name="twitter:image-height" content="1589">
+<meta name="twitter:image-width" content="1588">
+<meta name="twitter:card" content="summary_large_image">
+</head>
 
-
-
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -291,26 +286,26 @@ Figure&nbsp;1: Look closely, you can see some butterflies in there
 <section id="a-brief-primer-on-diffusion-models" class="level2">
 <h2 class="anchored" data-anchor-id="a-brief-primer-on-diffusion-models">A Brief Primer on Diffusion Models</h2>
 <p>Diffusion models are based around the random process of….diffusion…in which an input has noise slowly added to it until it is pure noise. There’s some physics background on this but sorry physicists, the AI people are in charge of all science now and have even <a href="https://www.nobelprize.org/prizes/physics/2024/press-release/">taken your nobel prizes</a>. I present an incomplete description of the process here, but really just read <span class="citation" data-cites="ho_denoising_2020">Ho, Jain, and Abbeel (<a href="#ref-ho_denoising_2020" role="doc-biblioref">2020</a>)</span>.</p>
-<p>We consider a series of inputs <span class="math inline">\(x_t\)</span>: <span class="math inline">\(t \in {0,1,...T}\)</span>. They describe the diffusion process as <span class="math inline">\(p_{\theta}(x_0) := \int \reverseproc dx_{1:T}\)</span>. They begin by defining the ‘reverse process’, that is, the process that takes noise and maps it back to the input. It is defined as a Markov chain with Gaussian transitions: <span class="math display">\[
+<p>We consider a series of inputs <span class="math inline">\(x_t\)</span>: <span class="math inline">\(t \in {0,1,...T}\)</span>. They describe the diffusion process as <span class="math inline">\(p_{\theta}(x_0) := \int p_{\theta}(x_{0:T})dx_{1:T}\)</span>. They begin by defining the ‘reverse process’, that is, the process that takes noise and maps it back to the input. It is defined as a Markov chain with Gaussian transitions: <span class="math display">\[
 \begin{align}
-\reverseproc := p(x_T) \prod_{t=1}^T p_{\theta}(x_{t-1}\vert x_t) \quad \quad p_{\theta}(x_{t-1}\vert x_t) := \mathcal{N}(x_t;\mu_{\theta}(x_t,t), \Sigma_{\theta}(x_t, t))
+p_{\theta}(x_{0:T}):= p(x_T) \prod_{t=1}^T p_{\theta}(x_{t-1}\vert x_t) \quad \quad p_{\theta}(x_{t-1}\vert x_t) := \mathcal{N}(x_t;\mu_{\theta}(x_t,t), \Sigma_{\theta}(x_t, t))
 \end{align} \label{eq1}\tag{eqn-1}
 \]</span></p>
 <p>i.e.&nbsp;we have some image <span class="math inline">\(x_t\)</span>, and we ‘transition’ to a different (hopefully denoised) image <span class="math inline">\(x_{t-1}\)</span> by adding a draw from a normal distribution with mean and variance dependent on <span class="math inline">\(x_t\)</span> and the timestep <span class="math inline">\(t\)</span>.</p>
 <p>The other part of the model is the forward process, which adds noise based on a series of coefficients <span class="math inline">\(\beta_1, \beta_2, ..., \beta_T \in (0,1)\)</span>:</p>
 <p><span class="math display">\[
-\forwardproc := \prod_{t=1}^T \forwardcond \quad \quad \forwardcond := \mathcal{N}(x_t; \sqrt{1-\beta_t}x_{t-1}, \beta_t \mathbf{I}) \label{eq2}\tag{eqn-2}
+q(x_{1:T} \vert x_0):= \prod_{t=1}^T q(x_t \vert x_{t-1})\quad \quad q(x_t \vert x_{t-1}):= \mathcal{N}(x_t; \sqrt{1-\beta_t}x_{t-1}, \beta_t \mathbf{I}) \label{eq2}\tag{eqn-2}
 \]</span></p>
 <p>That is, the forward process takes an input (say, an image) <span class="math inline">\(x_0\)</span> and gradually transitions to a noise distribution centered at 0. If you look at the equation, it should make sense why this is: Each step has a mean that is closer to zero than the mean before it, and after sufficient steps, this is gonna be around 0 with high probability.</p>
 <p>From here you can optimize the evidence lower bound as described in the VAE literature, except with <span class="math inline">\(x_0\)</span> as the evidence and <span class="math inline">\(x_{1:T}\)</span> is the latent representation <span class="math inline">\(z\)</span>. See my <a href="../../posts/variational-autoencoder/index.html">other post</a> about VAE’s.</p>
 <p>One particular property of the forward process is that we can sample an <span class="math inline">\(x_t\)</span> at an arbitrary timestep in closed form:</p>
-<p><span class="math display">\[q(x_t \vert x_0) = \mathcal{N}(x_t; \sqrt \alphabar x_0, (1-\alphabar)\mathbf{I}) \quad \quad \alpha_t = 1 - \beta_t \quad \quad \alphabar = \prod_{s=1}^t \alpha_s \label{eq3}\tag{eqn-3}\]</span></p>
+<p><span class="math display">\[q(x_t \vert x_0) = \mathcal{N}(x_t; \sqrt{\bar{\alpha}_t} x_0, (1-\bar{\alpha}_t)\mathbf{I}) \quad \quad \alpha_t = 1 - \beta_t \quad \quad \bar{\alpha}_t= \prod_{s=1}^t \alpha_s \label{eq3}\tag{eqn-3}\]</span></p>
 <p>It is a nice exercise to try and show that this is the case … no I’m not going to show it, I did it once and forgot okay, look at (<span class="math inline">\(\ref{eq2}\)</span>) and cascade that second equality all the way back to <span class="math inline">\(x_0\)</span> to show that it is the case.</p>
-<p>The objective reduces to something where we randomly sample elements of the forward process and optimize the evidence lower bound by optimizing the paramers of the model, which are currently <span class="math inline">\(\beta_t\)</span> and <span class="math inline">\(\theta\)</span>. In <span class="citation" data-cites="ho_denoising_2020">Ho, Jain, and Abbeel (<a href="#ref-ho_denoising_2020" role="doc-biblioref">2020</a>)</span> They hold fixed <span class="math inline">\(\beta\)</span>, as well as reparametrize the elements of the reverse process <span class="math inline">\(\reverseproc\)</span>, which we notice were defined by two parameterized functions <span class="math inline">\(\mu_{\theta}(x_t,t)\)</span> and <span class="math inline">\(\Sigma_{\theta}(x_t, t)\)</span>. Well, first they actually just set the variance to be fixed to: <span class="math inline">\(\Sigma_{\theta}(x_t, t) = \sigma_t^2\mathbf{I}\)</span>, where they experiment with a couple schemes for the values of <span class="math inline">\(\sigma_t^2\)</span> based on <span class="math inline">\(\beta_t\)</span> which seemed to both work well.</p>
+<p>The objective reduces to something where we randomly sample elements of the forward process and optimize the evidence lower bound by optimizing the paramers of the model, which are currently <span class="math inline">\(\beta_t\)</span> and <span class="math inline">\(\theta\)</span>. In <span class="citation" data-cites="ho_denoising_2020">Ho, Jain, and Abbeel (<a href="#ref-ho_denoising_2020" role="doc-biblioref">2020</a>)</span> They hold fixed <span class="math inline">\(\beta\)</span>, as well as reparametrize the elements of the reverse process <span class="math inline">\(p_{\theta}(x_{0:T})\)</span>, which we notice were defined by two parameterized functions <span class="math inline">\(\mu_{\theta}(x_t,t)\)</span> and <span class="math inline">\(\Sigma_{\theta}(x_t, t)\)</span>. Well, first they actually just set the variance to be fixed to: <span class="math inline">\(\Sigma_{\theta}(x_t, t) = \sigma_t^2\mathbf{I}\)</span>, where they experiment with a couple schemes for the values of <span class="math inline">\(\sigma_t^2\)</span> based on <span class="math inline">\(\beta_t\)</span> which seemed to both work well.</p>
 <p>They eventually get to the parametrization:</p>
-<p><span class="math display">\[\mu_{\theta}(x_t, t) = \tilde{\mu}\left(x_t, \frac{1}{\sqrt{\alphabar}}(x_t - \sqrt{1 - \alphabar} \epsilon_{\theta}(x_t))\right) = \frac{1}{\alpha_t}(x_t - \frac{\beta_t}{\sqrt{1-\alphabar}}\epsilon_{\theta}(x_t, t))\]</span></p>
+<p><span class="math display">\[\mu_{\theta}(x_t, t) = \tilde{\mu}\left(x_t, \frac{1}{\sqrt{\bar{\alpha}_t}}(x_t - \sqrt{1 - \bar{\alpha}_t} \epsilon_{\theta}(x_t))\right) = \frac{1}{\alpha_t}(x_t - \frac{\beta_t}{\sqrt{1-\bar{\alpha}_t}}\epsilon_{\theta}(x_t, t))\]</span></p>
 <p>Forget what <span class="math inline">\(\tilde{\mu}\)</span> is, or read the paper for the details … the tldr of this whole thing is that what we need to optimize in the end is this <span class="math inline">\(\epsilon_{\theta}(x_t, t)\)</span> function which predicts the noise component of <span class="math inline">\(x_t\)</span>. That is, <strong>the training simply consists of training a model to predict the noise component given an input <span class="math inline">\(x_t\)</span> and timestep <span class="math inline">\(t\)</span>.</strong></p>
-<p>The math works out that to get the ‘previous sample’ <span class="math inline">\(x_{t-1} \sim \reversecond\)</span> we can simply compute: <span class="math display">\[x_{t-1} = \frac{1}{\sqrt{\alpha_t}}(x_t - \frac{\beta_t}{\sqrt{1-\alphabar}}\epsilon_{\theta}(x_t, t)) + \sigma_t z$ where $z \sim \mathcal{N}(0, \mathbf{I})\label{eq4}\tag{eqn-4}\]</span></p>
+<p>The math works out that to get the ‘previous sample’ <span class="math inline">\(x_{t-1} \sim p_{\theta}(x_{t-1} \vert x_t)\)</span> we can simply compute: <span class="math display">\[x_{t-1} = \frac{1}{\sqrt{\alpha_t}}(x_t - \frac{\beta_t}{\sqrt{1-\bar{\alpha}_t}}\epsilon_{\theta}(x_t, t)) + \sigma_t z \quad \quad z \sim \mathcal{N}(0, \mathbf{I})\label{eq4}\tag{eqn-4}\]</span></p>
 <p>Mmmkay so this is the framework for training and sampling from an <em>unconditional</em> diffusion model. We will simply do the following:</p>
 <ol type="1">
 <li>Represent <span class="math inline">\(\epsilon_{\theta}(x_t, t)\)</span> as a UNET that takes in a noisy image (<span class="math inline">\(x_t\)</span>) and <span class="math inline">\(t\)</span> as a timestep embedding.</li>
