@@ -1,4 +1,10 @@
+# website
 _freeze/
 _site/
+
+# quarto artifacts
 .quarto/
 /.quarto/
+*.quarto_ipynb
+
+.DS_Store
