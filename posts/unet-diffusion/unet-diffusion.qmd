@@ -1,8 +1,8 @@
 ---
 title: "Unconditional Diffusion With a UNET"
 author: "Daniel Claborne"
-date: "2025-05-12"
-lastmod: "2025-05-12"
+date: "2025-05-19"
+lastmod: "2025-05-19"
 categories: [machine learning, code]
 bibliography: "../../bibs/ml.bib"
 image: "butterflies4x4.png"
