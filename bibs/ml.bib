@@ -163,3 +163,54 @@ arXiv:2005.14165 [cs]},
   year={2020},
   publisher={MIT press}
 }
+
+# Diffusion
+
+@misc{ho_denoising_2020,
+	title = {Denoising {Diffusion} {Probabilistic} {Models}},
+	url = {http://arxiv.org/abs/2006.11239},
+	doi = {10.48550/arXiv.2006.11239},
+	abstract = {We present high quality image synthesis results using diffusion probabilistic models, a class of latent variable models inspired by considerations from nonequilibrium thermodynamics. Our best results are obtained by training on a weighted variational bound designed according to a novel connection between diffusion probabilistic models and denoising score matching with Langevin dynamics, and our models naturally admit a progressive lossy decompression scheme that can be interpreted as a generalization of autoregressive decoding. On the unconditional CIFAR10 dataset, we obtain an Inception score of 9.46 and a state-of-the-art FID score of 3.17. On 256x256 LSUN, we obtain sample quality similar to ProgressiveGAN. Our implementation is available at https://github.com/hojonathanho/diffusion},
+	urldate = {2022-09-07},
+	publisher = {arXiv},
+	author = {Ho, Jonathan and Jain, Ajay and Abbeel, Pieter},
+	month = dec,
+	year = {2020},
+	note = {arXiv:2006.11239 [cs, stat]},
+	keywords = {Computer Science - Machine Learning, Statistics - Machine Learning},
+	file = {Ho et al. - 2020 - Denoising Diffusion Probabilistic Models.pdf:/Users/daniel/Zotero/storage/XCGZV78K/Ho et al. - 2020 - Denoising Diffusion Probabilistic Models.pdf:application/pdf},
+}
+
+
+@misc{rombach_high-resolution_2022,
+	title = {High-{Resolution} {Image} {Synthesis} with {Latent} {Diffusion} {Models}},
+	url = {http://arxiv.org/abs/2112.10752},
+	doi = {10.48550/arXiv.2112.10752},
+	abstract = {By decomposing the image formation process into a sequential application of denoising autoencoders, diffusion models (DMs) achieve state-of-the-art synthesis results on image data and beyond. Additionally, their formulation allows for a guiding mechanism to control the image generation process without retraining. However, since these models typically operate directly in pixel space, optimization of powerful DMs often consumes hundreds of GPU days and inference is expensive due to sequential evaluations. To enable DM training on limited computational resources while retaining their quality and flexibility, we apply them in the latent space of powerful pretrained autoencoders. In contrast to previous work, training diffusion models on such a representation allows for the first time to reach a near-optimal point between complexity reduction and detail preservation, greatly boosting visual fidelity. By introducing cross-attention layers into the model architecture, we turn diffusion models into powerful and flexible generators for general conditioning inputs such as text or bounding boxes and high-resolution synthesis becomes possible in a convolutional manner. Our latent diffusion models (LDMs) achieve a new state of the art for image inpainting and highly competitive performance on various tasks, including unconditional image generation, semantic scene synthesis, and super-resolution, while significantly reducing computational requirements compared to pixel-based DMs. Code is available at https://github.com/CompVis/latent-diffusion .},
+	urldate = {2022-10-27},
+	publisher = {arXiv},
+	author = {Rombach, Robin and Blattmann, Andreas and Lorenz, Dominik and Esser, Patrick and Ommer, Björn},
+	month = apr,
+	year = {2022},
+	note = {arXiv:2112.10752 [cs]},
+	keywords = {Computer Science - Computer Vision and Pattern Recognition},
+	annote = {Comment: CVPR 2022},
+	file = {arXiv Fulltext PDF:/Users/daniel/Zotero/storage/FVEVLNZB/Rombach et al. - 2022 - High-Resolution Image Synthesis with Latent Diffus.pdf:application/pdf;arXiv.org Snapshot:/Users/daniel/Zotero/storage/H29K3EKN/2112.html:text/html},
+}
+
+@misc{ronneberger_u-net_2015,
+	title = {U-{Net}: {Convolutional} {Networks} for {Biomedical} {Image} {Segmentation}},
+	shorttitle = {U-{Net}},
+	url = {http://arxiv.org/abs/1505.04597},
+	doi = {10.48550/arXiv.1505.04597},
+	abstract = {There is large consent that successful training of deep networks requires many thousand annotated training samples. In this paper, we present a network and training strategy that relies on the strong use of data augmentation to use the available annotated samples more efficiently. The architecture consists of a contracting path to capture context and a symmetric expanding path that enables precise localization. We show that such a network can be trained end-to-end from very few images and outperforms the prior best method (a sliding-window convolutional network) on the ISBI challenge for segmentation of neuronal structures in electron microscopic stacks. Using the same network trained on transmitted light microscopy images (phase contrast and DIC) we won the ISBI cell tracking challenge 2015 in these categories by a large margin. Moreover, the network is fast. Segmentation of a 512x512 image takes less than a second on a recent GPU. The full implementation (based on Caffe) and the trained networks are available at http://lmb.informatik.uni-freiburg.de/people/ronneber/u-net .},
+	urldate = {2022-10-27},
+	publisher = {arXiv},
+	author = {Ronneberger, Olaf and Fischer, Philipp and Brox, Thomas},
+	month = may,
+	year = {2015},
+	note = {arXiv:1505.04597 [cs]},
+	keywords = {Computer Science - Computer Vision and Pattern Recognition},
+	annote = {Comment: conditionally accepted at MICCAI 2015},
+	file = {arXiv Fulltext PDF:/Users/daniel/Zotero/storage/KL8QVNMR/Ronneberger et al. - 2015 - U-Net Convolutional Networks for Biomedical Image.pdf:application/pdf;arXiv.org Snapshot:/Users/daniel/Zotero/storage/UCJPXA68/1505.html:text/html},
+}
