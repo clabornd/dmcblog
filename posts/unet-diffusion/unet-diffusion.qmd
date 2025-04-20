@@ -5,10 +5,10 @@ date: "2025-05-12"
 lastmod: "2025-05-12"
 categories: [machine learning, code]
 bibliography: "../../bibs/ml.bib"
-image: "lunarlander.gif"
+image: "butterflies4x4.png"
 twitter-card:
-    image: "lunarlander.gif"
-description: "Trying to rewrite the whole guided latent diffusion thing is hard, so instead here's some blurry images of butterflies."
+    image: "butterflies4x4.png"
+description: "Trying to rewrite the whole guided latent diffusion thing is hard, so instead here's some smushy images of butterflies."
 format:
     html:
         include-in-header: 
