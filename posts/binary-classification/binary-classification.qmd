@@ -1,0 +1,231 @@
+---
+author: Daniel Claborne
+title: Comparing Various Cross-Entropy Implementations and Attention Masks Double Feature
+date: '2025-07-12'
+description: "What the HECK is the difference between various implementations of cross-entropy and transformer padding."
+---
+
+Been a while, so I'm posting about some random things I had to puzzle through as I did some model training at work.  The first is essentially going through the various flavors of cross-entropy in pytorch for training binary/multi-class classification tasks.  [The second](#attention-and-padding-masks) is about the various types of attention masks you might encounter when building a transformer based model in pytorch.  Essentially, this whole blog post is a long stackoverflow answer to a question no one asked...listen, I didn't ask you to click on this article, I'm just trying to pass the time on a Saturday.
+
+## Cross-Entropy Variants
+
+There are several variants of cross-entropy in pytorch.  While the documentation is very good, I found myself wanting a code example of how exactly they all related. Specifically, I was doing a binary classification task and wanted to implement possibly class balanced focal loss, a variant of cross-entropy loss, with soft labels.  I'll show how I ended up doing this at the end, but for now we'll focus on the core cross-entropy loss.
+
+The loss for this task can be accomplished with both the binary and multi-class version of the loss function.  I hope to show how to link between the three.  
+
+Here are the various cross-entropy-based losses in pytorch:
+
+- `torch.nn.CrossEntropyLoss`
+- `torch.nn.BCELoss`
+- `torch.nn.BCEWithLogitsLoss`
+
+And their functional forms, which I wont use, but implement the same calculations:
+
+- `torch.nn.functional.cross_entropy`
+- `torch.nn.functional.binary_cross_entropy`
+- `torch.nn.functional.binary_cross_entropy_with_logits`
+
+Lets first make some inputs for these, assuming they are $(N,2)$ logits coming out of some model for a binary classification problem.  We also have targets both as a dimension $(N)$ tensor of class labels and a $(N,2)$ tensor of class probabilities, one where all the mass is on the correct class, and one with 'soft' labels.
+
+```{python}
+#| label: make inputs and losses
+
+import torch
+import torch.nn.functional as F
+import pandas as pd
+
+# random logits as (5, 2) vector
+logits = torch.randn(5, 2, requires_grad=True)
+
+# targets as dimension (N,) tensor with class labels
+tgt_cls = torch.randint(0, 2, (5,)).long()
+
+# targets as (N, 2) tensor where dimension 1 is a probability distribution with all mass on the correct label
+tgt_probs_hard = torch.cat([1 - tgt_cls.unsqueeze(1), tgt_cls.unsqueeze(1)], dim=1).float()
+
+# targets as (N,2) tensor where dimension 1 is a probability distribution (soft targets)
+tgt_probs_soft = torch.randn(5,2).softmax(dim=-1)
+
+```
+
+Now the three losses we want to compare, with no reduction.
+
+```{python}
+cross_entropy_loss = torch.nn.CrossEntropyLoss(reduction = 'none')
+bceloss = torch.nn.BCELoss(reduction = 'none')
+bce_logits_loss = torch.nn.BCEWithLogitsLoss(reduction = 'none')
+```
+
+Lets try to use them all with various inputs and transformations.
+
+### CrossEntropyLoss
+```{python}
+#| label: cross-entropy-loss calculations
+
+def get_grad_and_zero(logits, loss):
+    loss.mean().backward()
+    grad = logits.grad.clone()
+    _ = logits.grad.zero_()
+    return grad
+
+# whats a regex to find `tgt_probs_soft` without characters before or after it
+
+loss_ce_cls = cross_entropy_loss(logits, tgt_cls)
+grad_ce_cls = get_grad_and_zero(logits, loss_ce_cls)
+
+loss_ce_prob_hard = cross_entropy_loss(logits, tgt_probs_hard)
+grad_ce_prob_hard = get_grad_and_zero(logits, loss_ce_prob_hard)
+
+loss_ce_prob_soft = cross_entropy_loss(logits, tgt_probs_soft)
+grad_ce_prob = get_grad_and_zero(logits, loss_ce_prob_soft)
+ 
+print(f"Cross entropy loss with just batch dimension: {loss_ce_cls.detach().numpy()}")
+print(f"Cross entropy loss with soft targets: {loss_ce_prob_hard.detach().numpy()}")
+print(f"Cross entropy loss with probabilities: {loss_ce_prob_soft.detach().numpy()}")
+```
+
+Ok, with `reduction = None` these all output a $(N,)$ dimensional loss tensor with a per-batch loss.  We can replicate the default `reduction='mean'` by averaging these.  `CrossEntropyLoss` returns the same thing for both versions of targets, and of course something different for the class probabilities.  This is consistent with the documentation which handles different formats of the target tensor differently:
+
+- `tgt_cls`:  This is the case where we have a dimension $(N,)$ of type `torch.long`.
+- `tgt_probs_hard`:  This is the case where we have a dimension $(N,2)$ of type `torch.float`.  When we pass floats, `CrossEntropyLoss` assumes these are probabilities (between 0 and 1), and that the target tensor is the same shape as the input.
+- `tgt_probs_soft`:  This is the same as `tgt_probs_hard` but with not all the probability mass on one class.  
+
+Ok, all the above seems reasonable.  We can perform some sort of binary classification task with any of these.  As a sanity check we can also see that the gradients produced by the first two targets are the same:
+
+```{python}
+#| label: same gradients ce-loss
+print(f"Gradients the same for (N,) and (N,2): {(grad_ce_cls == grad_ce_prob_hard).all()}!")
+```
+
+### BCELoss
+
+Alright, lets look at the two version of BCELoss, the ones with and without logits.  This is where I stumbled a bit, because the format of the input/targets in `BCELoss` is fundamentally different that that of `CrossEntropyLoss`.  Specifically, the docs say that the input and targets should always be the same shape.  **WARNING**:  I'll have several code examples that either don't work, or 'work' but are not really correct usage for a binary classification task. For instance, [the below](#error-bce-bad-target-shape) throws an error because `tgt_cls` is not the same shape as `logits`.
+
+```{python}
+#| label: error bce bad target shape
+#| eval: false
+
+bce_logits_loss(logits, tgt_cls)
+# > ValueError: Target size (torch.Size([5])) must be the same as input size (torch.Size([5, 2]))
+```
+
+Okay, what about the other targets.  `BCELoss` expects inputs in the interval [0,1], so we have to take care of that.  I'll try a sigmoid and softmax.
+
+```{python}
+#| label: bce with hard targets (probabilities)
+loss_bcewl_probs_hard = bce_logits_loss(logits, tgt_probs_hard)
+grad_bcewl_probs_hard = get_grad_and_zero(logits, loss_bcewl_probs_hard)
+
+loss_bcesigmoid_probs_hard = bceloss(F.sigmoid(logits), tgt_probs_hard)
+grad_bcesigmoid_probs_hard = get_grad_and_zero(logits, loss_bcesigmoid_probs_hard)
+
+loss_bcesm_probs_hard = bceloss(logits.softmax(dim=-1), tgt_probs_hard)
+grad_bcesm_probs_hard = get_grad_and_zero(logits, loss_bcesm_probs_hard)
+```
+
+I'll do the same but using the probabilities as targets:
+
+```{python}
+#| label: bce with soft targets
+loss_bcewl_probs_soft = bce_logits_loss(logits, tgt_probs_soft)
+grad_bcewl_probs_soft = get_grad_and_zero(logits, loss_bcewl_probs_soft)
+
+loss_bcesigmoid_probs_soft = bceloss(F.sigmoid(logits), tgt_probs_soft)
+grad_bcesigmoid_probs_soft = get_grad_and_zero(logits, loss_bcesigmoid_probs_soft)
+
+loss_bcesm_probs_soft = bceloss(logits.softmax(dim=-1), tgt_probs_soft)
+grad_bcesm_probs_soft = get_grad_and_zero(logits, loss_bcesm_probs_soft)
+```
+
+The first thing to quickly get out of the way is that the only difference[^1]between `BCELoss` and `BCEWithLogitsLoss` is that in `BCEWithLogitsLoss` the input goes through a sigmoid activation internally.  Applying sigmoid to the logits before passing through regular `BCELoss` produces the exact same result:
+
+```{python}
+#| label: bce with logits same as sigmoid
+
+# we all good
+assert torch.allclose(loss_bcewl_probs_hard, loss_bcesigmoid_probs_hard), "Release the hounds."
+assert torch.allclose(loss_bcewl_probs_soft, loss_bcesigmoid_probs_soft), "Call in a drone strike on the reader."
+
+# whhooaaa, close one, dont uncomment this!
+# assert torch.allclose(loss_bcewl_probs_soft, loss_bcesm_probs_soft,), "Launch the warheads."
+
+print("Whew! made it!")
+```
+
+Alright, but what does the output look like...is it correct?  First, the output is not even the same shape: `{python} loss_bcewl_probs_soft.shape`.  The losses using sigmoid (either explicitly or internally with `BCEWithLogitsLoss`) do not seem to have any relationship to the values as `CrossEntropyLoss`:
+
+```{python}
+#| label: bce loss values vs cross entropy
+print(f"BCELoss: {loss_bcewl_probs_hard.detach().numpy()}")
+print(f"CrossEntropyLoss: {loss_ce_cls.detach().numpy()}")
+```
+
+The losses for `BCELoss` when passing in softmax values seems to contain the same values as `CrossEntropyLoss`, but in two columns:
+
+```{python}
+#| label: bce with softmax vs cross entropy
+
+print(f"BCELoss with softmax and hard targets: \n{loss_bcesm_probs_hard.detach().numpy()}")
+print(f"CrossEntropyLoss with hard targets: \n{loss_ce_prob_hard.detach().numpy()}\n")
+
+print(f"BCELoss with softmax with soft targets: \n{loss_bcesm_probs_soft.detach().numpy()}")
+print(f"CrossEntropyLoss with soft targets: \n{loss_ce_prob_soft.detach().numpy()}")
+```
+
+Whats going on here is that the BCE versions of cross entropy assume dimensions other than the batch dimension are part of a multi-dimensional output, where each element is a separate prediction/target for a binary classification task, not a prediction/probability for a class based on index.
+
+So, when we pass in a size $(N,2)$ input, BCE loss says oh, you have some weird 2-dimensional output per observation, with each of the two values representing a prediction/target for that output index.  It is not expecting some probability distribution over 2 discrete values.
+
+So, the softmax into `BCELoss` doesn't really make sense, but it happens to transform the input into something that `BCELoss` accepts (inputs are in [0,1]).  Also, why does it contain the same values as `CrossEntropyLoss` in two columns?
+
+Well, `CrossEntropyLoss` is initially passing the input through `torch.nn.LogSoftMax` and then through `torch.nn.NLLLoss`.  That is, it takes the softmax of the logits, applies the log, then sums along the columns weighted by the (hard or soft) targets.
+
+When we softmax the input to `BCELoss` in the binary case, we essentially replicate this element-wise.  Lets take a look at the element-wise loss from `BCELoss`, ignoring the optional weighting:
+
+$$l_n = y_n \cdot \log x_n + (1-y_n) \cdot \log(1-x_n)$$
+
+First, the $x_n$ in there has gone through a softmax, and is now having a log applied to it, replicating the `torch.nn.LogSoftMax`.  The rest replicates `torch.nn.NLLLoss` in the binary case.
+
+What about why the two columns are identical?  Well, for each row each element is 1 minus the other element, and it is easy to verify that in this case the loss equation for BCELoss ends up being the same for both elements.
+
+Oh wow, I've created a useless wall of text....so how DO we replicate the  `CrossEntropyLoss` binary classification with `BCELoss`?
+
+Well, first off, the best correct way of using `BCELoss` when you just have a single classification per observation is to have a single output per observation for your model, i.e. your logits should be of size (N,1) and subsequently your targets should be of size (N,1), something like:
+
+```{python}
+#| label: bce with single output
+logits_single = torch.randn(5, 1, requires_grad=True)
+targets_single = torch.randint(0, 2, (5,)).float().unsqueeze(1)
+
+bce_single_output = bceloss(F.sigmoid(logits_single), targets_single)
+```
+
+But suppose we just want to see how they would be the same, given we're committed to softmax.  Well, given we've seen the output matches when we softmax -> `BCELoss` but with two duplicate columns....we could just only take one of the columns and call `.backwards()` based on that:
+
+```{python}
+loss_bcesm_probs_hard = bceloss(logits.softmax(dim=-1), tgt_probs_hard)
+loss_bcesm_probs_soft = bceloss(logits.softmax(dim=-1), tgt_probs_soft)
+
+assert torch.allclose(get_grad_and_zero(logits, loss_bcesm_probs_hard[:,1]), grad_ce_prob_hard), "Not even close!"
+assert torch.allclose(get_grad_and_zero(logits, loss_bcesm_probs_soft[:,1]), grad_ce_prob), "sudo rm -rf /* --no-preserve-root"
+
+print("Whew, made it!")
+```
+
+We could also just take one column of the softmaxed input and targets and pass those to `BCELoss`.  Note that it doesn't matter which index we take before we pass, in terms of the gradients; your intuition about how the two values are probabilistic inverses of each other should tell you this.  This will however change what a prediction close to 1 means.
+
+```{python}
+loss_bcesm_probs_hard_0 = bceloss(logits.softmax(dim=-1)[:,0], tgt_probs_hard[:,0])
+loss_bcesm_probs_soft_0 = bceloss(logits.softmax(dim=-1)[:,0], tgt_probs_soft[:,0])
+
+assert torch.allclose(get_grad_and_zero(logits, loss_bcesm_probs_hard_0), grad_ce_prob_hard), "Not even close!"
+assert torch.allclose(get_grad_and_zero(logits, loss_bcesm_probs_soft_0), grad_ce_prob), "sudo rm -rf /* --no-preserve-root"
+
+loss_bcesm_probs_hard_1 = bceloss(logits.softmax(dim=-1)[:,1], tgt_probs_hard[:,1])
+loss_bcesm_probs_soft_1 = bceloss(logits.softmax(dim=-1)[:,1], tgt_probs_soft[:,1])
+
+assert torch.allclose(get_grad_and_zero(logits, loss_bcesm_probs_hard_1), grad_ce_prob_hard), "Not even close!"
+assert torch.allclose(get_grad_and_zero(logits, loss_bcesm_probs_soft_1), grad_ce_prob), "sudo rm -rf /* --no-preserve-root"
+```
+
+## Attention and Padding Masks
