@@ -4,3 +4,6 @@ dirs:
 fileExtensions:
   - qmd
   - md
+
+ignorePatterns:
+  - pattern: '#error-bce-bad-target-shape'
