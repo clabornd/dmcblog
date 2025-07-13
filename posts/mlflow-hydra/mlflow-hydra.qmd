@@ -11,7 +11,7 @@ description: "Using mlflow with minio and postgresql as storage backends, and hy
 
 PROGRAMMING NOTE:  My post on running diambra reinforcement learning training from Colab is still coming, but might be posted elsewhere.
 
-UPDATE:  This post discusses running the storage (postgres and minio) in docker containers and the mlflow UI from the command line.  The post references a [github repo at this commit](https://github.com/clabornd/mlflow-examples/tree/249d4fb78b2c6fd9ebc2ace3ed04951244ecc6a4).  I've since edited the associated [github repo](https://github.com/clabornd/mlflow-examples) to run the mlflow UI in a docker container as well from docker-compose, inspired by [this tds post](https://towardsdatascience.com/deploy-mlflow-with-docker-compose-8059f16b6039).  The below should still work, but take a look at that post and the repo for the full docker setup.
+UPDATE:  This post discusses running the storage (postgres and minio) in docker containers and the mlflow UI from the command line.  The post references a [github repo at this commit](https://github.com/clabornd/mlflow-examples/tree/249d4fb78b2c6fd9ebc2ace3ed04951244ecc6a4).  I've since edited the associated [github repo](https://github.com/clabornd/mlflow-examples) to run the mlflow UI in a docker container as well from docker-compose, inspired by [this tds post](https://medium.com/data-science/deploy-mlflow-with-docker-compose-8059f16b6039).  The below should still work, but take a look at that post and the repo for the full docker setup.
 
 # Table of Contents
 
