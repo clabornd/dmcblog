@@ -54,19 +54,30 @@ executing==2.2.0
 fastjsonschema==2.21.1
     # via nbformat
 filelock==3.18.0
-    # via torch
+    # via
+    #   huggingface-hub
+    #   torch
+    #   transformers
 fonttools==4.58.5
     # via matplotlib
 fqdn==1.5.1
     # via jsonschema
 fsspec==2025.5.1
-    # via torch
+    # via
+    #   huggingface-hub
+    #   torch
 h11==0.16.0
     # via httpcore
+hf-xet==1.1.5
+    # via huggingface-hub
 httpcore==1.0.9
     # via httpx
 httpx==0.28.1
     # via jupyterlab
+huggingface-hub==0.33.4
+    # via
+    #   tokenizers
+    #   transformers
 idna==3.10
     # via
     #   anyio
@@ -201,10 +212,12 @@ numpy==2.3.1
     #   matplotlib
     #   pandas
     #   seaborn
+    #   transformers
 overrides==7.7.0
     # via jupyter-server
 packaging==25.0
     # via
+    #   huggingface-hub
     #   ipykernel
     #   jupyter-events
     #   jupyter-server
@@ -212,6 +225,7 @@ packaging==25.0
     #   jupyterlab-server
     #   matplotlib
     #   nbconvert
+    #   transformers
 pandas==2.3.1
     # via
     #   dmcblog (pyproject.toml)
@@ -261,7 +275,10 @@ python-json-logger==3.3.0
 pytz==2025.2
     # via pandas
 pyyaml==6.0.2
-    # via jupyter-events
+    # via
+    #   huggingface-hub
+    #   jupyter-events
+    #   transformers
 pyzmq==27.0.0
     # via
     #   ipykernel
@@ -273,8 +290,13 @@ referencing==0.36.2
     #   jsonschema
     #   jsonschema-specifications
     #   jupyter-events
+regex==2024.11.6
+    # via transformers
 requests==2.32.4
-    # via jupyterlab-server
+    # via
+    #   huggingface-hub
+    #   jupyterlab-server
+    #   transformers
 rfc3339-validator==0.1.4
     # via
     #   jsonschema
@@ -287,6 +309,8 @@ rpds-py==0.26.0
     # via
     #   jsonschema
     #   referencing
+safetensors==0.5.3
+    # via transformers
 seaborn==0.13.2
     # via dmcblog (pyproject.toml)
 send2trash==1.8.3
@@ -313,6 +337,8 @@ terminado==0.18.1
     #   jupyter-server-terminals
 tinycss2==1.4.0
     # via bleach
+tokenizers==0.21.2
+    # via transformers
 torch==2.7.1
     # via dmcblog (pyproject.toml)
 tornado==6.5.1
@@ -323,6 +349,10 @@ tornado==6.5.1
     #   jupyterlab
     #   notebook
     #   terminado
+tqdm==4.67.1
+    # via
+    #   huggingface-hub
+    #   transformers
 traitlets==5.14.3
     # via
     #   comm
@@ -339,11 +369,14 @@ traitlets==5.14.3
     #   nbclient
     #   nbconvert
     #   nbformat
+transformers==4.53.2
+    # via dmcblog (pyproject.toml)
 types-python-dateutil==2.9.0.20250708
     # via arrow
 typing-extensions==4.14.1
     # via
     #   beautifulsoup4
+    #   huggingface-hub
     #   torch
 tzdata==2025.2
     # via pandas

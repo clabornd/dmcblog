@@ -2,7 +2,8 @@
 author: Daniel Claborne
 title: Comparing Various Cross-Entropy Implementations and Attention Masks Double Feature
 date: '2025-07-12'
-description: "What the HECK is the difference between various implementations of cross-entropy and transformer padding."
+description: "What the HECK is the difference between various implementations of cross-entropy and transformer padding?"
+bibliography: ../../bibs/ml.bib
 ---
 
 Been a while, so I'm posting about some random things I had to puzzle through as I did some model training at work.  The first is essentially going through the various flavors of cross-entropy in pytorch for training binary/multi-class classification tasks.  [The second](#attention-and-padding-masks) is about the various types of attention masks you might encounter when building a transformer based model in pytorch.  Essentially, this whole blog post is a long stackoverflow answer to a question no one asked...listen, I didn't ask you to click on this article, I'm just trying to pass the time on a Saturday.
@@ -62,13 +63,12 @@ Lets try to use them all with various inputs and transformations.
 ```{python}
 #| label: cross-entropy-loss calculations
 
+# helper to grab the gradients induced by a particular loss
 def get_grad_and_zero(logits, loss):
     loss.mean().backward()
     grad = logits.grad.clone()
     _ = logits.grad.zero_()
     return grad
-
-# whats a regex to find `tgt_probs_soft` without characters before or after it
 
 loss_ce_cls = cross_entropy_loss(logits, tgt_cls)
 grad_ce_cls = get_grad_and_zero(logits, loss_ce_cls)
@@ -112,13 +112,17 @@ bce_logits_loss(logits, tgt_cls)
 Okay, what about the other targets.  `BCELoss` expects inputs in the interval [0,1], so we have to take care of that.  I'll try a sigmoid and softmax.
 
 ```{python}
-#| label: bce with hard targets (probabilities)
+#| label: bce with hard targets
+
+# bce with logits, expects just raw logits
 loss_bcewl_probs_hard = bce_logits_loss(logits, tgt_probs_hard)
 grad_bcewl_probs_hard = get_grad_and_zero(logits, loss_bcewl_probs_hard)
 
+# regular bce, wants inputs in [0,1], use sigmoid to take care of that
 loss_bcesigmoid_probs_hard = bceloss(F.sigmoid(logits), tgt_probs_hard)
 grad_bcesigmoid_probs_hard = get_grad_and_zero(logits, loss_bcesigmoid_probs_hard)
 
+# regular bce again, use softmax to get values in [0,1]
 loss_bcesm_probs_hard = bceloss(logits.softmax(dim=-1), tgt_probs_hard)
 grad_bcesm_probs_hard = get_grad_and_zero(logits, loss_bcesm_probs_hard)
 ```
@@ -127,6 +131,9 @@ I'll do the same but using the probabilities as targets:
 
 ```{python}
 #| label: bce with soft targets
+
+## Same as above but with soft targets ##
+
 loss_bcewl_probs_soft = bce_logits_loss(logits, tgt_probs_soft)
 grad_bcewl_probs_soft = get_grad_and_zero(logits, loss_bcewl_probs_soft)
 
@@ -152,7 +159,7 @@ assert torch.allclose(loss_bcewl_probs_soft, loss_bcesigmoid_probs_soft), "Call 
 print("Whew! made it!")
 ```
 
-Alright, but what does the output look like...is it correct?  First, the output is not even the same shape: `{python} loss_bcewl_probs_soft.shape`.  The losses using sigmoid (either explicitly or internally with `BCEWithLogitsLoss`) do not seem to have any relationship to the values as `CrossEntropyLoss`:
+Alright, but what does the output look like...is it correct?  First, the output is not even the same shape: `{python} loss_bcewl_probs_soft.shape`.  The losses using sigmoid (either explicitly or internally with `BCEWithLogitsLoss`) also do not seem to have any relationship to the values as `CrossEntropyLoss`:
 
 ```{python}
 #| label: bce loss values vs cross entropy
@@ -172,25 +179,19 @@ print(f"BCELoss with softmax with soft targets: \n{loss_bcesm_probs_soft.detach(
 print(f"CrossEntropyLoss with soft targets: \n{loss_ce_prob_soft.detach().numpy()}")
 ```
 
-Whats going on here is that the BCE versions of cross entropy assume dimensions other than the batch dimension are part of a multi-dimensional output, where each element is a separate prediction/target for a binary classification task, not a prediction/probability for a class based on index.
+Whats going on here is that the BCE versions of cross entropy assume dimensions other than the batch dimension are part of a multi-dimensional output, where each element is a separate prediction/target for a binary classification task, not a prediction/probability for a class based on index.  Think of an image model that outputs a tensor of size $(N, H, W)$.  Pytorch's implementation of `BCELoss` would expect you to pass in a $(N, H, W)$ target to perform **per-pixel** loss calculations before averaging (with `reduction='mean'`) across all pixels/batch indices.
 
 So, when we pass in a size $(N,2)$ input, BCE loss says oh, you have some weird 2-dimensional output per observation, with each of the two values representing a prediction/target for that output index.  It is not expecting some probability distribution over 2 discrete values.
 
-So, the softmax into `BCELoss` doesn't really make sense, but it happens to transform the input into something that `BCELoss` accepts (inputs are in [0,1]).  Also, why does it contain the same values as `CrossEntropyLoss` in two columns?
+So, the softmax into `BCELoss` doesn't really make sense, but it just happens to transform the input into something that `BCELoss` accepts (inputs are in [0,1]).  Also, why does it contain the same values as `CrossEntropyLoss` in two columns?
 
-Well, `CrossEntropyLoss` is initially passing the input through `torch.nn.LogSoftMax` and then through `torch.nn.NLLLoss`.  That is, it takes the softmax of the logits, applies the log, then sums along the columns weighted by the (hard or soft) targets.
-
-When we softmax the input to `BCELoss` in the binary case, we essentially replicate this element-wise.  Lets take a look at the element-wise loss from `BCELoss`, ignoring the optional weighting:
+Well, `CrossEntropyLoss` is initially passing the input through `torch.nn.LogSoftMax` and then through `torch.nn.NLLLoss`.  That is, it takes the softmax of the logits, applies the log, then sums along the columns weighted by the (hard or soft) targets.  When we softmax the input to `BCELoss` in the binary case, we essentially replicate this element-wise.  Lets take a look at the element-wise loss from `BCELoss`, ignoring the optional weighting:
 
 $$l_n = y_n \cdot \log x_n + (1-y_n) \cdot \log(1-x_n)$$
 
-First, the $x_n$ in there has gone through a softmax, and is now having a log applied to it, replicating the `torch.nn.LogSoftMax`.  The rest replicates `torch.nn.NLLLoss` in the binary case.
+First, the $x_n$ in there has gone through a softmax, and is now having a log applied to it, replicating the `torch.nn.LogSoftMax`.  The rest replicates `torch.nn.NLLLoss` in the binary case/  What about why the two columns are identical?  Well, for each row each element is 1 minus the other element, and it is easy to verify that in this case the loss equation for BCELoss ends up being the same for both elements.
 
-What about why the two columns are identical?  Well, for each row each element is 1 minus the other element, and it is easy to verify that in this case the loss equation for BCELoss ends up being the same for both elements.
-
-Oh wow, I've created a useless wall of text....so how DO we replicate the  `CrossEntropyLoss` binary classification with `BCELoss`?
-
-Well, first off, the best correct way of using `BCELoss` when you just have a single classification per observation is to have a single output per observation for your model, i.e. your logits should be of size (N,1) and subsequently your targets should be of size (N,1), something like:
+Oh wow, I've created a useless wall of text....so how DO we replicate the  `CrossEntropyLoss` binary classification with `BCELoss`?  Well, first off, the best correct way of using `BCELoss` when you just have a single classification per observation is to have a single output per observation for your model, i.e. your logits should be of size (N,1) and subsequently your targets should be of size (N,1), something like:
 
 ```{python}
 #| label: bce with single output
@@ -229,3 +230,225 @@ assert torch.allclose(get_grad_and_zero(logits, loss_bcesm_probs_soft_1), grad_c
 ```
 
 ## Attention and Padding Masks
+
+Part two of this post is making sense of all the different types of attention masks inside both the `transformers` library as well as base pytorch.
+
+Lets start with imo the easiest to understand, the transformers padding mask.  I'll first load a tokenizer and some random text and pass the text through the tokenizer.
+
+```{python}
+from transformers import AutoTokenizer
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+
+model_name = "distilbert-base-uncased-finetuned-sst-2-english"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+# example list of different texts:
+texts = [
+    "I am a sick man...I am a wicked man.",
+    "And if you be a philosopher, though seated in the whale-boat, you would not at heart feel one whit more of terror, than though seated before your evening fire with a poker, and not a harpoon, by your side.",
+    "It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife.",
+    "We thought we were the only thinking beings in the universe, until we met you, but never did we dream that thought could arise from the lonely animals who cannot dream each other's dreams."
+]
+
+KV_texts = [
+    "Still less did that genius, Napoleon, know it, for no one issued any orders to him.",
+    "Someone must have been telling lies about Josef K., he knew he had done nothing wrong but, one morning, he was arrested.",
+    "...this thought, which had until then been but a doubt, became a conviction, and his last words were, 'Maximilian, it was Edmond Dantès!'",
+    "Like, you take over a small public company and you announce that you are raising $200 million to buy MicroStrategy Inc. stock. Maybe that would be worth $400 million?"
+]
+
+inputs = tokenizer(
+    texts,
+    padding=True,
+    truncation=True,
+    return_tensors="pt"
+)
+
+kv_inputs = tokenizer(
+    KV_texts,
+    padding=True,
+    truncation=True,
+    return_tensors="pt"
+)
+
+
+```
+
+`inputs` has a 'attention_mask' key that contains a boolean mask where 1 means 'this token can be attended to'.  This mask is necessary to pass batch inputs to models since different texts can be of different length, and we need to pad the shorter sequences to the max sequence length but also track which tokens are padding and should not be attended to.  
+
+```{python}
+#| label: huggingface transformers padding mask
+print(inputs['attention_mask'])
+print(inputs['attention_mask'].shape)
+
+# then we'd pass the attention masks to some huggingface transformers model like:
+# outputs = model(**inputs)
+```
+
+You may have also heard of a 'causal mask' used autoregressive models.  Huggingface transformers usually handles this type of attention masking internally in decoder style models.  
+
+### PyTorch Attention
+
+PyTorch handles attention differently than huggingface, I mean christ lets look at the docs of [`torch.nn.MultiheadAttention`](https://docs.pytorch.org/docs/stable/generated/torch.nn.MultiheadAttention.html) and [`torch.nn.TransformerDecoderLayer`](https://docs.pytorch.org/docs/stable/generated/torch.nn.TransformerDecoderLayer.html).  They have the following arguments for attention masks:
+
+`torch.nn.MultiheadAttention`
+
+- `key_padding_mask (Optional[Tensor]) – If specified, a mask of shape (N,S) indicating which elements within key to ignore for the purpose of attention (i.e. treat as “padding”). For unbatched query, shape should be (S). Binary and float masks are supported. For a binary mask, a True value indicates that the corresponding key value will be ignored for the purpose of attention. For a float mask, it will be directly added to the corresponding key value.`{.bullet-wrap}
+- `attn_mask (Optional[Tensor]) – If specified, a 2D or 3D mask preventing attention to certain positions. Must be of shape (L,S) or (N⋅num_heads,L,S), where N is the batch size, L is the target sequence length, and S is the source sequence length. A 2D mask will be broadcasted across the batch while a 3D mask allows for a different mask for each entry in the batch. Binary and float masks are supported. For a binary mask, a True value indicates that the corresponding position is not allowed to attend. For a float mask, the mask values will be added to the attention weight. If both attn_mask and key_padding_mask are supplied, their types should match.`{.bullet-wrap}
+
+`torch.nn.TransformerDecoderLayer`
+
+- `tgt_mask (Optional[Tensor]) – the mask for the tgt sequence (optional).`
+- `memory_mask (Optional[Tensor]) – the mask for the memory sequence (optional).`
+- `tgt_key_padding_mask (Optional[Tensor]) – the mask for the tgt keys per batch (optional).`
+- `memory_key_padding_mask (Optional[Tensor]) – the mask for the memory keys per batch (optional).`
+
+
+For fucks sake....okay lets go through these.  I'll begin by making these modules and some embeddings of the text I created above that we'll use as input.  We need a Q, K, V to shove through these attention-based layers.  Additionally, I'll keep with the pytorch documentation and use $L$ to denote the 'target' (query) sequence length and $S$ to denote the 'source' (key/value) sequence length.
+
+```{python}
+#| label: make pytorch attention modules and embeddings
+
+d_model = 16
+
+# sequence length for the target (Q)
+L = inputs['input_ids'].shape[1]
+
+# sequence length for memory/source (K-V)
+S = kv_inputs['input_ids'].shape[1]
+
+mha = nn.MultiheadAttention(embed_dim=d_model, num_heads=4, batch_first=True)
+decoder = nn.TransformerDecoderLayer(d_model=d_model, nhead=4, batch_first=True)
+
+emb_layer = torch.nn.Embedding(tokenizer.vocab_size,d_model)
+
+target = emb_layer(inputs['input_ids']) # Q
+memory = emb_layer(kv_inputs['input_ids']) # K, V
+```
+
+First up, the attention arguments for `MultiHeadedAttention`, we have `key_padding_mask` and `attn_mask`.
+
+`key_padding_mask` is pretty self-explanatory:  which elements of the `K` matrix in attention should we treat as padding, so as not to attend to them?  Unlike `transformers`, `pytorch` expects a boolean mask where `True` indicates that we treat that element as padding, or a float mask that is **added** element-wise before the softmax in the attention operation.  We can create either of these from the transformers padding mask like so:
+
+```{python}
+key_padding_mask = kv_inputs['attention_mask'].bool() == False
+
+# as float
+key_padding_mask_ft = kv_inputs['attention_mask'].clone().float() 
+key_padding_mask_ft[key_padding_mask_ft == 0] = -torch.inf
+key_padding_mask_ft -= 1
+
+output = mha(target, memory, memory, key_padding_mask = key_padding_mask)
+```
+
+This essentially zeros out elements after the softmax operation, which we can see in the returned attention weights from the `MultiHeadedAttention` forward method in @fig-mha-attn-weights.
+
+```{python}
+#| label: fig-mha-attn-weights
+#| fig-cap: Cross attention weights with padding mask for one input.
+#| echo: false
+fig, ax = plt.subplots()
+ax.imshow(output[1][0].detach().numpy())
+ax.set_xlabel("Key Sequence");
+ax.set_ylabel("Query Sequence");
+```
+
+Okay, what about the `attn_mask`?  This is a more flexible mask that can determine which positions in the 'source' sequence are attended to.  For instance, perhaps we want something like a causal mask in self attention.  Below I use `MultiheadAttention` to perform self attention with a causal plus padding mask @fig-causal-plus-padding-mask.
+
+```{python}
+#| label: create diagonal mask
+
+attn_mask = torch.nn.Transformer.generate_square_subsequent_mask(L)
+key_padding_mask_ft = inputs['attention_mask'].clone().float() 
+key_padding_mask_ft[key_padding_mask_ft == 0] = -torch.inf
+key_padding_mask_ft -= 1
+
+output = mha(target, target, target, key_padding_mask = key_padding_mask_ft, attn_mask = attn_mask)
+```
+
+```{python}
+#| label: fig-causal-plus-padding-mask
+#| fig-cap:  Attention weights of 4 sequences in self attention with causal mask and padding mask.  Longest sequence is in the top right with familiar causal mask shape.  Other sequences are truncated due to padding.
+  
+cmap = mpl.colormaps.get_cmap('viridis')  # viridis is the default colormap for imshow
+cmap.set_bad(color='black')
+
+fig, axs = plt.subplots(2,2)
+
+for i, ax in enumerate(axs.ravel()):
+    tmp_out = output[1][i].clone()
+    tmp_out[tmp_out == 0] = float('nan')
+    ax.imshow(tmp_out.detach().numpy(), cmap=cmap)
+    ax.axis('off')
+
+fig.subplots_adjust(wspace=0.05, hspace=0.05)
+fig.tight_layout()
+```
+
+***
+
+Now for the arguments to `torch.nn.DecoderLayer` - a lot of this is analagous to the arguments in `MultiheadAttention`.  We have `tgt_mask` and `memory_mask`, which are both analagous to `attn_mask` in `MultiheadAttention`, in that they apply an element-wise multiplicative boolean or additive float causal mask before the softmax operation.  `tgt_key_padding_mask` and `memory_key_padding_mask` are analagous to `key_padding_mask` in `MultiheadAttention`.
+
+Okay but why are there two?  The simple answer is that the original decoder block from @vaswani_attention_2017, which is implemented in `DecoderLayer`, has both a self-attention and cross-attention block.  The arguments with `tgt` prefix handles attention masking in the self-attention layers, and the arguments with `memory` prefix handle attention masking in the cross attention.  If you look at the source for `DecoderLayer`, there are simply two `MultiheadAttention` layers that are passed (`target`, `target`, `target`) and (`target`, `memory` `memory`) for Q, K, V and the `tgt` and `memory` masks respectively.  The 'normal' use case in a decoder is to pass both padding masks, as well as a causal mask for the self-attention layers.  Note that in the cross-attention block, we need to provide a dimension $(L, S)$ mask, which is a bit weird...you probably shouldn't be using this mask.
+
+```{python}
+memory_mask = torch.nn.Transformer.generate_square_subsequent_mask(S)
+# pad L-S rows of zeros to memory_mask to make it the 'right' shape.
+memory_mask = torch.cat([memory_mask, torch.zeros(L-S, S)], dim=0)
+
+tgt_mask = torch.nn.Transformer.generate_square_subsequent_mask(L)
+
+tgt_key_padding_mask = inputs['attention_mask'].clone().float()
+tgt_key_padding_mask[tgt_key_padding_mask == 0] = -torch.inf
+tgt_key_padding_mask -= 1
+
+memory_key_padding_mask = kv_inputs['attention_mask'].clone().float()
+memory_key_padding_mask[memory_key_padding_mask == 0] = -torch.inf
+memory_key_padding_mask -= 1
+
+# example with just a padding mask
+out_pad = decoder(
+    target,
+    memory,
+    tgt_key_padding_mask=tgt_key_padding_mask,
+    memory_key_padding_mask=memory_key_padding_mask
+)
+
+# causal mask plus both paddings (this is the 'usual' use case)
+out_tgt = decoder(
+    target,
+    memory,
+    tgt_mask=tgt_mask,
+    tgt_key_padding_mask=tgt_key_padding_mask,
+    memory_key_padding_mask=memory_key_padding_mask
+)
+
+# mask for just the memory, not sure when this would be used.
+out_mem = decoder(
+    target,
+    memory,
+    memory_mask=memory_mask,
+    tgt_key_padding_mask=tgt_key_padding_mask,
+    memory_key_padding_mask=memory_key_padding_mask
+)
+
+```
+
+One question you **might** have ("ahhh no I don't have that question actually bec..." - "SILENCE!") is why there is not a separate mask for the query in the `MultiheadAttention` module.  That is, we prevent attention to certain indices of V by masking them out with a padding mask and another more flexible mask.  This is because **we dont attend to anything in Q**.  Q determines, through dot-products with the values of K, which elements of V we attend to.  There is no notion of whether we attend to the $i$-th element in the sequence of Q, it is simply the thing that determines **how much** we attend to the other thing.  
+
+Still, what about the padding mask?  Certainly we must ignore certain elements of the 'target' sequence.  Sure, when you've got your output of target sequence length $L$, just throw away the padded inputs.  Returning to the previous example:
+
+```{python}
+out = mha(target, target, target, key_padding_mask = key_padding_mask_ft, attn_mask = attn_mask)
+
+out_pad_mask = (out[0] * inputs['attention_mask'].unsqueeze(-1)) # (B, L, D) x (B, L, 1) broadcasting last dimension
+
+# suppose we want to average:
+denoms = inputs['attention_mask'].sum(axis=-1)
+out_mean = out_pad_mask.sum(axis=1) / denoms.unsqueeze(-1)
+```
