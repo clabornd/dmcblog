@@ -1,18 +1,20 @@
 ---
 author: Daniel Claborne
 title: Comparing Various Cross-Entropy Implementations and Attention Masks Double Feature
-date: '2025-07-12'
+date: '2025-07-17'
+lastmod: '2025-07-17'
+format: html
 description: "What the HECK is the difference between various implementations of cross-entropy and transformer padding?"
 bibliography: ../../bibs/ml.bib
 ---
 
-Been a while, so I'm posting about some random things I had to puzzle through as I did some model training at work.  The first is essentially going through the various flavors of cross-entropy in pytorch for training binary/multi-class classification tasks.  [The second](#attention-and-padding-masks) is about the various types of attention masks you might encounter when building a transformer based model in pytorch.  Essentially, this whole blog post is a long stackoverflow answer to a question no one asked...listen, I didn't ask you to click on this article, I'm just trying to pass the time on a Saturday.
+Been a while[^1], so I'm posting about some random things I had to puzzle through as I did some model training at work.  The first is essentially going through the various flavors of cross-entropy in pytorch for training binary/multi-class classification tasks.  [The second](#attention-and-padding-masks) is about the common types of attention masks you might encounter when building a transformer based model in pytorch.  Essentially, this whole blog post is a long stackoverflow answer to a question no one asked...listen, I didn't ask you to click on this article, I'm just trying to pass the time on a Saturday.
 
 ## Cross-Entropy Variants
 
-There are several variants of cross-entropy in pytorch.  While the documentation is very good, I found myself wanting a code example of how exactly they all related. Specifically, I was doing a binary classification task and wanted to implement possibly class balanced focal loss, a variant of cross-entropy loss, with soft labels.  I'll show how I ended up doing this at the end, but for now we'll focus on the core cross-entropy loss.
+There are several variants of cross-entropy in pytorch.  While the documentation is very good, I found myself wanting a code example of how exactly they all related (if at all). Specifically, I was doing a binary classification task and wanted to implement possibly class balanced focal loss, a variant of cross-entropy loss, with soft labels.  I'll show how I ended up doing this later, but for now we'll focus on the core cross-entropy loss.
 
-The loss for this task can be accomplished with both the binary and multi-class version of the loss function.  I hope to show how to link between the three.  
+The loss for binary classification can be accomplished with both the binary and multi-class version of the loss function.  I hope to show how to link between the three.  
 
 Here are the various cross-entropy-based losses in pytorch:
 
@@ -26,7 +28,7 @@ And their functional forms, which I wont use, but implement the same calculation
 - `torch.nn.functional.binary_cross_entropy`
 - `torch.nn.functional.binary_cross_entropy_with_logits`
 
-Lets first make some inputs for these, assuming they are $(N,2)$ logits coming out of some model for a binary classification problem.  We also have targets both as a dimension $(N)$ tensor of class labels and a $(N,2)$ tensor of class probabilities, one where all the mass is on the correct class, and one with 'soft' labels.
+Lets first make some inputs for these, assuming they are $(N,2)$ logits coming out of some model for a binary classification problem.  We also have targets both as a dimension $(N)$ tensor of class labels and a $(N,2)$ tensor of class probabilities, one where all the mass is on the correct class, and one with 'soft' labels where the mass is distributed between the two classes.
 
 ```{python}
 #| label: make inputs and losses
@@ -34,6 +36,8 @@ Lets first make some inputs for these, assuming they are $(N,2)$ logits coming o
 import torch
 import torch.nn.functional as F
 import pandas as pd
+
+torch.manual_seed(42142)
 
 # random logits as (5, 2) vector
 logits = torch.randn(5, 2, requires_grad=True)
@@ -84,7 +88,7 @@ print(f"Cross entropy loss with soft targets: {loss_ce_prob_hard.detach().numpy(
 print(f"Cross entropy loss with probabilities: {loss_ce_prob_soft.detach().numpy()}")
 ```
 
-Ok, with `reduction = None` these all output a $(N,)$ dimensional loss tensor with a per-batch loss.  We can replicate the default `reduction='mean'` by averaging these.  `CrossEntropyLoss` returns the same thing for both versions of targets, and of course something different for the class probabilities.  This is consistent with the documentation which handles different formats of the target tensor differently:
+Ok, with `reduction = None` these all output a $(N,)$ dimensional loss tensor with a per-batch loss.  We can replicate the default `reduction='mean'` by averaging these.  `CrossEntropyLoss` returns the same thing for both class labels and $(N,2)$ hard probabilities, and of course something different for the soft class probabilities.  This is consistent with the documentation which handles different formats of the target tensor differently:
 
 - `tgt_cls`:  This is the case where we have a dimension $(N,)$ of type `torch.long`.
 - `tgt_probs_hard`:  This is the case where we have a dimension $(N,2)$ of type `torch.float`.  When we pass floats, `CrossEntropyLoss` assumes these are probabilities (between 0 and 1), and that the target tensor is the same shape as the input.
@@ -99,7 +103,7 @@ print(f"Gradients the same for (N,) and (N,2): {(grad_ce_cls == grad_ce_prob_har
 
 ### BCELoss
 
-Alright, lets look at the two version of BCELoss, the ones with and without logits.  This is where I stumbled a bit, because the format of the input/targets in `BCELoss` is fundamentally different that that of `CrossEntropyLoss`.  Specifically, the docs say that the input and targets should always be the same shape.  **WARNING**:  I'll have several code examples that either don't work, or 'work' but are not really correct usage for a binary classification task. For instance, [the below](#error-bce-bad-target-shape) throws an error because `tgt_cls` is not the same shape as `logits`.
+Alright, lets look at the two version of BCELoss, the ones with and without logits.  This is where I stumbled a bit, because the format of the input/targets in `BCELoss` is fundamentally different that that of `CrossEntropyLoss`.  Specifically, the docs say that the input and targets should always be the same shape.  **WARNING**:  I'll have several code examples that either don't work, or 'work' but are not really correct usage for a binary classification task. For instance, the code snippet below throws an error because `tgt_cls` is not the same shape as `logits`.
 
 ```{python}
 #| label: error bce bad target shape
@@ -144,7 +148,7 @@ loss_bcesm_probs_soft = bceloss(logits.softmax(dim=-1), tgt_probs_soft)
 grad_bcesm_probs_soft = get_grad_and_zero(logits, loss_bcesm_probs_soft)
 ```
 
-The first thing to quickly get out of the way is that the only difference[^1]between `BCELoss` and `BCEWithLogitsLoss` is that in `BCEWithLogitsLoss` the input goes through a sigmoid activation internally.  Applying sigmoid to the logits before passing through regular `BCELoss` produces the exact same result:
+The first thing to quickly get out of the way is that the only difference[^2] between `BCELoss` and `BCEWithLogitsLoss` is that in `BCEWithLogitsLoss` the input goes through a sigmoid activation internally.  Applying sigmoid to the logits before passing through regular `BCELoss` produces the exact same result:
 
 ```{python}
 #| label: bce with logits same as sigmoid
@@ -266,16 +270,17 @@ inputs = tokenizer(
     texts,
     padding=True,
     truncation=True,
-    return_tensors="pt"
+    return_tensors="pt",
+    add_special_tokens=False
 )
 
 kv_inputs = tokenizer(
     KV_texts,
     padding=True,
     truncation=True,
-    return_tensors="pt"
+    return_tensors="pt",
+    add_special_tokens=False
 )
-
 
 ```
 
@@ -350,12 +355,18 @@ This essentially zeros out elements after the softmax operation, which we can se
 
 ```{python}
 #| label: fig-mha-attn-weights
-#| fig-cap: Cross attention weights with padding mask for one input.
+#| fig-cap: Cross attention weights with key padding mask evident as dark purple strip on the right, e.g. bottom right has no key padding mask.  Strips of equal color among the non-zero attention weights are padding tokens for the query.
 #| echo: false
-fig, ax = plt.subplots()
-ax.imshow(output[1][0].detach().numpy())
-ax.set_xlabel("Key Sequence");
-ax.set_ylabel("Query Sequence");
+fig, axs = plt.subplots(2,2, figsize=(10,10))
+
+for i, ax in enumerate(axs.ravel()):
+    ax.imshow(output[1][i].detach().numpy())
+
+fig.supxlabel("Key Sequence");
+fig.supylabel("Query Sequence");
+
+fig.subplots_adjust(wspace=0, hspace=0)
+fig.tight_layout()
 ```
 
 Okay, what about the `attn_mask`?  This is a more flexible mask that can determine which positions in the 'source' sequence are attended to.  For instance, perhaps we want something like a causal mask in self attention.  Below I use `MultiheadAttention` to perform self attention with a causal plus padding mask @fig-causal-plus-padding-mask.
@@ -378,7 +389,7 @@ output = mha(target, target, target, key_padding_mask = key_padding_mask_ft, att
 cmap = mpl.colormaps.get_cmap('viridis')  # viridis is the default colormap for imshow
 cmap.set_bad(color='black')
 
-fig, axs = plt.subplots(2,2)
+fig, axs = plt.subplots(2,2, figsize=(10,10))
 
 for i, ax in enumerate(axs.ravel()):
     tmp_out = output[1][i].clone()
@@ -394,7 +405,7 @@ fig.tight_layout()
 
 Now for the arguments to `torch.nn.DecoderLayer` - a lot of this is analagous to the arguments in `MultiheadAttention`.  We have `tgt_mask` and `memory_mask`, which are both analagous to `attn_mask` in `MultiheadAttention`, in that they apply an element-wise multiplicative boolean or additive float causal mask before the softmax operation.  `tgt_key_padding_mask` and `memory_key_padding_mask` are analagous to `key_padding_mask` in `MultiheadAttention`.
 
-Okay but why are there two?  The simple answer is that the original decoder block from @vaswani_attention_2017, which is implemented in `DecoderLayer`, has both a self-attention and cross-attention block.  The arguments with `tgt` prefix handles attention masking in the self-attention layers, and the arguments with `memory` prefix handle attention masking in the cross attention.  If you look at the source for `DecoderLayer`, there are simply two `MultiheadAttention` layers that are passed (`target`, `target`, `target`) and (`target`, `memory` `memory`) for Q, K, V and the `tgt` and `memory` masks respectively.  The 'normal' use case in a decoder is to pass both padding masks, as well as a causal mask for the self-attention layers.  Note that in the cross-attention block, we need to provide a dimension $(L, S)$ mask, which is a bit weird...you probably shouldn't be using this mask.
+Okay but why are there two?  The simple answer is that the original decoder block from @vaswani_attention_2017, which is implemented in `DecoderLayer`, has both a self-attention and cross-attention block[^3].  The arguments with `tgt` prefix handles attention masking in the self-attention layers, and the arguments with `memory` prefix handle attention masking in the cross attention.  If you look at the source for `DecoderLayer`, there are simply two `MultiheadAttention` layers that are passed (`target`, `target`, `target`) and (`target`, `memory` `memory`) for Q, K, V and the `tgt` and `memory` masks respectively.  The 'normal' use case in a decoder is to pass both padding masks, as well as a causal mask for the self-attention layers.  Note that in the cross-attention block, we need to provide a dimension $(L, S)$ mask, which is a bit weird...you probably shouldn't be using this mask.
 
 ```{python}
 memory_mask = torch.nn.Transformer.generate_square_subsequent_mask(S)
@@ -439,7 +450,7 @@ out_mem = decoder(
 
 ```
 
-One question you **might** have ("ahhh no I don't have that question actually bec..." - "SILENCE!") is why there is not a separate mask for the query in the `MultiheadAttention` module.  That is, we prevent attention to certain indices of V by masking them out with a padding mask and another more flexible mask.  This is because **we dont attend to anything in Q**.  Q determines, through dot-products with the values of K, which elements of V we attend to.  There is no notion of whether we attend to the $i$-th element in the sequence of Q, it is simply the thing that determines **how much** we attend to the other thing.  
+One question you **might** have ("ahhh no I don't have that question actually bec..." - "SILENCE!") is why there is not a separate mask for the query in the `MultiheadAttention` module.  That is, we prevent attention to certain indices of V by masking them out with a padding mask and another more flexible mask.  This is because **we dont attend to anything in Q**.  Q determines, through dot-products with the values of K, which elements of V we attend to.  There is no notion of whether we attend to the $i$-th element in the sequence of Q, it is simply the thing that determines **how much** we attend to the *other* thing (the values V, which happen to be the same thing in self attention).  
 
 Still, what about the padding mask?  Certainly we must ignore certain elements of the 'target' sequence.  Sure, when you've got your output of target sequence length $L$, just throw away the padded inputs.  Returning to the previous example:
 
@@ -452,3 +463,9 @@ out_pad_mask = (out[0] * inputs['attention_mask'].unsqueeze(-1)) # (B, L, D) x (
 denoms = inputs['attention_mask'].sum(axis=-1)
 out_mean = out_pad_mask.sum(axis=1) / denoms.unsqueeze(-1)
 ```
+
+[^1]: I got married, and am having a kid in less than 5 weeks, so will probably be a while again.
+
+[^2]: `BCEWithLogitsLoss` has better numerical stability, and so is preferred over `nn.Sigmoid` + `BCELoss`.
+
+[^3]:  Like in that picture from the paper!  No I'm not going to show it, you're going to remember or Google it.
