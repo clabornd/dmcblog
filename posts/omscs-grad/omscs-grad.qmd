@@ -9,7 +9,7 @@ twitter-card:
     image: izzy-seal-2.png
 ---
 
-First of all, happy new year, wow, 2025.  This opening is quickly dated as no one besides me is gonna be reading this during January 2025, but anyway.  What happened to me in 2024?  Well one big one was that I graduated from Georgia Tech's online M.S. in Computer Science (OMSCS) with a specialization in Machine Learning.  Other things included getting engaged$^{*}$ to my wonderful girlfriend, it'll happen sometime in 2025, probably around early June, perhaps more on that later.  This posts thumbnail is a drawing by her daughter.  Today I'm giving my 'review' of the OMSCS along with some of the highlights of my experiences during the program.
+First of all, happy new year, wow, 2025.  This opening is quickly dated as no one besides me is gonna be reading this during January 2025, but anyway.  What happened to me in 2024?  Well one big one was that I graduated from Georgia Tech's online M.S. in Computer Science (OMSCS) with a specialization in Machine Learning.  Other things included getting engaged[^1] to my wonderful girlfriend, it'll happen sometime in 2025, probably around early June, perhaps more on that later.  This posts thumbnail is a drawing by her daughter.  Today I'm giving my 'review' of the OMSCS along with some of the highlights of my experiences during the program.
 
 # OMSCS
 Trigger Warning:  Promotional sounding text.  Georgia Tech's online MS in Computer Science (they also have analytics and cybersecurity) is a fully asynchronous online master's degree in computer science.  It's main selling points are that 1.  It is a masters degree from a respected institution.  2.  It costs less than $10,000 3. It is well suited to people who are already employed and want to take 1, maybe 2 classes each semester.  CS lends itself somewhat well to an online setting since there's very little hands-on work to be done.    
@@ -55,6 +55,4 @@ Overall OMSCS was a good experience for me.  I feel like I learned a lot for ver
 
 Also as mentioned in the title my work immediately doubled by pay, fired my work enemies, and showered me with accolades.     
 
-*****
-
-\* We just agreed to get married sometimes next year, it was not as formal as it sounds.
+[^1]: We just agreed to get married sometimes next year, it was not as formal as it sounds.  Update 2025-07-18:  Am now married.
