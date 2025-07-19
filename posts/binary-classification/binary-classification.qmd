@@ -6,6 +6,9 @@ lastmod: '2025-07-17'
 format: html
 description: "What the HECK is the difference between various implementations of cross-entropy and transformer padding?"
 bibliography: ../../bibs/ml.bib
+image: white-streaks-purple-sky.png
+twitter-card:
+    image: white-streaks-purple-sky.png
 ---
 
 Been a while[^1], so I'm posting about some random things I had to puzzle through as I did some model training at work.  The first is essentially going through the various flavors of cross-entropy in pytorch for training binary/multi-class classification tasks.  [The second](#attention-and-padding-masks) is about the common types of attention masks you might encounter when building a transformer based model in pytorch.  Essentially, this whole blog post is a long stackoverflow answer to a question no one asked...listen, I didn't ask you to click on this article, I'm just trying to pass the time on a Saturday.
