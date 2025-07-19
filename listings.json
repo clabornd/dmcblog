@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/binary-classification/binary-classification.html",
       "/posts/unet-diffusion/unet-diffusion.html",
       "/posts/omscs-grad/omscs-grad.html",
       "/posts/diambra-colab/index.html",

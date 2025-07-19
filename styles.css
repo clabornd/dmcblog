@@ -3,3 +3,7 @@
 div[id*='fig:'] .figure-caption {
     text-align:center
 }
+
+.bullet-wrap {
+    text-wrap:auto
+}
