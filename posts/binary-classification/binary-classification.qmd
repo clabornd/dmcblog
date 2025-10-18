@@ -6,6 +6,7 @@ lastmod: '2025-07-17'
 format: html
 description: "What the HECK is the difference between various implementations of cross-entropy and transformer padding?"
 bibliography: ../../bibs/ml.bib
+categories: [machine learning, code]
 image: white-streaks-purple-sky.png
 twitter-card:
     image: white-streaks-purple-sky.png
