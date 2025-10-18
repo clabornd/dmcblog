@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -90,14 +90,15 @@ div.csl-indent {
 <meta name="quarto:offset" content="../../">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-a986a95301e671fce2c6472dffc862a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-533b9ae3c010999c496e3372658dddf2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -140,7 +141,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -172,6 +173,10 @@ window.Quarto = {
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+  </div>
             <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
@@ -283,28 +288,28 @@ L^{CLIP}(\theta) = E_{t \sim \pi_{\theta_{old}}}\left[\text{min}\left(\frac{\pi_
 \]</span></p>
 <p>Where <span class="math inline">\(\delta_{t'} = r_{t'} + \gamma V(s_{t'+1}) - V(s_{t'})\)</span> is the TD error at time step <span class="math inline">\(t'\)</span> and <span class="math inline">\(\lambda\)</span> is a hyperparameter that controls the weighting of the TD error. I show my implementation of this and highlight a mistake I made.</p>
 <p>First, lets assume I’ve calculated the rewards-to-go, <span class="math inline">\(G_t = \sum_{t'=t}^T \gamma^{t'-t}r_t'\)</span>, and the value function, <span class="math inline">\(V(s_t)\)</span>, for each time step <span class="math inline">\(t\)</span>. First, I compute the deltas:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># given tensor of values val_tensor and tensor of rewards-to-go dsc_rews</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>deltas <span class="op">=</span> gamma<span class="op">*</span>F.pad(val_tensor[<span class="dv">1</span>:], (<span class="dv">0</span>, <span class="dv">1</span>), <span class="st">'constant'</span>, <span class="dv">0</span>) <span class="op">+</span> torch.tensor(rew_list) <span class="op">-</span> val_tensor</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># given tensor of values val_tensor and tensor of rewards-to-go dsc_rews</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>deltas <span class="op">=</span> gamma<span class="op">*</span>F.pad(val_tensor[<span class="dv">1</span>:], (<span class="dv">0</span>, <span class="dv">1</span>), <span class="st">'constant'</span>, <span class="dv">0</span>) <span class="op">+</span> torch.tensor(rew_list) <span class="op">-</span> val_tensor</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>From this, I can compute the advantages by starting from the last time step, working backwards, and accumulating the weighted deltas:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute advantages from deltas</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute advantages from deltas</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>advantages <span class="op">=</span> []</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>cur_adv <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(deltas)):</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    cur_adv <span class="op">=</span> deltas[<span class="op">-</span>(t<span class="op">+</span><span class="dv">1</span>)] <span class="op">+</span> gamma <span class="op">*</span> lam <span class="op">*</span> cur_adv</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    advantages.append(cur_adv)</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>advantages <span class="op">=</span> <span class="bu">reversed</span>(torch.tensor(advantages, dtype<span class="op">=</span>torch.float32))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>advantages <span class="op">=</span> <span class="bu">reversed</span>(torch.tensor(advantages, dtype<span class="op">=</span>torch.float32))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>You can use a similar to collect-and-reverse scheme to compute the rewards to go, <strong>or you can be an idiot and forget to do that</strong>, like me:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dsc_rews <span class="op">=</span> []</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dsc_rews <span class="op">=</span> []</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>cur_rew <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># compute discounted rewards</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(rew_list)):</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    cur_rew <span class="op">=</span> rew_list[<span class="op">-</span>t] <span class="op">+</span> gamma <span class="op">*</span> cur_rew</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    dsc_rews.append(cur_rew)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    dsc_rews.append(cur_rew)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Basically my rewards to go were backwards…christ, look, the indexing isn’t even correct. Consider the situation where I have a large negative reward at the end of the episode, the <em>first</em> action will take the full weight for that failure. Unsurprisingly, my LunarLander agent was a bit timid about approaching the surface. However, shockingly, the algorithm still seemed to learn <em>something</em> with this glaring mistake, though it was incredibly inconsistent. My intuition is that successful episodes would still propagate positive reward signal to all state action pairs, even if the actual values were inaccurate, so the agent was still able to attempt to learn good behavior.</p>
 <p>Okay, so now the correct way to compute the rewards to go:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dsc_rews <span class="op">=</span> []</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dsc_rews <span class="op">=</span> []</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>cur_rew <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># compute discounted rewards</span></span>
@@ -312,33 +317,33 @@ L^{CLIP}(\theta) = E_{t \sim \pi_{\theta_{old}}}\left[\text{min}\left(\frac{\pi_
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    cur_rew <span class="op">=</span> rew_list[<span class="op">-</span>(t<span class="op">+</span><span class="dv">1</span>)] <span class="op">+</span> gamma <span class="op">*</span> cur_rew</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    dsc_rews.append(cur_rew)</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>dsc_rews <span class="op">=</span> <span class="bu">reversed</span>(torch.tensor(dsc_rews, dtype<span class="op">=</span>torch.float32))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>dsc_rews <span class="op">=</span> <span class="bu">reversed</span>(torch.tensor(dsc_rews, dtype<span class="op">=</span>torch.float32))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="computing-the-loss" class="level2">
 <h2 class="anchored" data-anchor-id="computing-the-loss">Computing the Loss</h2>
 <p>Okay so we have the advantages, the rewards-to-go, and some log-probabilities. We need to compute that probability ratio thing, multiply it by the advantage and then take the minimum of that and its clipped version. An important thing to remember is that when forming term <span class="math inline">\(\frac{\pi_{\theta}(a_t|s_t)}{\pi_{\theta_{old}}(a_t|s_t)}{A}(s_t, a_t)\)</span> the only thing that has gradients flow through it is the numerator. The advantage is a static quantity at this point, and the denominator is a frozen version of log-probabilities we saw when collecting experience.</p>
 <p>My implementation runs the observations back through the actor and critic to get the quantities we need to be differentiated via autograd (everything below is in the colab notebook).</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cur_batch from a queue of tuples</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cur_batch from a queue of tuples</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>obs_batch, act_batch, rew_batch, val_batch, log_prob_batch_prev, dsc_rew_batch, adv_batch <span class="op">=</span> <span class="bu">zip</span>(<span class="op">*</span>cur_batch)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>dist_batch <span class="op">=</span> actor(torch.tensor(obs_batch, device <span class="op">=</span> device))</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># this `requires_grad`, log_prob_batch_prev does not</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>log_prob_batch <span class="op">=</span> dist_batch.log_prob(torch.tensor(act_batch, device<span class="op">=</span>device))</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>val_batch <span class="op">=</span> critic(obs_batch.to(device))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>val_batch <span class="op">=</span> critic(obs_batch.to(device))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Now I compute the ratio with the differentiable numerator</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>denom <span class="op">=</span> torch.tensor(log_prob_batch_prev, device<span class="op">=</span>device)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>denom <span class="op">=</span> torch.tensor(log_prob_batch_prev, device<span class="op">=</span>device)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>adv_batch <span class="op">=</span> torch.tensor(adv_batch, device<span class="op">=</span>device)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>ratio <span class="op">=</span> torch.exp(log_prob_batch <span class="op">-</span> denom.to(device))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>ratio <span class="op">=</span> torch.exp(log_prob_batch <span class="op">-</span> denom.to(device))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>And compute the minimum of the clipped objective and the unclipped objective, as well as the mean-squared error between the value function estimate and the actual rewards-to-go we observed. The total loss is the negative of the clipped objective plus the value function loss. <strong>Note</strong>: in the paper they mention an entropy loss to encourage exploration, I show it below, but I don’t use it in my implementation, instead I use a simple exploration scheme where I randomly sample actions at a decreasing probability over training.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sloss <span class="op">=</span> torch.<span class="bu">min</span>(ratio <span class="op">*</span> adv_batch, torch.clamp(ratio, <span class="fl">1.0</span> <span class="op">-</span> config[<span class="st">'eps'</span>], <span class="fl">1.0</span> <span class="op">+</span> config[<span class="st">'eps'</span>]) <span class="op">*</span> adv_batch).mean()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sloss <span class="op">=</span> torch.<span class="bu">min</span>(ratio <span class="op">*</span> adv_batch, torch.clamp(ratio, <span class="fl">1.0</span> <span class="op">-</span> config[<span class="st">'eps'</span>], <span class="fl">1.0</span> <span class="op">+</span> config[<span class="st">'eps'</span>]) <span class="op">*</span> adv_batch).mean()</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>vloss <span class="op">=</span> F.mse_loss(val_batch.squeeze(), torch.tensor(dsc_rew_batch, dtype <span class="op">=</span> torch.float32, device<span class="op">=</span>device))</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># possible entropy loss, we would add this to loss</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># entropy = dist_batch.entropy().mean()</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> <span class="op">-</span>sloss <span class="op">+</span> vloss</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> <span class="op">-</span>sloss <span class="op">+</span> vloss</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="traininghyperparameter-tuning" class="level2">
 <h2 class="anchored" data-anchor-id="traininghyperparameter-tuning">Training/Hyperparameter Tuning</h2>
@@ -419,13 +424,14 @@ Sutton, Richard S, and Andrew G Barto. 2020. <em>Reinforcement Learning: An Intr
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

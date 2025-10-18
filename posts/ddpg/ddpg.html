@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -90,14 +90,15 @@ div.csl-indent {
 <meta name="quarto:offset" content="../../">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-a986a95301e671fce2c6472dffc862a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-533b9ae3c010999c496e3372658dddf2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -140,7 +141,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -172,6 +173,10 @@ window.Quarto = {
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+  </div>
             <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
@@ -276,7 +281,7 @@ window.Quarto = {
 <section id="actor-policy-and-critic-q-network" class="level3">
 <h3 class="anchored" data-anchor-id="actor-policy-and-critic-q-network">Actor (policy) and Critic (Q-network)</h3>
 <p>Okay, first thing, make two architectures to be the Q network and policy network. These are commonly referred to as the critic (Q network criticizes how ‘good’ a state action pair is) and the actor (the policy network chooses actions to be criticized).</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -306,47 +311,47 @@ window.Quarto = {
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, state, action):</span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        q <span class="op">=</span> F.relu(<span class="va">self</span>.l1(state))</span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        q <span class="op">=</span> F.relu(<span class="va">self</span>.l2(torch.cat([q, action], <span class="dv">1</span>)))</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.l3(q)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.l3(q)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Yup, those are two MLPs … I guess one thing to note is that the critic takes both state and action as input, but the action comes in at the second layer. Another is that the actor outputs a tanh activation times the max of the action space. Now, we make FOUR NETWORKS! Two extra for the ‘target networks’ that will be used to form…the targets. It sounds ridiculous, but like everything else in machine learning, they tried it and it worked, so were trying it.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>critic <span class="op">=</span> Critic(env.observation_space.shape[<span class="dv">0</span>], env.action_space.shape[<span class="dv">0</span>])</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>critic <span class="op">=</span> Critic(env.observation_space.shape[<span class="dv">0</span>], env.action_space.shape[<span class="dv">0</span>])</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>actor <span class="op">=</span> Actor(env.observation_space.shape[<span class="dv">0</span>], env.action_space.shape[<span class="dv">0</span>], env.action_space.high[<span class="dv">0</span>])</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>critic_tgt <span class="op">=</span> Critic(env.observation_space.shape[<span class="dv">0</span>], env.action_space.shape[<span class="dv">0</span>])</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>actor_tgt <span class="op">=</span> Actor(env.observation_space.shape[<span class="dv">0</span>], env.action_space.shape[<span class="dv">0</span>], env.action_space.high[<span class="dv">0</span>])</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>opt_critic <span class="op">=</span> AdamW(critic.parameters(), lr<span class="op">=</span>cfg[<span class="st">'critic_lr'</span>])</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>opt_actor <span class="op">=</span> AdamW(actor.parameters(), lr<span class="op">=</span>cfg[<span class="st">'actor_lr'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>opt_actor <span class="op">=</span> AdamW(actor.parameters(), lr<span class="op">=</span>cfg[<span class="st">'actor_lr'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Notice how I’m not making optimizers for the target networks. They are updated by slowly copying the weights from the main networks, like so:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> param, param_tgt <span class="kw">in</span> <span class="bu">zip</span>(critic.parameters(), critic_tgt.parameters()):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> param, param_tgt <span class="kw">in</span> <span class="bu">zip</span>(critic.parameters(), critic_tgt.parameters()):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    param_tgt.data.copy_(cfg[<span class="st">'tau'</span>]<span class="op">*</span>param.data <span class="op">+</span> (<span class="dv">1</span><span class="op">-</span>cfg[<span class="st">'tau'</span>])<span class="op">*</span>param_tgt.data)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> param, param_tgt <span class="kw">in</span> <span class="bu">zip</span>(actor.parameters(), actor_tgt.parameters()):</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    param_tgt.data.copy_(cfg[<span class="st">'tau'</span>]<span class="op">*</span>param.data <span class="op">+</span> (<span class="dv">1</span><span class="op">-</span>cfg[<span class="st">'tau'</span>])<span class="op">*</span>param_tgt.data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    param_tgt.data.copy_(cfg[<span class="st">'tau'</span>]<span class="op">*</span>param.data <span class="op">+</span> (<span class="dv">1</span><span class="op">-</span>cfg[<span class="st">'tau'</span>])<span class="op">*</span>param_tgt.data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>That is, the weights get updated by <span class="math inline">\(\theta_{tgt} = \tau * \theta + (1-\tau) * \theta_{tgt}\)</span>, where <span class="math inline">\(\theta\)</span> is the weights of the main network and <span class="math inline">\(\theta_{tgt}\)</span> is the weights of the target network.</p>
 </section>
 <section id="replay-buffer" class="level3">
 <h3 class="anchored" data-anchor-id="replay-buffer">Replay Buffer</h3>
 <p>This is simple enough, we make a queue, and while traversing the environment we store state, action, reward, next state tuples in it, and then sample from it to update our actor and critic. I also fill it with a few thousand random samples before starting training, just to get some initial data in there to sample from. The queue is implemented using <code>collections.deque</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> collections</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> collections</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>replay_buffer <span class="op">=</span> collections.deque(maxlen<span class="op">=</span>cfg[<span class="st">'buffer_size'</span>])</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#...then during training ...</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>replay_buffer.append((obs, act, rew, obs_next, done))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>replay_buffer.append((obs, act, rew, obs_next, done))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>I didn’t mention that we also store whether or not we have completed an episode (<code>done</code>) in the replay buffer. This is needed when forming a target for an action where we only want to consider the reward. Storing <code>done</code> allows us to multiply the bootstrapped part of the value function by <code>1 - done</code> to zero out the value function if we have completed an episode:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.array(rew_b) <span class="op">+</span> cfg[<span class="st">'gamma'</span>]<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>np.array(done_b))<span class="op">*</span>Q_tgt.numpy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.array(rew_b) <span class="op">+</span> cfg[<span class="st">'gamma'</span>]<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>np.array(done_b))<span class="op">*</span>Q_tgt.numpy()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="training" class="level3">
 <h3 class="anchored" data-anchor-id="training">Training</h3>
 <p>Okay, so store some interaction with the environment, and on each step sample from the replay buffer and update things. One thing that may not be obvious is how to update the actor network. Yea I wrote some weird chain rule formula up there but whats the code? It is a little weird, but if you stare at it it makes sense:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>acts_actor <span class="op">=</span> actor(torch.from_numpy(np.array(obs_b)).<span class="bu">float</span>())</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>acts_actor <span class="op">=</span> actor(torch.from_numpy(np.array(obs_b)).<span class="bu">float</span>())</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> critic(torch.from_numpy(np.array(obs_b)).<span class="bu">float</span>(), acts_actor)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>opt_actor.zero_grad()</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> <span class="op">-</span>Q.mean()</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>loss.backward()</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>opt_actor.step()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>opt_actor.step()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Whats happening here is we send a sample through the actor, pass that action to the critic, and then… call <code>backward()</code> on the loss of <code>-Q</code>? Remember the standard <code>backward()</code> + <code>step()</code> pattern updates the weights to minimize whatever you called <code>backward()</code> on. Here we are calling it on the negative of the Q value, that is we are minimizing the negative value, which is maximizing the positive value — we are applying a gradient to our policy network that results in greater value. When we call <code>step()</code> we only call it on the actor network (at this point in the training loop we’ve already updated the critic). The whole chain rule stuff is taken care of by the fact that the gradients flowed backward through the critic.</p>
 <section id="hyperparameters" class="level4">
 <h4 class="anchored" data-anchor-id="hyperparameters">Hyperparameters</h4>
@@ -428,13 +433,14 @@ Silver, David, Guy Lever, Nicolas Heess, Thomas Degris, Daan Wierstra, and Marti
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

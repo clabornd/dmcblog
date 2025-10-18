@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -70,14 +70,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="../../">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-a986a95301e671fce2c6472dffc862a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-533b9ae3c010999c496e3372658dddf2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -120,7 +121,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -156,6 +157,10 @@ window.Quarto = {
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+  </div>
             <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
@@ -259,7 +264,7 @@ window.Quarto = {
 <p>There was recently a question posed by <code>@littmath</code> on Twitter that stumped some people as far as explaining the answer. The best answer I found can be seen here: <a href="https://www.reddit.com/r/theydidthemath/comments/1bgnbnt/request_whod_get_more_points/">Reddit</a>.</p>
 <p>The problem, briefly: 100 coins are flipped. For every HH that appears, Alice gets a point. For every HT that appears, Bob gets a point. Who is more likely to win? That is, who is more likely to have more points at the end of the 100 flips? Doesn’t matter by how much they win, just who is more likely to win.</p>
 <p>There are reasonable arguments to say Alice will win (HHH is 2 points!), or that it is a tie (something about equal probability), however the answer is Bob. The easiest way to see this is by simply simulating a bunch of flips and seeing who wins more often, or by enumerating all possible outcomes for a smaller number of flips and counting who wins more:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># all combos of 10 flips</span></span>
@@ -288,7 +293,7 @@ window.Quarto = {
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>score_alice <span class="ot">=</span> purrr<span class="sc">::</span><span class="fu">map</span>(result<span class="sc">$</span>scores, <span class="sc">~</span>.x<span class="sc">$</span>alice) <span class="sc">|&gt;</span> <span class="fu">unlist</span>()</span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>score_bob <span class="ot">=</span> purrr<span class="sc">::</span><span class="fu">map</span>(result<span class="sc">$</span>scores, <span class="sc">~</span>.x<span class="sc">$</span>bob) <span class="sc">|&gt;</span> <span class="fu">unlist</span>()</span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">c</span>(<span class="fu">mean</span>(score_alice <span class="sc">&gt;</span> score_bob), <span class="fu">mean</span>(score_alice <span class="sc">&lt;</span> score_bob)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">c</span>(<span class="fu">mean</span>(score_alice <span class="sc">&gt;</span> score_bob), <span class="fu">mean</span>(score_alice <span class="sc">&lt;</span> score_bob)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>[1] 0.3623047 0.4531250</code></pre>
 <p>We see that Bob is winning more often in this example of 10 flips. The question asked for 100 flips though, which does matter, and indeed simulating it shows that Alice catches up a bit but loses more often. The intuition in the reddit post is that scoring happens only when there is one or more heads. This could be a single H, or a sequence of H’s, both terminated by a T or reaching the 100th flip. We can ask, for any such sequence, what is the expected points for Bob or Alice? Lets consider Bob first. They are almost always going to get 1 point, only in the case where there are H’s until the 100th flip will there not be 1 point which is usually very unlikely, so lets approximate the expected points for Bob as 1 for now.</p>
 <p>Now for Alice. We consider that HT makes up half of all sequences of H’s: Half the time, a T is flipped after the first head, ending the sequence with zero points. Then we consider that HHT happens 1/4 of the time with one point, HHHT 1/8 of the time with 2 points, etc. Assuming there are 99 possible flips to go after the initial H, we can write out this sequence of expected points for Alice as:</p>
@@ -379,13 +384,14 @@ S_5 - \sum_{i=1}^{5} \frac{1}{2^i} = 1.78125 - 0.96875 = 0.8125
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

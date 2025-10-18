@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -70,14 +70,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="../../">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-a986a95301e671fce2c6472dffc862a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-533b9ae3c010999c496e3372658dddf2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -127,6 +128,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+  </div>
             <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
@@ -219,7 +224,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="set-up-an-ec2-instance">Set up an EC2 instance</h3>
 <p>We need an ec2 instance to host our containers. It does not have to be beefy, just have enough memory to run some docker containers. I started with a t2.micro running AWS Linux, but we’ll have to spin up more . For a tutorial on how to create/connect to an ec2 instance via SSH, see <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html">this tutorial</a>.</p>
 <p>Once you are up and running and connected, we need to install docker. <a href="https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-docker.html">See this AWS documentation</a>. In short, we run:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install docker</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install docker</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> yum update <span class="at">-y</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> yum install <span class="at">-y</span> docker</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -227,7 +232,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> service docker start</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># add the ec2-user to the docker group so you dont have to do sudo docker commands</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> usermod <span class="at">-a</span> <span class="at">-G</span> docker ec2-user</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> usermod <span class="at">-a</span> <span class="at">-G</span> docker ec2-user</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Check that docker works with <code>docker run hello-world</code> or <code>docker ps</code>.</p>
 <section id="add-a-security-group" class="level4">
 <h4 class="anchored" data-anchor-id="add-a-security-group">Add a Security Group</h4>
@@ -238,14 +243,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="install-diambra" class="level4">
 <h4 class="anchored" data-anchor-id="install-diambra">Install Diambra</h4>
 <p>This setup is exactly like in the <a href="https://docs.diambra.ai/#installation">Diambra installation docs</a> and the vanilla ec2 instance should have all you need to install diambra. You will, as with running locally, need a copy of a compatible ROM (I use DOA++ in this example). You can copy this to the ec2 instance with <code>scp</code> or <code>rsync</code> from your local machine:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scp</span> <span class="at">-i</span> ~/.ssh/my-key.pem /path/to/doapp.zip <span class="op">&lt;</span>ec2-public-ip<span class="op">&gt;</span>:<span class="op">&lt;</span>ec2-roms-path<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scp</span> <span class="at">-i</span> ~/.ssh/my-key.pem /path/to/doapp.zip <span class="op">&lt;</span>ec2-public-ip<span class="op">&gt;</span>:<span class="op">&lt;</span>ec2-roms-path<span class="op">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 <section id="run-a-diambra-container" class="level3">
 <h3 class="anchored" data-anchor-id="run-a-diambra-container">Run a Diambra Container</h3>
 <p>And then specify the roms path as usual in the ec2 instance with the <code>DIAMBRAROMSPATH</code> environment variable.<br>
 We can run a single diambra container with:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[ec2-user]$</span> diambra arena <span class="at">--path.roms</span> /path/to/roms <span class="at">--env.host</span> 0.0.0.0 up</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[ec2-user]$</span> diambra arena <span class="at">--path.roms</span> /path/to/roms <span class="at">--env.host</span> 0.0.0.0 up</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">🖥️</span>  logged in</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">v2.2:</span> Pulling from diambra/engine</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Digest:</span> sha256:77ba99e5d7d099fe2db292fc7b4e43da310e1bbdb0bcc3a157810e1f933ec81d</span>
@@ -253,18 +258,18 @@ We can run a single diambra container with:</p>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Stored</span> credentials found.</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Authorization</span> granted.</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Server</span> listening on 0.0.0.0:50051</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">127.0.0.1:32768</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">127.0.0.1:32768</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Make note of the port it is running on, this will be in the range 32000-32999.</p>
 <p>We can see the running container with:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[ec2-user]$</span> docker ps</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[ec2-user]$</span> docker ps</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">CONTAINER</span> ID   IMAGE                 COMMAND                  CREATED         STATUS         PORTS                      NAMES</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">7bf96960255f</span>   diambra/engine:v2.2   <span class="st">"/bin/diambraEngineS…"</span>   8 seconds ago   Up 6 seconds   0.0.0.0:32768-<span class="op">&gt;</span>50051/tcp   busy_villani</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">7bf96960255f</span>   diambra/engine:v2.2   <span class="st">"/bin/diambraEngineS…"</span>   8 seconds ago   Up 6 seconds   0.0.0.0:32768-<span class="op">&gt;</span>50051/tcp   busy_villani</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 <section id="connect-from-colab" class="level2">
 <h2 class="anchored" data-anchor-id="connect-from-colab">Connect From Colab</h2>
 <p>From colab, we can connect using the diambra api. We will need the ec2 instances IPv4 address/IPv4 DNS. These can be obtained from the main page of your ec2 instance in the AWS console.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> diambra.arena</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> diambra.arena</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> diambra.arena <span class="im">import</span> EnvironmentSettings</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
@@ -279,7 +284,7 @@ We can run a single diambra container with:</p>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>env.reset()</span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>act <span class="op">=</span> env.action_space.sample()</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>state, reward, done, truncated, info <span class="op">=</span> env.step(act)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>state, reward, done, truncated, info <span class="op">=</span> env.step(act)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If we take a look at the state we see the start screen of a fight inside DOA++:</p>
 <p><img src="example-fight-start.png" class="img-fluid"></p>
 <p>Now you have the ability to run a training loop or pass your environment object to e.g.&nbsp;stable-baselines.</p>
@@ -290,7 +295,7 @@ We can run a single diambra container with:</p>
 <p>No problem, lets spin up a bunch of containers and call them in parallel! How do we do this? Well, basically we need to create a class that spins up multiple environments and calls them all at once. Thanks to <span class="citation" data-cites="lwneal">@lwneal</span> on github for <a href="https://github.com/lwneal/simple-multithreading-gym">this example</a> which was basically the template for what follows. We essentially have a function that executes multiple commands from an iterable and then use that for our environment’s <code>reset()</code> and <code>step()</code> functions. See the colab notebook for the code and below for an example of 12 observations pulled from 12 environments running in an ec2 instance:</p>
 <p><img src="multi-envs.png" class="img-fluid"></p>
 <p>Great! There are still some hurdles to jump over however. Remember these are 12 different environments being sampled from, we cant just mix the observations from all of them. Instead, we have to keep track of things like states, rewards, etc. on a per-environment basis. Something like below:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># store running episodes for each parallel environment</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># store running episodes for each parallel environment</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>obs_list <span class="op">=</span> [[] <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(env.envs))]</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>act_list <span class="op">=</span> [[] <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(env.envs))]</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>rew_list <span class="op">=</span> [[] <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(env.envs))]</span>
@@ -298,7 +303,7 @@ We can run a single diambra container with:</p>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>log_prob_list <span class="op">=</span> [[] <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(env.envs))]</span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>done_list <span class="op">=</span> [[] <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(env.envs))]</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>truncated_list <span class="op">=</span> [[] <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(env.envs))]</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>discounted_rewards <span class="op">=</span> [[] <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(env.envs))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>discounted_rewards <span class="op">=</span> [[] <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(env.envs))]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>For example, in PPO, we have to complete a few episodes, compute discounted rewards and advantages, and then form training tuples. We don’t want to just wait til a few episodes are complete, update the policy/value function, and then continue, since then the episodes that did not get used since they did not complete will not reflect the current policy.</p>
 <p>Further, this process is…..still kinda slow. Colab is a great tool, but this might not be the use case for it (we dont <em>really</em> need that A100), and the cost of spinning up an ec2 instance with a GPU might be worth having the environment running on the same machine that is doing the training and seriously reduce latency issues. I’ll probably give a go at actually training a fighter all on an ec2 instance since, well, I want to actually get this working and I’ve been making some mistakes in training previous PPO agents (incoming amendments to previous posts).</p>
 
@@ -357,13 +362,14 @@ We can run a single diambra container with:</p>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
