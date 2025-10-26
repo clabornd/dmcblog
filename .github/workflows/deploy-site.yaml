@@ -35,7 +35,8 @@ jobs:
       - name: Render Quarto
         uses: quarto-dev/quarto-actions/render@v2
         if: github.event_name == 'pull_request' && github.base_ref == 'master'
-      - run: source .venv/bin/activate
+        env:
+          QUARTO_PYTHON: .venv/bin/python
 
       - name: Publish to GitHub Pages (and render)
         uses: quarto-dev/quarto-actions/publish@v2
