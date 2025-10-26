@@ -4,3 +4,6 @@ dirs:
 fileExtensions:
   - qmd
   - md
+
+excludedFiles:
+  - 'posts/sql-practice/sql_practice.qmd'

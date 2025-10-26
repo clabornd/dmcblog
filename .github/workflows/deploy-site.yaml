@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -26,12 +26,15 @@ jobs:
           # To install LaTeX to build PDF book 
           tinytex: true 
 
-      - uses: actions/setup-python@v4
-      - run: pip install -r requirements.txt
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+      - run: uv sync --python 3.13
 
       - name: Render Quarto
         uses: quarto-dev/quarto-actions/render@v2
         if: github.event_name == 'pull_request' && github.base_ref == 'master'
+        env:
+          QUARTO_PYTHON: .venv/bin/python
 
       - name: Publish to GitHub Pages (and render)
         uses: quarto-dev/quarto-actions/publish@v2
