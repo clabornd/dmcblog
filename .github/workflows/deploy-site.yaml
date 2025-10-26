@@ -42,4 +42,5 @@ jobs:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # this secret is always available for github actions
+          QUARTO_PYTHON: .venv/bin/python
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
