@@ -30,11 +30,11 @@ jobs:
         uses: astral-sh/setup-uv@v6
 
       - uses: actions/setup-python@v4
-      - run: |
-          uv sync
-          source .venv/bin/activate
+      - run: uv sync
+
       - name: Render Quarto
         uses: quarto-dev/quarto-actions/render@v2
+        run: source .venv/bin/activate
         if: github.event_name == 'pull_request' && github.base_ref == 'master'
 
       - name: Publish to GitHub Pages (and render)
