@@ -26,8 +26,12 @@ jobs:
           # To install LaTeX to build PDF book 
           tinytex: true 
 
+      - uses: actions/checkout@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
       - uses: actions/setup-python@v4
-      - run: pip install -r requirements.txt
+      - run: uv sync
 
       - name: Render Quarto
         uses: quarto-dev/quarto-actions/render@v2
