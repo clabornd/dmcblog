@@ -28,9 +28,7 @@ jobs:
 
       - name: Install uv
         uses: astral-sh/setup-uv@v6
-
-      - uses: actions/setup-python@v4
-      - run: uv sync
+      - run: uv sync --python 3.13
 
       - name: Render Quarto
         uses: quarto-dev/quarto-actions/render@v2
