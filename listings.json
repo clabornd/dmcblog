@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/sql-practice/sql_practice.html",
       "/posts/baby-1/sandwich.html",
       "/posts/binary-classification/binary-classification.html",
       "/posts/unet-diffusion/unet-diffusion.html",

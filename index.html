@@ -42,7 +42,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-533b9ae3c010999c496e3372658dddf2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-0b37c64f34216b628666a8dac638b53b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -132,9 +132,13 @@ window.Quarto = {
 
 <link rel="stylesheet" href="styles.css">
 <meta property="og:title" content="Data Science and Miscellaneous Rambling from Daniel Mabayog Claborne">
-<meta property="og:image" content="https://clabornd.github.io/dmcblog/posts/baby-1/sandwich.jpg">
+<meta property="og:image" content="https://clabornd.github.io/dmcblog/posts/sql-practice/sql-practice.png">
+<meta property="og:image:height" content="411">
+<meta property="og:image:width" content="534">
 <meta name="twitter:title" content="Data Science and Miscellaneous Rambling from Daniel Mabayog Claborne">
-<meta name="twitter:image" content="https://clabornd.github.io/dmcblog/posts/baby-1/sandwich.jpg">
+<meta name="twitter:image" content="https://clabornd.github.io/dmcblog/posts/sql-practice/sql-practice.png">
+<meta name="twitter:image-height" content="411">
+<meta name="twitter:image-width" content="534">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -203,7 +207,7 @@ window.Quarto = {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(17)</span></div><div class="category" data-category="YmFraW5n">baking <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Y29kZQ==">code <span class="quarto-category-count">(5)</span></div><div class="category" data-category="Y3J5cHRv">crypto <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZGF0YSUyMHNjaWVuY2U=">data science <span class="quarto-category-count">(3)</span></div><div class="category" data-category="bWFjaGluZSUyMGxlYXJuaW5n">machine learning <span class="quarto-category-count">(11)</span></div><div class="category" data-category="bmV3cw==">news <span class="quarto-category-count">(2)</span></div><div class="category" data-category="cGVyc29uYWw=">personal <span class="quarto-category-count">(3)</span></div><div class="category" data-category="cHV6emxlcw==">puzzles <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cmVpbmZvcmNlbWVudCUyMGxlYXJuaW5n">reinforcement learning <span class="quarto-category-count">(2)</span></div><div class="category" data-category="dG9vbHM=">tools <span class="quarto-category-count">(2)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(18)</span></div><div class="category" data-category="YmFraW5n">baking <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Y29kZQ==">code <span class="quarto-category-count">(6)</span></div><div class="category" data-category="Y3J5cHRv">crypto <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZGF0YSUyMHNjaWVuY2U=">data science <span class="quarto-category-count">(3)</span></div><div class="category" data-category="bWFjaGluZSUyMGxlYXJuaW5n">machine learning <span class="quarto-category-count">(11)</span></div><div class="category" data-category="bmV3cw==">news <span class="quarto-category-count">(2)</span></div><div class="category" data-category="cGVyc29uYWw=">personal <span class="quarto-category-count">(3)</span></div><div class="category" data-category="cHV6emxlcw==">puzzles <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cmVpbmZvcmNlbWVudCUyMGxlYXJuaW5n">reinforcement learning <span class="quarto-category-count">(2)</span></div><div class="category" data-category="dG9vbHM=">tools <span class="quarto-category-count">(2)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -217,7 +221,37 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="cGVyc29uYWw=" data-listing-date-sort="1760486400000" data-listing-file-modified-sort="1760768506032" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="338">
+<div class="quarto-post image-right" data-index="0" data-categories="Y29kZQ==" data-listing-date-sort="1761350400000" data-listing-file-modified-sort="1761495747304" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="59" data-listing-word-count-sort="11778">
+<div class="thumbnail"><a href="./posts/sql-practice/sql_practice.html" class="no-external">
+
+<img loading="lazy" src="./posts/sql-practice/sql-practice.png" class="thumbnail-image">
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/sql-practice/sql_practice.html" class="no-external">Database Leetcode Examples</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Y29kZQ=='); return false;">code</div>
+
+</div>
+<div class="delink listing-description"><a href="./posts/sql-practice/sql_practice.html" class="no-external">
+I went through a bunch of leetcode database problems and tried to solve in pandas, polars, and sql as interview prep. I thought that someone might find it useful to have…
+</a></div>
+</div>
+<div class="metadata">
+<a href="./posts/sql-practice/sql_practice.html" class="no-external">
+<div class="listing-date">
+Oct 25, 2025
+</div>
+<div class="listing-author">
+Daniel Claborne
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="cGVyc29uYWw=" data-listing-date-sort="1760486400000" data-listing-file-modified-sort="1761495747285" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="338">
 <div class="thumbnail"><a href="./posts/baby-1/sandwich.html" class="no-external">
 
 <img loading="lazy" src="./posts/baby-1/sandwich.jpg" class="thumbnail-image">
@@ -247,7 +281,7 @@ Daniel Claborne
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDY29kZQ==" data-listing-date-sort="1752710400000" data-listing-file-modified-sort="1760768506032" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3456">
+<div class="quarto-post image-right" data-index="2" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDY29kZQ==" data-listing-date-sort="1752710400000" data-listing-file-modified-sort="1761495747286" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3456">
 <div class="thumbnail"><a href="./posts/binary-classification/binary-classification.html" class="no-external">
 
 <img loading="lazy" src="./posts/binary-classification/white-streaks-purple-sky.png" class="thumbnail-image">
@@ -279,7 +313,7 @@ Daniel Claborne
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDY29kZQ==" data-listing-date-sort="1747612800000" data-listing-file-modified-sort="1760768506057" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="35" data-listing-word-count-sort="6993">
+<div class="quarto-post image-right" data-index="3" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDY29kZQ==" data-listing-date-sort="1747612800000" data-listing-file-modified-sort="1761495747311" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="35" data-listing-word-count-sort="6993">
 <div class="thumbnail"><a href="./posts/unet-diffusion/unet-diffusion.html" class="no-external">
 
 <img loading="lazy" src="./posts/unet-diffusion/butterflies4x4.png" class="thumbnail-image">
@@ -311,7 +345,7 @@ Daniel Claborne
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="cGVyc29uYWw=" data-listing-date-sort="1736121600000" data-listing-file-modified-sort="1760768506049" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1441">
+<div class="quarto-post image-right" data-index="4" data-categories="cGVyc29uYWw=" data-listing-date-sort="1736121600000" data-listing-file-modified-sort="1761495747303" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1441">
 <div class="thumbnail"><a href="./posts/omscs-grad/omscs-grad.html" class="no-external">
 
 <img loading="lazy" src="./posts/omscs-grad/izzy-seal-2.png" class="thumbnail-image">
@@ -341,7 +375,7 @@ Daniel Claborne
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDdG9vbHM=" data-listing-date-sort="1729728000000" data-listing-file-modified-sort="1760768506038" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1281">
+<div class="quarto-post image-right" data-index="5" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDdG9vbHM=" data-listing-date-sort="1729728000000" data-listing-file-modified-sort="1761495747292" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1281">
 <div class="thumbnail"><a href="./posts/diambra-colab/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/diambra-colab/example-fight-start.png" class="thumbnail-image">
@@ -373,7 +407,7 @@ Daniel Claborne
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDdG9vbHM=" data-listing-date-sort="1718928000000" data-listing-file-modified-sort="1760768506042" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2011">
+<div class="quarto-post image-right" data-index="6" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDdG9vbHM=" data-listing-date-sort="1718928000000" data-listing-file-modified-sort="1761495747296" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2011">
 <div class="thumbnail"><a href="./posts/mlflow-hydra/mlflow-hydra.html" class="no-external">
 
 <img loading="lazy" src="./posts/mlflow-hydra/mlflow-hydra-thumb.png" class="thumbnail-image">
@@ -405,7 +439,7 @@ Daniel Claborne
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="cGVyc29uYWwlMkNwdXp6bGVz" data-listing-date-sort="1715385600000" data-listing-file-modified-sort="1760768506058" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1288">
+<div class="quarto-post image-right" data-index="7" data-categories="cGVyc29uYWwlMkNwdXp6bGVz" data-listing-date-sort="1715385600000" data-listing-file-modified-sort="1761495747312" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1288">
 <div class="thumbnail"><a href="./posts/update-2024/index.html" class="no-external">
 
 <img loading="lazy" src="./www/coinflips.png" class="thumbnail-image">
@@ -437,7 +471,7 @@ Daniel Claborne
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDcmVpbmZvcmNlbWVudCUyMGxlYXJuaW5n" data-listing-date-sort="1689120000000" data-listing-file-modified-sort="1760768506050" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1403">
+<div class="quarto-post image-right" data-index="8" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDcmVpbmZvcmNlbWVudCUyMGxlYXJuaW5n" data-listing-date-sort="1689120000000" data-listing-file-modified-sort="1761495747303" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1403">
 <div class="thumbnail"><a href="./posts/ppo/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/ppo/lunarlander.gif" class="thumbnail-image">
@@ -469,7 +503,7 @@ Daniel Claborne
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-categories="YmFraW5nJTJDbWFjaGluZSUyMGxlYXJuaW5n" data-listing-date-sort="1681603200000" data-listing-file-modified-sort="1760768506041" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="417">
+<div class="quarto-post image-right" data-index="9" data-categories="YmFraW5nJTJDbWFjaGluZSUyMGxlYXJuaW5n" data-listing-date-sort="1681603200000" data-listing-file-modified-sort="1761495747294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="417">
 <div class="thumbnail"><a href="./posts/init-bagels/bagels.html" class="no-external">
 
 <img loading="lazy" src="./posts/init-bagels/bagel-single.jpg" class="thumbnail-image">
@@ -501,7 +535,7 @@ Daniel Claborne
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDcmVpbmZvcmNlbWVudCUyMGxlYXJuaW5n" data-listing-date-sort="1681344000000" data-listing-file-modified-sort="1760768506033" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1624">
+<div class="quarto-post image-right" data-index="10" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDcmVpbmZvcmNlbWVudCUyMGxlYXJuaW5n" data-listing-date-sort="1681344000000" data-listing-file-modified-sort="1761495747286" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1624">
 <div class="thumbnail"><a href="./posts/ddpg/ddpg.html" class="no-external">
 
 <img loading="lazy" src="./posts/ddpg/walker.gif" class="thumbnail-image">
@@ -533,7 +567,7 @@ Daniel Claborne
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-categories="bWFjaGluZSUyMGxlYXJuaW5n" data-listing-date-sort="1678752000000" data-listing-file-modified-sort="1760768506058" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1454">
+<div class="quarto-post image-right" data-index="11" data-categories="bWFjaGluZSUyMGxlYXJuaW5n" data-listing-date-sort="1678752000000" data-listing-file-modified-sort="1761495747312" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1454">
 <div class="thumbnail"><a href="./posts/vqvae/vqvae.html" class="no-external">
 
 <img loading="lazy" src="./www/vqvae-thumb.png" class="thumbnail-image">
@@ -563,7 +597,7 @@ Daniel Claborne
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="11" data-categories="ZGF0YSUyMHNjaWVuY2UlMkNtYWNoaW5lJTIwbGVhcm5pbmclMkNjb2Rl" data-listing-date-sort="1675209600000" data-listing-file-modified-sort="1760768506041" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1111">
+<div class="quarto-post image-right" data-index="12" data-categories="ZGF0YSUyMHNjaWVuY2UlMkNtYWNoaW5lJTIwbGVhcm5pbmclMkNjb2Rl" data-listing-date-sort="1675209600000" data-listing-file-modified-sort="1761495747295" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1111">
 <div class="thumbnail"><a href="./posts/minigpt/minigpt.html" class="no-external">
 
 <img loading="lazy" src="./www/masked_attn.png" class="thumbnail-image">
@@ -597,7 +631,7 @@ Daniel Claborne
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="12" data-categories="ZGF0YSUyMHNjaWVuY2UlMkNtYWNoaW5lJTIwbGVhcm5pbmclMkNjb2Rl" data-listing-date-sort="1672531200000" data-listing-file-modified-sort="1760768506058" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="990">
+<div class="quarto-post image-right" data-index="13" data-categories="ZGF0YSUyMHNjaWVuY2UlMkNtYWNoaW5lJTIwbGVhcm5pbmclMkNjb2Rl" data-listing-date-sort="1672531200000" data-listing-file-modified-sort="1761495747312" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="990">
 <div class="thumbnail"><a href="./posts/vision-transformer/vision-transformer.html" class="no-external">
 
 <img loading="lazy" src="./www/mnist-chunks.png" class="thumbnail-image">
@@ -631,7 +665,7 @@ Daniel Claborne
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="13" data-categories="ZGF0YSUyMHNjaWVuY2UlMkNjb2Rl" data-listing-date-sort="1669593600000" data-listing-file-modified-sort="1760768506058" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1169">
+<div class="quarto-post image-right" data-index="14" data-categories="ZGF0YSUyMHNjaWVuY2UlMkNjb2Rl" data-listing-date-sort="1669593600000" data-listing-file-modified-sort="1761495747312" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1169">
 <div class="thumbnail"><a href="./posts/use-shift/index.html" class="no-external">
 
 <img loading="lazy" src="./www/gumbel-matrix.png" class="thumbnail-image">
@@ -663,7 +697,7 @@ Daniel Claborne
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="14" data-categories="bWFjaGluZSUyMGxlYXJuaW5n" data-listing-date-sort="1668211200000" data-listing-file-modified-sort="1760768506058" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3112">
+<div class="quarto-post image-right" data-index="15" data-categories="bWFjaGluZSUyMGxlYXJuaW5n" data-listing-date-sort="1668211200000" data-listing-file-modified-sort="1761495747312" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3112">
 <div class="thumbnail"><a href="./posts/variational-autoencoder/index.html" class="no-external">
 
 <img loading="lazy" src="./www/sd-vae-impressionist-2.png" class="thumbnail-image">
@@ -693,7 +727,7 @@ Daniel Claborne
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="15" data-categories="bmV3cyUyQ2NyeXB0bw==" data-listing-date-sort="1667952000000" data-listing-file-modified-sort="1760768506039" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="969">
+<div class="quarto-post image-right" data-index="16" data-categories="bmV3cyUyQ2NyeXB0bw==" data-listing-date-sort="1667952000000" data-listing-file-modified-sort="1761495747293" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="969">
 <div class="thumbnail"><a href="./posts/ftx-blowup/index.html" class="no-external">
 
 <img loading="lazy" src="./www/sd-crypto-wasteland-1.png" class="thumbnail-image">
@@ -725,7 +759,7 @@ Daniel Claborne
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="16" data-categories="bmV3cw==" data-listing-date-sort="1667692800000" data-listing-file-modified-sort="1760768506040" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="44">
+<div class="quarto-post image-right" data-index="17" data-categories="bmV3cw==" data-listing-date-sort="1667692800000" data-listing-file-modified-sort="1761495747293" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="44">
 <div class="thumbnail"><a href="./posts/hello-word/index.html" class="no-external">
 
 <p class="card-img-top"><img src="posts/hello-word/index_files/figure-html/cell-2-output-1.png"  class="thumbnail-image card-img"/></p>
