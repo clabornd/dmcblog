@@ -271,7 +271,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>df_pandas <span class="op">=</span> pd.DataFrame(data)</span>
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>df_polars <span class="op">=</span> pl.DataFrame(data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="4e2850a5" class="cell" data-execution_count="3">
+<div id="c7c73215" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>pandas solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># in pandas</span></span>
@@ -283,7 +283,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">sum</span>(result[<span class="st">'days_diff'</span>] <span class="op">==</span> <span class="dv">1</span>) <span class="op">/</span> (df_pandas.drop_duplicates(<span class="st">"player_id"</span>).shape[<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="61627d37" class="cell" data-execution_count="4">
+<div id="5a8c4311" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>polars solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># in polars</span></span>
@@ -318,7 +318,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co"># products_df_pandas = pd.DataFrame(products_data)</span></span>
 <span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co"># products_df_polars = pl.DataFrame(products_data)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="97fbc1b7" class="cell" data-execution_count="6">
+<div id="334229d2" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>pandas solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sales_df_pandas[<span class="st">'mindate'</span>] <span class="op">=</span> sales_df_pandas.groupby(<span class="st">"product_id"</span>)[<span class="st">'year'</span>].transform(<span class="st">"min"</span>)</span>
@@ -326,7 +326,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>sales_df_pandas[sales_df_pandas[<span class="st">'mindate'</span>] <span class="op">==</span> sales_df_pandas[<span class="st">'year'</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="e1b9a8b8" class="cell" data-execution_count="7">
+<div id="40ba7c7a" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>polars solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># with polars....so much better</span></span>
@@ -337,7 +337,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="6ff18ce8" class="cell" data-execution_count="8">
+<div id="d4170b78" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>sql solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>duckdb.sql(</span>
@@ -373,7 +373,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>transactions_df_pandas <span class="op">=</span> pd.DataFrame(transactions_data)</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>transactions_df_polars <span class="op">=</span> pl.DataFrame(transactions_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="7fb3086f" class="cell" data-execution_count="10">
+<div id="8b57d892" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>pandas solution for Monthly Transactions</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find for each month and country, the number of transactions and their total amount, the number of approved transactions and their total amount.</span></span>
@@ -408,7 +408,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>out_df[[<span class="st">'country'</span>, <span class="st">'month'</span>, <span class="st">'trans_count'</span>, <span class="st">'approved_count'</span>, <span class="st">'trans_total_amount'</span>, <span class="st">'approved_total_amount'</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="cd8b65d3" class="cell" data-execution_count="11">
+<div id="ac93d2d4" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>polars solution for Monthly Transactions</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># polars with .filter() retains entries with zero counts, nice!</span></span>
@@ -451,7 +451,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the Product table in polars</span></span>
 <span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>product_pl <span class="op">=</span> pl.DataFrame(product_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="9565bcc1" class="cell" data-execution_count="13">
+<div id="db40902e" class="cell" data-execution_count="13">
 <details class="code-fold">
 <summary>pandas solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>n_products <span class="op">=</span> product_pd.shape[<span class="dv">0</span>]</span>
@@ -460,7 +460,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>out_df[out_df[<span class="st">'product_key'</span>] <span class="op">==</span> n_products][<span class="st">'customer_id'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="b20ebc17" class="cell" data-execution_count="14">
+<div id="d0f2e487" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>polars solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>(</span>
@@ -484,7 +484,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>df_pd <span class="op">=</span> pd.DataFrame(consecutive_data)</span>
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>df_pl <span class="op">=</span> pl.DataFrame(consecutive_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cb53310f" class="cell" data-execution_count="16">
+<div id="78d2f555" class="cell" data-execution_count="16">
 <details class="code-fold">
 <summary>pandas solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create shifted versions of each dataframe</span></span>
@@ -494,7 +494,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>df_pd[(df_pd[<span class="st">'num'</span>] <span class="op">==</span> df_pd[<span class="st">'s1'</span>]) <span class="op">&amp;</span> (df_pd[<span class="st">'s1'</span>] <span class="op">==</span> df_pd[<span class="st">'s2'</span>])][<span class="st">'id'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="e6f308c2" class="cell" data-execution_count="17">
+<div id="32519394" class="cell" data-execution_count="17">
 <details class="code-fold">
 <summary>polars solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>(</span>
@@ -508,7 +508,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="e0d99b98" class="cell" data-execution_count="18">
+<div id="59dc208e" class="cell" data-execution_count="18">
 <details class="code-fold">
 <summary>sql solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>duckdb.sql(</span>
@@ -540,7 +540,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>pc_pd <span class="op">=</span> pd.DataFrame(price_change_data)</span>
 <span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>pc_pl <span class="op">=</span> pl.DataFrame(price_change_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="fa2cae41" class="cell" data-execution_count="20">
+<div id="8f7132cf" class="cell" data-execution_count="20">
 <details class="code-fold">
 <summary>pandas solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a column indicating if an entry is before the indicated date</span></span>
@@ -559,7 +559,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>pc_pd[[<span class="st">'product_id'</span>, <span class="st">'cur_price'</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="6038dc6d" class="cell" data-execution_count="21">
+<div id="1615df44" class="cell" data-execution_count="21">
 <details class="code-fold">
 <summary>polars solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>(</span>
@@ -598,7 +598,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>bus_df_pd <span class="op">=</span> pd.DataFrame(bus_data)</span>
 <span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>bus_df_pl <span class="op">=</span> pl.DataFrame(bus_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="3b0dbbef" class="cell" data-execution_count="23">
+<div id="29decbff" class="cell" data-execution_count="23">
 <details class="code-fold">
 <summary>pandas solution for Last Person to Fit in the Bus</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>bus_df_pd[<span class="st">'cumsum'</span>] <span class="op">=</span> bus_df_pd.sort_values(<span class="st">"turn"</span>)[<span class="st">'weight'</span>].expanding().<span class="bu">sum</span>()</span>
@@ -607,7 +607,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>out_df <span class="op">=</span> out_df[out_df[<span class="st">'turn'</span>] <span class="op">==</span> <span class="bu">max</span>(out_df[<span class="st">'turn'</span>])]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="81da9de5" class="cell" data-execution_count="24">
+<div id="dc7c70d2" class="cell" data-execution_count="24">
 <details class="code-fold">
 <summary>polars solution for Last Person to Fit in the Bus</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>(</span>
@@ -649,7 +649,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>large_income_df_pd <span class="op">=</span> pd.DataFrame(large_income_data)</span>
 <span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>large_income_df_pl <span class="op">=</span> pl.DataFrame(large_income_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="fe7d30a5" class="cell" data-execution_count="26">
+<div id="f71bf9b5" class="cell" data-execution_count="26">
 <details class="code-fold">
 <summary>pandas solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>categories_table <span class="op">=</span> pd.DataFrame({<span class="st">"category"</span>:[<span class="st">"Low Salary"</span>, <span class="st">"Average Salary"</span>, <span class="st">"High Salary"</span>]})</span>
@@ -670,7 +670,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>out_df[out_df[<span class="st">'accounts_count'</span>].isna()] <span class="op">=</span> <span class="dv">0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="8a49dd72" class="cell" data-execution_count="27">
+<div id="6a42fd86" class="cell" data-execution_count="27">
 <details class="code-fold">
 <summary>sql solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>duckdb.sql(</span>
@@ -703,7 +703,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="0d829ece" class="cell" data-execution_count="28">
+<div id="51021612" class="cell" data-execution_count="28">
 <details class="code-fold">
 <summary>polars solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>categories_table <span class="op">=</span> pl.DataFrame({<span class="st">"category"</span>:[<span class="st">"Low Salary"</span>, <span class="st">"Average Salary"</span>, <span class="st">"High Salary"</span>]})</span>
@@ -745,7 +745,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>seats_df_pl <span class="op">=</span> pl.DataFrame(seats_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="9d83c09c" class="cell" data-execution_count="30">
+<div id="ba1ef53c" class="cell" data-execution_count="30">
 <details class="code-fold">
 <summary>pandas solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a new id where every consecutive id is swapped (e.g. reverse 1 and 2, 3 and 4, etc.)</span></span>
@@ -765,7 +765,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>result[[<span class="st">'id_x'</span>, <span class="st">'student_y'</span>]].rename(columns<span class="op">=</span>{<span class="st">'id_x'</span>: <span class="st">'id'</span>, <span class="st">'student_y'</span>: <span class="st">'student'</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="d817836f" class="cell" data-execution_count="31">
+<div id="ea2f1821" class="cell" data-execution_count="31">
 <details class="code-fold">
 <summary>polars solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>(</span>
@@ -790,7 +790,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="66b4414b" class="cell" data-execution_count="32">
+<div id="aa1d10d7" class="cell" data-execution_count="32">
 <details class="code-fold">
 <summary>sql solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>duckdb.sql(</span>
@@ -861,7 +861,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb33-39"><a href="#cb33-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the MovieRating table in polars</span></span>
 <span id="cb33-40"><a href="#cb33-40" aria-hidden="true" tabindex="-1"></a>movie_rating_df_pl <span class="op">=</span> pl.DataFrame(movie_rating_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="375b88de" class="cell" data-execution_count="34">
+<div id="147a83d0" class="cell" data-execution_count="34">
 <details class="code-fold">
 <summary>pandas solution for Movie Ratings</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ratings_cts = movie_rating_df_pd.groupby("user_id", as_index=False).count()</span></span>
@@ -894,7 +894,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>top_movie <span class="op">=</span> avg_df.sort_values([<span class="st">"rating"</span>, <span class="st">'title'</span>],ascending<span class="op">=</span>[<span class="va">False</span>, <span class="va">True</span>])[<span class="st">'title'</span>].to_list()[<span class="dv">0</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="16cb23ca" class="cell" data-execution_count="35">
+<div id="c2305bd0" class="cell" data-execution_count="35">
 <details class="code-fold">
 <summary>polars solution for Movie Ratings</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>(</span>
@@ -927,7 +927,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a>)[<span class="st">'title'</span>][<span class="dv">0</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="44e81fbe" class="cell" data-execution_count="36">
+<div id="30874118" class="cell" data-execution_count="36">
 <details class="code-fold">
 <summary>sql solution</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>duckdb.sql(</span>
@@ -995,7 +995,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the DataFrame in polars</span></span>
 <span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a>salary_df_pl <span class="op">=</span> pl.DataFrame(salary_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="dcca7066" class="cell" data-execution_count="38">
+<div id="36ebbf32" class="cell" data-execution_count="38">
 <details class="code-fold">
 <summary>pandas solution for Second Highest Salary</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if there are at least 2 unique salaries</span></span>
@@ -1008,7 +1008,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Second highest salary: </span><span class="sc">{</span>second_highest<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="c0db2d70" class="cell" data-execution_count="39">
+<div id="785e9fcd" class="cell" data-execution_count="39">
 <details class="code-fold">
 <summary>polars solution for Second Highest Salary</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if there are at least 2 unique salaries</span></span>
@@ -1021,7 +1021,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Second highest salary: </span><span class="sc">{</span>second_highest<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="0e03fc3d" class="cell" data-execution_count="40">
+<div id="68b0b23a" class="cell" data-execution_count="40">
 <details class="code-fold">
 <summary>sql solution for Second Highest Salary</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>duckdb.sql(</span>
@@ -1067,7 +1067,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>patients_df_pd <span class="op">=</span> pd.DataFrame(patient_data)</span>
 <span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>patients_df_pl <span class="op">=</span> pl.DataFrame(patient_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="b6015b58" class="cell" data-execution_count="42">
+<div id="a1c89edc" class="cell" data-execution_count="42">
 <details class="code-fold">
 <summary>pandas solution for Patient Conditions</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
@@ -1077,7 +1077,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>patients_df_pd[patients_df_pd[<span class="st">'has_diab'</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="7043aada" class="cell" data-execution_count="43">
+<div id="f04efd3d" class="cell" data-execution_count="43">
 <details class="code-fold">
 <summary>polars solution for Patient Conditions</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>patients_df_pl.<span class="bu">filter</span>(</span>
@@ -1085,7 +1085,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="408c8d4e" class="cell" data-execution_count="44">
+<div id="5c5f7498" class="cell" data-execution_count="44">
 <details class="code-fold">
 <summary>sql solution for Patient Conditions</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>duckdb.sql(</span>
@@ -1146,7 +1146,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb45-45"><a href="#cb45-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the Department table in polars</span></span>
 <span id="cb45-46"><a href="#cb45-46" aria-hidden="true" tabindex="-1"></a>department_df_pl <span class="op">=</span> pl.DataFrame(department_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="6723e026" class="cell" data-execution_count="46">
+<div id="d0b2636b" class="cell" data-execution_count="46">
 <details class="code-fold">
 <summary>pandas solution for Department Top Three Salaries</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>df_pd <span class="op">=</span> employee_df_pd.merge(</span>
@@ -1160,7 +1160,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>df_pd[df_pd[<span class="st">'drank'</span>] <span class="op">&lt;=</span> <span class="dv">3</span>][[<span class="st">'name_y'</span>, <span class="st">'name_x'</span>, <span class="st">'salary'</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="1ec921c5" class="cell" data-execution_count="47">
+<div id="70e6cbdb" class="cell" data-execution_count="47">
 <details class="code-fold">
 <summary>polars solution for Department Top Three Salaries</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>(</span>
@@ -1177,7 +1177,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="1122ffbe" class="cell" data-execution_count="48">
+<div id="896ed52e" class="cell" data-execution_count="48">
 <details class="code-fold">
 <summary>sql solution for Department Top Three Salaries</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>duckdb.sql(</span>
@@ -1270,7 +1270,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb49-70"><a href="#cb49-70" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb49-71"><a href="#cb49-71" aria-hidden="true" tabindex="-1"></a>insurance_df_pl <span class="op">=</span> pl.DataFrame(insurance_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="8af6a2df" class="cell" data-execution_count="50">
+<div id="b397ae31" class="cell" data-execution_count="50">
 <details class="code-fold">
 <summary>polars for Investments in 2016</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>(</span>
@@ -1284,7 +1284,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="174cb9f9" class="cell" data-execution_count="51">
+<div id="688bfb1e" class="cell" data-execution_count="51">
 <details class="code-fold">
 <summary>pandas solution for Investments in 2016</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>insurance_df_pd[<span class="st">'ct1'</span>] <span class="op">=</span> insurance_df_pd.groupby(<span class="st">'tiv_2015'</span>)[<span class="st">'pid'</span>].transform(<span class="st">'count'</span>)</span>
@@ -1293,7 +1293,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>insurance_df_pd[(insurance_df_pd[<span class="st">'ct1'</span>] <span class="op">&gt;</span> <span class="dv">1</span>) <span class="op">&amp;</span> (insurance_df_pd[<span class="st">'ct2'</span>] <span class="op">==</span> <span class="dv">1</span>)][<span class="st">'tiv_2016'</span>].<span class="bu">sum</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="cf8ddbfd" class="cell" data-execution_count="52">
+<div id="3016435a" class="cell" data-execution_count="52">
 <details class="code-fold">
 <summary>sql solution for Investments in 2016</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>duckdb.sql(</span>
@@ -1350,7 +1350,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb53-35"><a href="#cb53-35" aria-hidden="true" tabindex="-1"></a>})</span>
 <span id="cb53-36"><a href="#cb53-36" aria-hidden="true" tabindex="-1"></a>fr_df_pl <span class="op">=</span> pl.concat([friend_requests_df_pl, additional_users_pl])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="ca50f862" class="cell" data-execution_count="54">
+<div id="98834d74" class="cell" data-execution_count="54">
 <details class="code-fold">
 <summary>pandas solution for Friend requests II - Who Has the Most Friends?</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>requester_counts <span class="op">=</span> fr_df_pd.groupby(<span class="st">"requester_id"</span>, as_index<span class="op">=</span><span class="va">False</span>)[<span class="st">'accepter_id'</span>].count().rename({<span class="st">'accepter_id'</span>:<span class="st">'req_counts'</span>}, axis<span class="op">=</span><span class="dv">1</span>)</span>
@@ -1374,7 +1374,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb54-19"><a href="#cb54-19" aria-hidden="true" tabindex="-1"></a>sum_df[sum_df[<span class="st">'all_counts'</span>] <span class="op">==</span> <span class="bu">max</span>(sum_df[<span class="st">'all_counts'</span>])]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="c7b998d4" class="cell" data-execution_count="55">
+<div id="9343576c" class="cell" data-execution_count="55">
 <details class="code-fold">
 <summary>polars solution for Friend requests II - Who Has the Most Friends?</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>pl.DataFrame(pl.concat(</span>
@@ -1383,7 +1383,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>)).group_by(<span class="st">"requester_id"</span>).<span class="bu">len</span>().<span class="bu">filter</span>(pl.col(<span class="st">"len"</span>) <span class="op">==</span> pl.col(<span class="st">'len'</span>).<span class="bu">max</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="fab891f6" class="cell" data-execution_count="56">
+<div id="8a5765e7" class="cell" data-execution_count="56">
 <details class="code-fold">
 <summary>sql solution for Friend requests II - Who Has the Most Friends?</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>soln1 <span class="op">=</span> <span class="st">"""</span></span>
@@ -1463,7 +1463,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb57-21"><a href="#cb57-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the Customer table in polars</span></span>
 <span id="cb57-22"><a href="#cb57-22" aria-hidden="true" tabindex="-1"></a>customer_df_pl <span class="op">=</span> pl.DataFrame(customer_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="725a8118" class="cell" data-execution_count="58">
+<div id="c388634a" class="cell" data-execution_count="58">
 <details class="code-fold">
 <summary>pandas solution for Restaurant Growth</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>customer_df_pd[<span class="st">'visited_on'</span>] <span class="op">=</span> pd.to_datetime(customer_df_pd[<span class="st">'visited_on'</span>])</span>
@@ -1476,7 +1476,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>sum_df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="8522efa2" class="cell" data-execution_count="59">
+<div id="224be231" class="cell" data-execution_count="59">
 <details class="code-fold">
 <summary>polars solution for Restaurant Growth</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>(</span>
@@ -1498,7 +1498,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb59-17"><a href="#cb59-17" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="0e01e1e9" class="cell" data-execution_count="60">
+<div id="163987d3" class="cell" data-execution_count="60">
 <details class="code-fold">
 <summary>sql solution for Restaurant Growth</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>duckdb.sql(</span>
@@ -1559,14 +1559,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb61-32"><a href="#cb61-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb61-33"><a href="#cb61-33" aria-hidden="true" tabindex="-1"></a>score_df_pl <span class="op">=</span> pl.DataFrame(score_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="63fd22e9" class="cell" data-execution_count="62">
+<div id="bc55f5d5" class="cell" data-execution_count="62">
 <details class="code-fold">
 <summary>pandas solution for Rank Scores</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>score_df_pd[<span class="st">'rank'</span>] <span class="op">=</span> score_df_pd[<span class="st">'score'</span>].rank(ascending<span class="op">=</span><span class="va">False</span>, method<span class="op">=</span><span class="st">'dense'</span>)</span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>score_df_pd.sort_values(<span class="st">"score"</span>,ascending<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="9cbdc259" class="cell" data-execution_count="63">
+<div id="1d47eb2a" class="cell" data-execution_count="63">
 <details class="code-fold">
 <summary>polars solution for Rank Scores</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>(</span>
@@ -1577,7 +1577,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="cded7142" class="cell" data-execution_count="64">
+<div id="09b0ba36" class="cell" data-execution_count="64">
 <details class="code-fold">
 <summary>sql solution for Rank Scores</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>duckdb.sql(</span>
@@ -1650,7 +1650,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb65-58"><a href="#cb65-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the updated Department table in polars</span></span>
 <span id="cb65-59"><a href="#cb65-59" aria-hidden="true" tabindex="-1"></a>department_df_pl <span class="op">=</span> pl.DataFrame(department_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="20a05f68" class="cell" data-execution_count="66">
+<div id="e3aa4829" class="cell" data-execution_count="66">
 <details class="code-fold">
 <summary>pandas solution for Department Highest Salary</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>out_df <span class="op">=</span> employee_df_pd.merge(</span>
@@ -1663,7 +1663,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>out_df.loc[out_df[<span class="st">'rank'</span>] <span class="op">==</span> <span class="dv">1</span>, [<span class="st">'id_x'</span>, <span class="st">'name_y'</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="708674ae" class="cell" data-execution_count="67">
+<div id="25bcbeb9" class="cell" data-execution_count="67">
 <details class="code-fold">
 <summary>polars solution for Department Highest Salary</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>(</span>
@@ -1679,7 +1679,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="0d012266" class="cell" data-execution_count="68">
+<div id="75f5cb66" class="cell" data-execution_count="68">
 <details class="code-fold">
 <summary>sql solution for Department Highest Salary</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>duckdb.sql(</span>
@@ -1751,7 +1751,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb69-32"><a href="#cb69-32" aria-hidden="true" tabindex="-1"></a>trips_df_pl <span class="op">=</span> pl.DataFrame(trips_data)</span>
 <span id="cb69-33"><a href="#cb69-33" aria-hidden="true" tabindex="-1"></a>users_df_pl <span class="op">=</span> pl.DataFrame(users_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="49244909" class="cell" data-execution_count="70">
+<div id="f9874ce9" class="cell" data-execution_count="70">
 <details class="code-fold">
 <summary>pandas solution for Trips and Users</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>merge_df <span class="op">=</span> trips_df_pd.merge(</span>
@@ -1776,7 +1776,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb70-20"><a href="#cb70-20" aria-hidden="true" tabindex="-1"></a>merge_df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="75beed9d" class="cell" data-execution_count="71">
+<div id="616c532f" class="cell" data-execution_count="71">
 <details class="code-fold">
 <summary>polars solution for Trips and Users</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>(</span>
@@ -1807,7 +1807,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb71-26"><a href="#cb71-26" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="e6ce0377" class="cell" data-execution_count="72">
+<div id="5008bfde" class="cell" data-execution_count="72">
 <details class="code-fold">
 <summary>sql solution for Trips and Users</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>duckdb.sql(</span>
@@ -1847,7 +1847,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb73-12"><a href="#cb73-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb73-13"><a href="#cb73-13" aria-hidden="true" tabindex="-1"></a>activity_df_pl <span class="op">=</span> pl.DataFrame(activity_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="3d8280d8" class="cell" data-execution_count="74">
+<div id="f9790ed9" class="cell" data-execution_count="74">
 <details class="code-fold">
 <summary>pandas solution for Game Play Analysis IV</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>activity_df_pd[<span class="st">'mindate'</span>] <span class="op">=</span> activity_df_pd.groupby(<span class="st">"player_id"</span>)[<span class="st">'event_date'</span>].transform(<span class="kw">lambda</span> x: <span class="bu">min</span>(x))</span>
@@ -1857,7 +1857,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>activity_df_pd[activity_df_pd[<span class="st">'datediff'</span>].dt.days <span class="op">==</span> <span class="dv">1</span>].drop_duplicates(<span class="st">"player_id"</span>).shape[<span class="dv">0</span>]<span class="op">/</span>activity_df_pd.drop_duplicates(<span class="st">"player_id"</span>).shape[<span class="dv">0</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="baa65067" class="cell" data-execution_count="75">
+<div id="be725884" class="cell" data-execution_count="75">
 <details class="code-fold">
 <summary>polars solution for Game Play Analysis IV</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>(</span>
@@ -1877,7 +1877,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb75-15"><a href="#cb75-15" aria-hidden="true" tabindex="-1"></a>)<span class="op">/</span>activity_df_pl.unique(<span class="st">'player_id'</span>).shape[<span class="dv">0</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="5d050a7e" class="cell" data-execution_count="76">
+<div id="1c3f7c09" class="cell" data-execution_count="76">
 <details class="code-fold">
 <summary>sql solution for Game Play Analysis IV</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>duckdb.sql(</span>
@@ -1914,7 +1914,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb77-13"><a href="#cb77-13" aria-hidden="true" tabindex="-1"></a>tree_node_df_pd <span class="op">=</span> pd.DataFrame(tree_node_data)</span>
 <span id="cb77-14"><a href="#cb77-14" aria-hidden="true" tabindex="-1"></a>tree_node_df_pl <span class="op">=</span> pl.DataFrame(tree_node_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="158a3da6" class="cell" data-execution_count="78">
+<div id="698482d2" class="cell" data-execution_count="78">
 <details class="code-fold">
 <summary>pandas solution for Tree Node</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>tree_node_df_pd[<span class="st">'child_count'</span>] <span class="op">=</span> tree_node_df_pd[<span class="st">'id'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: <span class="bu">sum</span>(tree_node_df_pd[<span class="st">'p_id'</span>] <span class="op">==</span> x))</span>
@@ -1929,7 +1929,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb78-10"><a href="#cb78-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="6dd8cc35" class="cell" data-execution_count="79">
+<div id="117748e5" class="cell" data-execution_count="79">
 <details class="code-fold">
 <summary>polars solution for Tree Node</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>(</span>
@@ -1946,7 +1946,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb79-12"><a href="#cb79-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="5bc0876f" class="cell" data-execution_count="80">
+<div id="c782b4fa" class="cell" data-execution_count="80">
 <details class="code-fold">
 <summary>sql solution for Tree Node</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>duckdb.sql(</span>
@@ -2038,7 +2038,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb82-21"><a href="#cb82-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb82-22"><a href="#cb82-22" aria-hidden="true" tabindex="-1"></a>orders_df_pl <span class="op">=</span> pl.DataFrame(orders_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="97aadc62" class="cell" data-execution_count="83">
+<div id="914e35af" class="cell" data-execution_count="83">
 <details class="code-fold">
 <summary>pandas solution for Market Analysis I</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>join_df <span class="op">=</span> users_df_pd.merge(</span>
@@ -2057,7 +2057,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb83-14"><a href="#cb83-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="68a5c336" class="cell" data-execution_count="84">
+<div id="16634a70" class="cell" data-execution_count="84">
 <details class="code-fold">
 <summary>polars solution for Market Analysis I</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>(</span>
@@ -2080,7 +2080,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb84-18"><a href="#cb84-18" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="1ef733db" class="cell" data-execution_count="85">
+<div id="eb266908" class="cell" data-execution_count="85">
 <details class="code-fold">
 <summary>sql solution for Market Analysis I</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>duckdb.sql(</span>
@@ -2135,7 +2135,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb86-32"><a href="#cb86-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb86-33"><a href="#cb86-33" aria-hidden="true" tabindex="-1"></a>organization_df_pl <span class="op">=</span> pl.DataFrame(organization_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="69e83218" class="cell" data-execution_count="87">
+<div id="377f183c" class="cell" data-execution_count="87">
 <details class="code-fold">
 <summary>pandas solution for Analyze Organization Hierarchy</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>level <span class="op">=</span> <span class="dv">1</span></span>
@@ -2169,7 +2169,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb87-29"><a href="#cb87-29" aria-hidden="true" tabindex="-1"></a>    collect_df <span class="op">=</span> pd.concat([collect_df, cur_result])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="190b931d" class="cell" data-execution_count="88">
+<div id="1fe4911f" class="cell" data-execution_count="88">
 <details class="code-fold">
 <summary>polars solution for Analyze Organization Hierarchy</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co"># steps in pandas, start from the top level (Alice, whose manager id is null) then recursively perform joins to get the next level of the hierarchy</span></span>
@@ -2219,7 +2219,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb88-45"><a href="#cb88-45" aria-hidden="true" tabindex="-1"></a>    collect_df <span class="op">=</span> pl.concat([collect_df, cur_result])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="922be4a2" class="cell" data-execution_count="89">
+<div id="7bbe6b09" class="cell" data-execution_count="89">
 <details class="code-fold">
 <summary>sql solution for Analyze Organization Hierarchy</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb89"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>duckdb.sql(</span>
