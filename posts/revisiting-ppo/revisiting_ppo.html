@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Daniel Claborne">
-<meta name="dcterms.date" content="2023-04-16">
-<meta name="description" content="Somewhere in this blog I mentioned I would talk about baking? Ok here it is. Look at that bagel, mmmmmm. I got the recipe from GPT-5 which OpenAI has been sitting on since early 2023 and gave me early access to.">
+<meta name="dcterms.date" content="2026-08-16">
+<meta name="description" content="AI finds and doesn’t judge my past mistakes.">
 
-<title>Making Bagels With GPT-5</title>
+<title>Revisiting PPO and VQVAE with AI</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -29,42 +29,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
 }
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
 }
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
 }
-</style>
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -114,12 +98,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="Making Bagels With GPT-5">
-<meta property="og:description" content="Somewhere in this blog I mentioned I would talk about baking? Ok here it is. Look at that bagel, mmmmmm. I got the recipe from GPT-5 which OpenAI has been sitting on since early 2023 and gave me early access to.">
-<meta property="og:image" content="https://clabornd.github.io/dmcblog/posts/init-bagels/bagel-single.jpg">
-<meta name="twitter:title" content="Making Bagels With GPT-5">
-<meta name="twitter:description" content="Somewhere in this blog I mentioned I would talk about baking? Ok here it is. Look at that bagel, mmmmmm. I got the recipe from GPT-5 which OpenAI has been sitting on since early 2023 and gave me early access to.">
-<meta name="twitter:image" content="https://clabornd.github.io/dmcblog/posts/init-bagels/bagel-single.jpg">
+<meta property="og:title" content="Revisiting PPO and VQVAE with AI">
+<meta property="og:description" content="AI finds and doesn’t judge my past mistakes.">
+<meta property="og:image" content="https://clabornd.github.io/dmcblog/posts/revisiting-ppo/reconstructed_dog.png">
+<meta property="og:image:height" content="429">
+<meta property="og:image:width" content="429">
+<meta name="twitter:title" content="Revisiting PPO and VQVAE with AI">
+<meta name="twitter:description" content="AI finds and doesn’t judge my past mistakes.">
+<meta name="twitter:image" content="https://clabornd.github.io/dmcblog/posts/revisiting-ppo/reconstructed_dog.png">
+<meta name="twitter:image-height" content="429">
+<meta name="twitter:image-width" content="429">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -166,14 +154,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Making Bagels With GPT-5</h1>
+      <h1 class="title">Revisiting PPO and VQVAE with AI</h1>
                   <div>
         <div class="description">
-          Somewhere in this blog I mentioned I would talk about baking? Ok here it is. Look at that bagel, mmmmmm. I got the recipe from GPT-5 which OpenAI has been sitting on since early 2023 and gave me early access to.
+          AI finds and doesn’t judge my past mistakes.
         </div>
       </div>
                           <div class="quarto-categories">
-                <div class="quarto-category">baking</div>
                 <div class="quarto-category">machine learning</div>
               </div>
                   </div>
@@ -192,7 +179,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">April 16, 2023</p>
+        <p class="date">August 16, 2026</p>
       </div>
     </div>
     
@@ -211,45 +198,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>I’ve made bagels for a long time, usually bringing them into the office and leaving them out in the lunch-room for co-workers, interns, and others to eat them. If you’d just like to have the recipe and be on your way it is <a href="https://honestcooking.com/peter-reinharts-new-york-style-bagels-wild-sourdough/">Peter Reinhart’s New York Style Bagels With Wild Sourdough</a>. I use molasses instead of barley malt, and ~30g less flour since I found 4 cups to make them too tough — the gears on my KitchenAid were eventually stripped from mixing the dough. I’ve had it from at least one actual New Yorker that they pass the test.</p>
-<p>I would often anonymously leave them in there and pat myself on the back for so selflessly sharing the gift of baking with people without need for thanks and praise. Of course this was inwardly dishonest, as I was going for the having my-cake-and-eating-it-too situation of everyone knowing who provided the bagels, but me not putting too much effort into having it be known such that I can claim pure intentions.</p>
-<p>Anyway, the pandemic obviously killed the bagel sharing situation in the office. Too bad too since I was on a long streak of having bagels in the break room every Monday morning. For a while I tried to deliver to co-workers houses, distribute to neighbors etc., but did not move nearly the same volume as before. Once I moved out of my apartment and started taking classes again the bagel production went to essentially zero.</p>
-<p>Recently I’ve tried to find time to make bagels again and have fixed a problem that plagued me previously - overproofing. Essentially the recipe is from a professional baker who has a walk in fridge that maintains a super consistent low temperature and can leave the dough in there for 24 hours, so I cut the proofing time to ~10 hours overnight, which seems to consistently produce a nice product. Anyway, here they are:</p>
-<p><img src="bagel-single.jpg" class="img-fluid"></p>
-<p><img src="bagel-sheet.jpg" class="img-fluid"></p>
-<p><a href="#fig-bagel-histogram" class="quarto-xref">Figure&nbsp;1</a> shows histograms of the three color channels for the single bagel image. From the red color channel, we can see that the bagel is very tasty.</p>
-<div id="cell-fig-bagel-histogram" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># load an image</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> np.array(Image.<span class="bu">open</span>(<span class="st">'bagel-single.jpg'</span>))</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># histogram of the three color channels</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].hist(img[:,:,<span class="dv">0</span>].flatten(), bins<span class="op">=</span><span class="dv">256</span>, color<span class="op">=</span><span class="st">'r'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">1</span>].hist(img[:,:,<span class="dv">1</span>].flatten(), bins<span class="op">=</span><span class="dv">256</span>, color<span class="op">=</span><span class="st">'g'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">2</span>].hist(img[:,:,<span class="dv">2</span>].flatten(), bins<span class="op">=</span><span class="dv">256</span>, color<span class="op">=</span><span class="st">'b'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div id="fig-bagel-histogram" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-bagel-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="bagels_files/figure-html/fig-bagel-histogram-output-1.png" width="1187" height="412" class="figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bagel-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Histograms of the three color channel intensities of the single bagel image.
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>If you were invested in the GPT-5 part of the title I am very sorry.</p>
+<p>Been a while since I posted, which I guess is what happens when you <a href="../baby-1">have a child</a>. The little guy is almost a year old, and wondering why he’s been born to a man who hasn’t updated his blog in many months, so here I am fulfilling my duty as a father and revisiting some old business.</p>
+<p>Previous posts on here ended in a bit of uncertainty or disappointment, specifically <a href="../../posts/ppo/index.html">Lunar Lander PPO</a> and <a href="../../posts/vqvae/vqvae.html">VQ-VAE</a>. PPO ‘worked’, and VQ-VAE…..did a little better. This is the kind of thing that AI is nice for. I can just point Claude at my noteook/blog post and ask “ehhhhh, anything wrong with this?”. Sure enough it came back with some fixes/changes that I was eager to try out. It also helped immensely to spin up a <a href="https://github.com/clabornd/vqvae">simple repo</a> to launch remote training jobs for the VQ-VAE and auxiliary models using <a href="https://docs.skypilot.ai/en/latest/docs/index.html">skypilot</a> and <a href="https://lambda.ai">lambda</a> for cloud compute, as I was getting a bit tired of running things in Google Colab.</p>
+<p>I think AI is incredibly useful for this type of experimentation/personal project, especially if you have limited free time and sleep for some reason. My main tension is of course the ‘slopification’ of codebases, as well as the feeling of getting dumber as I put in progressively lazier prompts to <em>make the thing go</em>. I do have to exert some mental effort to not get addicted to doing vibes-only coding and actually reviewing the code, but I think there is a good balance in there somewhere, and as long as I can pay 40 bucks a month for such a service, I am going to. Now, on to the topics of the day.</p>
+<section id="ppo" class="level2">
+<h2 class="anchored" data-anchor-id="ppo">PPO</h2>
+<p>My PPO implementation for the lunar lander gym environment produced successful agents that essentially guided the lunar lander to the surface every episode. I was later looking around to see if the use of a replay buffer was standard for PPO. While the answer seemed to be <em>no</em>, PPO training inherently uses ‘old’ data, in the sense that it is making updates using data generated from a previous policy, so a replay buffer it just kinda doing this more. In this way PPO is very much <em>off-policy</em>.</p>
+<p>Now, Googling ‘is PPO an on-policy algorithm’ will give you the answer ‘Yes, PPO is an on-policy reinforcement learning algorithm’. And indeed OpenAI’s ‘spinning up’ resources will tell you the same. Now, I’m just some guy, but I feel the need to call bullshit on this. In my studying of reinforcement learning, the distinction between on and off-policy seemed to be very flexible. Often asking: “why is [algorithm x] on/off-policy” will get you an answer that just gives some description that can easily be broken by any number of decisions about how the policy is trained. On/off policy is a concept/vibe, not a mathematical definition, and I think just calling PPO on-policy and refusing to elaborate further is flat wrong….Anyway:</p>
+<p>Claude also came back with the following suggestions/mistakes: - Normalize the advantages - Stop using epsilon-greedy exploration. This is non-standard for PPO, as it already explores via its stochastic policy. - Perform gradient clipping as well as the ‘PPO clipping’ on the value estimate - I was padding computation of the TD residuals with a zero, when it should be padded with a value estimate for the last state when it is not terminal.</p>
+<p>Sure, I’ll try these.</p>
+<p>Ok, so I’m using a replay buffer, which is a bit non-standard, but my janky implementation <em>worked</em>, and as I mentioned before, this is not fundamentally different that running a bunch of minibatches over sampled episodes. Still, there has to be a limit right? At what point does the data sampled via the old policy become too stale?</p>
+<p>I decided to test this by sweeping over a bunch of different buffer sizes, while keeping the total number of gradient updates the same. The only difference then should be how ‘fresh’ the data is.</p>
+<hr>
+<p>One always hopes the results show this nice, ordered effect, which as always, was not the case here. The plot below shows a rolling average reward grouped by buffer size. The lowest buffer size, where the data is freshest, shows the worst average performance and the highest variance. It had one of the worst runs as well as one of the best, as measured by how long it takes to produce a consistently successful agent.</p>
+<p>Next is a buffer size of 10,000, which on average produced the best results. The remaining: 20K, 40K, and 80K buffer sizes get progressively worse. Good science involves taking some empirical results and finding a hand-wavy story that fits those results: You do need a sufficiently large pool of observations so that there is good variety/less correlation in the training data, but there is a point at which every unit of increased variety in the data comes at a greater cost of data staleness.</p>
+<iframe src="https://wandb.ai/clabornd/ppo-rewrite/reports/PPO-Buffer-Size-Experiment--VmlldzoxNzYzODU0Mg" style="border:none;height:1024px;width:100%">
+</iframe>
+<p><a href="https://wandb.ai/clabornd/ppo-rewrite/reports/PPO-Buffer-Size-Experiment--VmlldzoxNzYzODU0Mg"></a></p>
+</section>
+<section id="vq-vae" class="level2">
+<h2 class="anchored" data-anchor-id="vq-vae">VQ-VAE</h2>
+<p>This project was far, <em>far</em> more poorly implemented. Some mistakes identified by Claude/GPT:</p>
+<ol type="1">
+<li>The padding in two of the convolutional layers of the model were mis-specified.</li>
+<li>I was dividing by the wrong denominator when reducing the KL loss calculation</li>
+<li>During inference, I was still using the softmax operator to construct codebook values. Switching to actual argmax during inference is standard.</li>
+<li>I completely missed the part of the Dall-E paper where they had to train a completely separate model to learn the prior. The prior learned by the VQVAE during training has no shot of being good.</li>
+</ol>
+<p>For training the encoder-decoder architecture, 1. and 2. helped me out a lot. I was getting frustrated because my deep learning knowledge suggested I should be able to <em>very</em> accurately reconstruct at least the training images if I trained for long enough, but I was still getting pretty blurry reconstructions. These fixes allowed me to get the below reconstructions of <em>training data</em>. My wife congratulated me on getting great definition of the dogs butthole:</p>
+<p><img src="vqvae_before_after_dog.png" class="img-fluid"></p>
+<p>The next failure was just completely missing the part of the Dall-E paper <span class="citation" data-cites="ramesh_zero-shot_2021">Ramesh et al. (<a href="#ref-ramesh_zero-shot_2021" role="doc-biblioref">2021</a>)</span> where they trained a separate transformer model to learn the prior for generation. The basic argument is that the uniform categorical prior assumed in the KL divergence term during training is pretty much just a regularization term that pushes the model to use more of the codebook (closer to a uniform categorical).</p>
+<p>If you recall, the encoder outputs a probability distribution over codebook entries per ‘pixel’ in the bottleneck layer. The KL term encourages this per-pixel conditional distribution to be close to a uniform categorical. However the final conditional distribution is likely to not be very close. Moreover, if you sample from a uniform categorical independently per pixel, you are ignoring some amount of spatial correlation present in images. Their solution is to train a transformer model to learn the prior. This is essentially an image transformer over the latent space of the VQVAE. My implementation uses class-conditioning to hopefully improve generation.</p>
+<p>The result is not particularly impressive (no dog buttholes, sorry), but is somewhat mesmerizing:</p>
+<p><img src="vqvae_gen_class_label_5.png" class="img-fluid"></p>
+<p>It is likely there is simply not enough training data in STL-10 to learn a prior that is going to generate realistic looking images. The code to train the vq-vae and prior via skypilot+lambda is <a href="https://github.com/clabornd/vqvae">here</a></p>
+<!-- June 19th is the first 'good' version of VQ-VAE, if all else fails revert to that one. -->
+<!-- Possible debug scenario is that I trained it for more epochs, but it didnt reflect in the notebook -->
 
 
 
-</main> <!-- /main -->
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-ramesh_zero-shot_2021" class="csl-entry" role="listitem">
+Ramesh, Aditya, Mikhail Pavlov, Gabriel Goh, et al. 2021. <em>Zero-<span>Shot</span> <span>Text</span>-to-<span>Image</span> <span>Generation</span></em>. arXiv. <a href="https://doi.org/10.48550/arXiv.2102.12092">https://doi.org/10.48550/arXiv.2102.12092</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
