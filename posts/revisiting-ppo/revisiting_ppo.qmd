@@ -47,7 +47,7 @@ Next is a buffer size of 10,000, which on average produced the best results.  Th
 
 ## VQ-VAE
 
-This project was far, *far* more poorly implemented.  Two big mistakes: 
+This project was far, *far* more poorly implemented.  Some mistakes identified by Claude/GPT: 
 
 1. The padding in two of the convolutional layers of the model were mis-specified.
 2. I was dividing by the wrong denominator when reducing the KL loss calculation
